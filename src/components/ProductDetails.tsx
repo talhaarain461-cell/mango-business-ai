@@ -524,46 +524,8 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
       </div>
       
       <AnimatePresence>
-        {selectedReviewImage && (
-          <Lightbox 
-            image={selectedReviewImage} 
-            onClose={() => setSelectedReviewImage(null)} 
-          />
-        )}
+        {/* The Reviews component now handles its own image lightboxes internally */}
       </AnimatePresence>
-    </motion.div>
-  );
-}
-
-// Reusable Lightbox Component
-function Lightbox({ image, onClose }: { image: string; onClose: () => void }) {
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      <button 
-        onClick={onClose}
-        className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-[110]"
-      >
-        <X size={32} />
-      </button>
-      <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center"
-        onClick={e => e.stopPropagation()}
-      >
-        <img 
-          src={image} 
-          alt="Full size review" 
-          className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl border border-white/10"
-        />
-      </motion.div>
     </motion.div>
   );
 }

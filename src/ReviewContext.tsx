@@ -1,6 +1,15 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { db } from "./firebase";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  query, 
+  orderBy, 
+  serverTimestamp,
+  doc,
+  getDocFromServer
+} from 'firebase/firestore';
+import { db, auth } from './firebase';
 
 export interface Review {
   id: string;
@@ -11,75 +20,131 @@ export interface Review {
   message: string;
   date: string;
   images?: string[];
+  createdAt?: any;
+}
+
+enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+    tenantId?: string | null;
+    providerInfo?: {
+      providerId?: string | null;
+      email?: string | null;
+    }[];
+  }
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData?.map(provider => ({
+        providerId: provider.providerId,
+        email: provider.email,
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
 }
 
 interface ReviewContextType {
   reviews: Review[];
-  addReview: (review: Review) => Promise<void>;
+  addReview: (review: Omit<Review, 'id'>) => Promise<void>;
   getReviewsByProduct: (productId: string) => Review[];
   getProductRating: (productId: string) => { average: number; count: number };
+  loading: boolean;
 }
 
 const ReviewContext = createContext<ReviewContextType | undefined>(undefined);
 
 export function ReviewProvider({ children }: { children: ReactNode }) {
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load reviews from Firebase
-  const fetchReviews = async () => {
-    try {
-      const snapshot = await getDocs(collection(db, "reviews"));
-      const data = snapshot.docs.map((doc) => ({
-        ...(doc.data() as Review),
-        id: doc.id,
-      }));
-      setReviews(data);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
-
+  // Validate Firestore connection on boot as requested
   useEffect(() => {
-    fetchReviews();
+    async function testConnection() {
+      try {
+        await getDocFromServer(doc(db, 'test', 'connection'));
+      } catch (error: any) {
+        if(error instanceof Error && error.message.includes('the client is offline')) {
+          console.error("Please check your Firebase configuration.");
+        }
+      }
+    }
+    testConnection();
   }, []);
 
-  // Add review to Firebase
-  const addReview = async (review: Review) => {
-    try {
-      const docRef = await addDoc(collection(db, "reviews"), review);
+  // Real-time synchronization
+  useEffect(() => {
+    const reviewsRef = collection(db, 'reviews');
+    const q = query(reviewsRef, orderBy('createdAt', 'desc'));
 
-      setReviews((prev) => [
-        { ...review, id: docRef.id },
-        ...prev,
-      ]);
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const fetchedReviews = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Review[];
+      setReviews(fetchedReviews);
+      setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'reviews');
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const addReview = async (reviewData: Omit<Review, 'id'>) => {
+    try {
+      const reviewsRef = collection(db, 'reviews');
+      await addDoc(reviewsRef, {
+        ...reviewData,
+        createdAt: serverTimestamp()
+      });
     } catch (error) {
-      console.error("Error adding review:", error);
+      handleFirestoreError(error, OperationType.CREATE, 'reviews');
     }
   };
 
   const getReviewsByProduct = (productId: string) => {
-    return reviews.filter((r) => r.productId === productId);
+    return reviews.filter(r => r.productId === productId);
   };
 
   const getProductRating = (productId: string) => {
-    const productReviews = reviews.filter((r) => r.productId === productId);
-
-    if (productReviews.length === 0) {
-      return { average: 0, count: 0 };
-    }
-
+    const productReviews = reviews.filter(r => r.productId === productId);
+    if (productReviews.length === 0) return { average: 0, count: 0 };
     const sum = productReviews.reduce((acc, r) => acc + r.rating, 0);
-
     return {
-      average: Number((sum / productReviews.length).toFixed(1)),
-      count: productReviews.length,
+      average: parseFloat((sum / productReviews.length).toFixed(1)),
+      count: productReviews.length
     };
   };
 
   return (
-    <ReviewContext.Provider
-      value={{ reviews, addReview, getReviewsByProduct, getProductRating }}
-    >
+    <ReviewContext.Provider value={{ reviews, addReview, getReviewsByProduct, getProductRating, loading }}>
       {children}
     </ReviewContext.Provider>
   );
@@ -87,8 +152,8 @@ export function ReviewProvider({ children }: { children: ReactNode }) {
 
 export function useReviews() {
   const context = useContext(ReviewContext);
-  if (!context) {
-    throw new Error("useReviews must be used within ReviewProvider");
+  if (context === undefined) {
+    throw new Error('useReviews must be used within a ReviewProvider');
   }
   return context;
 }

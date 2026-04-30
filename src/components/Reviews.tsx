@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useReviews } from '../ReviewContext';
-import { Star, MessageSquare, ChevronDown, Camera, Upload, X } from 'lucide-react';
+import { Star, MessageSquare, ChevronDown, Camera, Upload, X, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MANGO_PRODUCTS } from '../types';
 import { ReviewCard } from './ReviewCard';
 import { ReviewModal } from './ReviewModal';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase';
 
 interface ReviewsProps {
   hideForm?: boolean;
@@ -14,7 +16,7 @@ interface ReviewsProps {
 }
 
 export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: ReviewsProps) {
-  const { reviews, addReview, getReviewsByProduct } = useReviews();
+  const { reviews, addReview, getReviewsByProduct, loading } = useReviews();
   const [showFormOnHome, setShowFormOnHome] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [selectedReviewImage, setSelectedReviewImage] = useState<string | null>(null);
@@ -39,7 +41,7 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
   const [activeSlide, setActiveSlide] = useState(0);
   const todayDateStr = new Date().toISOString().split('T')[0];
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
+  const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!newReview.productId || !newReview.name) {
@@ -58,19 +60,25 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
     const selectedProduct = MANGO_PRODUCTS.find(p => p.id === newReview.productId);
     if (!selectedProduct) return;
 
-    addReview({
-      id: Date.now().toString(),
-      productId: selectedProduct.id,
-      productName: selectedProduct.name,
-      name: newReview.name || 'Customer',
-      rating: newReview.rating,
-      message: newReview.message || '',
-      date: selectedDate.toLocaleDateString(),
-      images: newReview.images
-    });
-    setNewReview({ name: '', rating: 5, message: '', date: '', productId: productId || '', images: [] });
-    setSubmitSuccess(true);
-    setTimeout(() => setSubmitSuccess(false), 3000);
+    setIsUploading(true);
+    try {
+      await addReview({
+        productId: selectedProduct.id,
+        productName: selectedProduct.name,
+        name: newReview.name || 'Customer',
+        rating: newReview.rating,
+        message: newReview.message || '',
+        date: selectedDate.toLocaleDateString(),
+        images: newReview.images
+      });
+      setNewReview({ name: '', rating: 5, message: '', date: '', productId: productId || '', images: [] });
+      setSubmitSuccess(true);
+      setTimeout(() => setSubmitSuccess(false), 3000);
+    } catch (error) {
+      console.error("Failed to submit review:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,8 +91,8 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
         setImageError(`Format not supported: ${file.name}. Only JPG and PNG are allowed.`);
         return;
       }
-      if (file.size > 2 * 1024 * 1024) {
-        setImageError(`File too large: ${file.name}. Max size is 2MB per image.`);
+      if (file.size > 5 * 1024 * 1024) {
+        setImageError(`File too large: ${file.name}. Max size is 5MB per image.`);
         return;
       }
     }
@@ -92,22 +100,20 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
     setIsUploading(true);
     
     try {
-      const uploadPromises = files.map(file => {
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.onerror = () => reject(new Error("Failed to read file"));
-          reader.readAsDataURL(file);
-        });
+      const uploadPromises = files.map(async (file) => {
+        const fileRef = ref(storage, `reviews/${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(fileRef, file);
+        return await getDownloadURL(snapshot.ref);
       });
 
-      const results = await Promise.all(uploadPromises);
+      const urls = await Promise.all(uploadPromises);
       setNewReview(prev => ({ 
         ...prev, 
-        images: [...prev.images, ...results] 
+        images: [...prev.images, ...urls] 
       }));
     } catch (error) {
-      setImageError("Failed to upload some images.");
+      console.error("Upload error:", error);
+      setImageError("Failed to upload some images. Please check your connection.");
     } finally {
       setIsUploading(false);
     }
@@ -325,7 +331,12 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
         </AnimatePresence>
 
         {/* Reviews List */}
-        {filteredReviews.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 size={40} className="text-brand-accent animate-spin mb-4" />
+            <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Loading reviews...</p>
+          </div>
+        ) : filteredReviews.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm max-w-xl mx-auto">
             <MessageSquare size={40} className="mx-auto mb-4 text-slate-200" />
             <p className="text-xs font-black text-slate-400 uppercase tracking-widest">No reviews yet. Be the first!</p>

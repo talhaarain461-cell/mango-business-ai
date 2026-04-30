@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductGrid } from './components/ProductGrid';
@@ -193,7 +193,7 @@ export default function App() {
               />
               <PremiumFeatures onNavigate={handleNavigate} />
               <About />
-              <Reviews hideForm={true} limit={4} onViewMore={() => handleNavigate('Reviews')} />
+              <Reviews hideForm={true} limit={4} onViewMore={() => handleNavigate('reviews')} />
             </div>
           } />
           
@@ -218,6 +218,9 @@ export default function App() {
               />
             </div>
           } />
+          
+          <Route path="/product" element={<Navigate to="/shop" replace />} />
+          <Route path="/product/" element={<Navigate to="/shop" replace />} />
 
           <Route path="/checkout" element={
             <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
