@@ -26,7 +26,7 @@ export function Footer({ onNavigate }: FooterProps) {
           <div className="col-span-1">
              <Logo onNavigate={onNavigate} className="mb-8" />
               <p className="text-sm text-white/70 leading-relaxed mb-8 font-medium italic">
-                “Delivering the rich, authentic taste of Sindh’s finest mangoes straight to your doorstep with premium care.”
+                Delivering the rich, authentic taste of Sindh’s finest mangoes straight to your doorstep with premium care.
               </p>
               
               <h4 className="text-sm font-bold text-white mb-4">Follow Us</h4>

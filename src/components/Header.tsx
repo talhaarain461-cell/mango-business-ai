@@ -82,11 +82,11 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
     <>
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-mango-brand via-mango-brand to-mango-dark backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.1)] transition-all duration-300">
       {/* Top Theme Bar - Welcome Message only */}
-      <div className="bg-brand-accent pt-1 pb-1.5 sm:py-1.5 border-b border-black/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-0 h-auto sm:h-8">
+      <div className="bg-brand-accent border-b border-black/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center sm:justify-between h-10 sm:h-12">
             {/* Centered Welcome Message */}
-            <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 sm:whitespace-nowrap sm:pt-0">
-              <span className="text-[8px] sm:text-[10px] font-black text-black uppercase tracking-[0.2em] sm:tracking-[0.3em] font-sans">
+            <div className="flex items-center justify-center h-full sm:absolute sm:left-1/2 sm:-translate-x-1/2 sm:whitespace-nowrap">
+              <span className="text-[10px] sm:text-[12px] font-black text-black uppercase tracking-[0.25em] sm:tracking-[0.35em] font-sans pt-[1px]">
                 WELCOME TO AAM WALA ONLINE STORE
               </span>
             </div>

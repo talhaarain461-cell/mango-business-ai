@@ -6,6 +6,7 @@ import { Review } from '../ReviewContext';
 interface ReviewCardProps {
   review: Review;
   onImageClick: (image: string) => void;
+  key?: string | number;
 }
 
 export function ReviewCard({ review, onImageClick }: ReviewCardProps) {

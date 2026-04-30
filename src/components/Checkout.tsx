@@ -39,8 +39,64 @@ const PAYMENT_ACCOUNTS = {
 export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuantity, onBack, onContinueShopping }: CheckoutProps) {
   const { clearCart } = useCart();
   const { userData, setUserData } = useUser();
-  const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>('idle');
-  const [submittedData, setSubmittedData] = useState<typeof formData | null>(null);
+  const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>(() => {
+    // Check if there's a recent successful order in local storage
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('mango_last_order');
+      if (saved) return 'success';
+    }
+    return 'idle';
+  });
+  const [submittedData, setSubmittedData] = useState<typeof formData | null>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('mango_last_order');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
+
+  // Handle scroll and success state on mount/revisit
+  React.useLayoutEffect(() => {
+    const saved = localStorage.getItem('mango_last_order');
+    if (saved) {
+      setFormState('success');
+      try {
+        setSubmittedData(JSON.parse(saved));
+      } catch (e) {}
+      
+      // Multi-layered scroll reset for different browser behaviors
+      const forceScroll = () => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTo(0, 0);
+        document.body.scrollTo(0, 0);
+      };
+      
+      forceScroll();
+      setTimeout(forceScroll, 10);
+      setTimeout(forceScroll, 100);
+      setTimeout(forceScroll, 300);
+    }
+  }, []);
+
+  // Scroll to top when form becomes success
+  React.useLayoutEffect(() => {
+    if (formState === 'success') {
+      const forceScroll = () => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTo(0, 0);
+        document.body.scrollTo(0, 0);
+      };
+      
+      forceScroll();
+      setTimeout(forceScroll, 100);
+    }
+  }, [formState]);
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -108,6 +164,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       
       // Save data for success screen summary
       setSubmittedData({ ...formData });
+      localStorage.setItem('mango_last_order', JSON.stringify(formData));
       
       // Reset form to empty values for the next potential order
       setFormData({
@@ -144,52 +201,70 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     const sTotal = Math.max(0, sSubtotal - sDiscount);
 
     return (
-      <div className="min-h-screen bg-white p-4 pt-24 pb-24">
-        <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen flex flex-col items-center justify-start bg-slate-50/50 p-4 pt-12 pb-12 md:pt-20 md:pb-20">
+        <div className="max-w-xl w-full">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-          className="bg-white p-12 lg:p-20 rounded-[40px] shadow-sm text-center border border-slate-100 max-w-2xl w-full"
-        >
-          <div className="w-24 h-24 bg-brand-accent text-slate-900 rounded-full flex items-center justify-center mx-auto mb-10 shadow-xl">
-            <Check size={56} />
-          </div>
-          <h2 className="text-4xl font-black text-infinite-night uppercase mb-4 tracking-tight">Order Received!</h2>
-          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-6 mb-8 text-left space-y-4 max-w-md mx-auto">
-            <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-200 pb-2">Your Order Summary</h4>
-            <div className="flex justify-between items-center text-sm">
-                <span className="font-bold text-slate-600">Name:</span>
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white p-8 md:p-12 lg:p-16 rounded-[40px] shadow-2xl shadow-brand-accent/5 text-center border border-slate-100 flex flex-col items-center"
+          >
+            <div className="w-20 h-20 bg-brand-accent text-mango-brand rounded-full flex items-center justify-center mb-8 shadow-xl relative overflow-hidden">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", damping: 10, stiffness: 100 }}
+              >
+                <Check size={40} strokeWidth={4} />
+              </motion.div>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-black text-infinite-night uppercase mb-3 tracking-tight">Order Successfully Submitted!</h2>
+            <p className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-8">We've received your request on WhatsApp</p>
+
+            <div className="bg-slate-50 border border-slate-100 rounded-3xl p-6 mb-10 text-left space-y-4 w-full">
+              <div className="flex justify-between items-center text-sm border-b border-slate-200 pb-3">
+                <span className="font-black text-slate-400 uppercase tracking-widest text-[10px]">Order Details</span>
+                <span className="font-black text-brand-accent uppercase tracking-widest text-[10px]">Processing</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-bold text-slate-500">Customer:</span>
                 <span className="font-black text-slate-900">{submittedData.fullName}</span>
-            </div>
-            <div className="flex justify-between items-center text-sm">
-                <span className="font-bold text-slate-600">Mangoes:</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-bold text-slate-500">Variety:</span>
                 <span className="font-black text-slate-900">{submittedProduct.name}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-bold text-slate-500">Package:</span>
+                <span className="font-black text-slate-900">{submittedData.quantity} × {submittedData.boxWeight}</span>
+              </div>
+              <div className="flex justify-between items-center text-base pt-3 border-t border-slate-200">
+                <span className="font-black text-slate-900 uppercase tracking-widest text-xs">Total Amount:</span>
+                <span className="font-black text-mango-dark">Rs. {sTotal}</span>
+              </div>
             </div>
-            <div className="flex justify-between items-center text-sm">
-                <span className="font-bold text-slate-600">Amount:</span>
-                <span className="font-black text-slate-900">{submittedData.quantity} Box ({submittedData.boxWeight})</span>
+
+            <p className="text-slate-600 mb-10 text-base leading-relaxed font-bold">
+              Thank you for trusting <span className="text-brand-accent font-black">Aam Wala</span>.<br />
+              We are verifying your payment and will contact you shortly to confirm your delivery details.
+            </p>
+
+            <div className="flex flex-col gap-4 w-full">
+              <button 
+                onClick={() => {
+                  localStorage.removeItem('mango_last_order');
+                  if (onContinueShopping) onContinueShopping();
+                  else onBack();
+                }}
+                className="w-full px-10 py-5 bg-mango-brand text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-mango-dark hover:text-brand-accent transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3"
+              >
+                <Package size={20} />
+                Continue Shopping
+              </button>
             </div>
-            <div className="flex justify-between items-center text-sm pt-2 border-t border-slate-200">
-                <span className="font-bold text-slate-600">Final Total:</span>
-                <span className="font-black text-brand-accent">Rs. {sTotal}</span>
-            </div>
-          </div>
-          <p className="text-slate-500 mb-10 max-w-md mx-auto text-lg leading-relaxed font-bold">
-            Thank You For Ordering.<br />
-            Your order has been received successfully.<br />
-            Our team will review your order and contact you shortly for confirmation.
-          </p>
-          <div className="flex flex-col gap-4 justify-center">
-            <button 
-              onClick={onContinueShopping || onBack}
-              className="mt-4 px-10 py-5 bg-mango-brand text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-mango-dark hover:text-brand-accent transition-all shadow-sm active:scale-95"
-            >
-              Continue Shopping
-            </button>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </div>
     );
   }
 
