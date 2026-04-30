@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Tailwind core */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   BASE RESET
+========================= */
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @apply text-slate-700 antialiased font-sans bg-white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply text-slate-900;
+}
+
+/* =========================
+   CUSTOM UTILITIES
+========================= */
+
+.font-sans {
+  font-family: "Inter", "Outfit", system-ui, sans-serif;
+}
+
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500;
+}
