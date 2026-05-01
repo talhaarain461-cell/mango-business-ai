@@ -33,7 +33,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'saroli',
     name: 'Saroli Mango',
-    pricePerKg: 300,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'Season Opener Mango',
     description: 'Saroli is one of the earliest mango varieties of the season, known for its soft texture and naturally sweet taste. It offers a refreshing and delightful start to the mango season.',
@@ -53,7 +53,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'desi-achar',
     name: 'Desi Achari Mango',
-    pricePerKg: 250,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'Raw Pickle Mango (Achar Special)',
     description: 'Desi Achari Mango – Best for Pickle (Achar). Desi Achari Mango is a traditional raw mango mainly used for making pickles. It has a sour taste and strong flavor, perfect for homemade achar.',
@@ -75,7 +75,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'sindhri',
     name: 'Sindhri Mango',
-    pricePerKg: 450,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the “Queen of Mangoes.” It is one of the most popular mango varieties in Pakistan.',
@@ -119,7 +119,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'anwar-ratol',
     name: 'Anwar Ratol Mango',
-    pricePerKg: 700,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'Mini Powerhouse Mango',
     description: 'Anwar Ratol Mango – Mini Powerhouse of Sweetness. Anwar Ratol is a small, yellow mango known for its extreme sweetness and smooth, fiberless pulp. It is one of the most loved mango varieties in Pakistan.',
@@ -143,7 +143,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'dasheri',
     name: 'Dasheri Mango',
-    pricePerKg: 350,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'Classic Summer Mango',
     description: 'Dasheri Mango – Sweet & Juicy Summer Delight. Dasheri Mango is a popular summer fruit known for its sweet taste, smooth texture, and juicy pulp. It is a refreshing and healthy mango variety loved by everyone.',
