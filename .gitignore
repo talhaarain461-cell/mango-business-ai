@@ -5,7 +5,10 @@ coverage/
 *.log
 .env*
 !.env.example
+
 !.github/
 !.github/workflows/
 !firebase.json
 !.firebaserc
+
+.adal/
