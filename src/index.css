@@ -32,6 +32,12 @@
   --color-slate-deep: #111827;
   
   --color-success: #16a34a;
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  --animate-ticker: ticker 60s linear infinite;
 }
 
 @layer utilities {

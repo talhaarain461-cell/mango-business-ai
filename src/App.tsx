@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductGrid } from './components/ProductGrid';
+import { Ticker } from './components/Ticker';
 import { About } from './components/About';
 import { Contact } from './components/Contact';
 import { FAQ } from './components/FAQ';
@@ -186,6 +187,7 @@ export default function App() {
               <Route path="/" element={
                 <div className="flex flex-col">
                   <Hero onNavigate={handleNavigate} />
+                  <Ticker />
                   <ProductGrid 
                     onBuyNow={handleBuyNow} 
                     onViewDetails={handleViewDetails} 
