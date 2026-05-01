@@ -56,8 +56,9 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
 
   const totalPrice = useMemo(() => {
     if (!selectedSize || selectedSize === 'Bulk') return 0;
+    if (typeof product.pricePerKg !== 'number') return 'N/A';
     const weight = parseInt(selectedSize.replace('kg', ''));
-    return product.pricePerKg * weight * quantity;
+    return (product.pricePerKg as number) * weight * quantity;
   }, [selectedSize, quantity, product.pricePerKg]);
 
   const handleAddToCart = () => {
@@ -187,7 +188,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                 </p>
                 <div className="h-1 w-1 bg-slate-300 rounded-full" />
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                  Rs {product.pricePerKg}/kg
+                  {typeof product.pricePerKg === 'number' ? `Rs ${product.pricePerKg}/kg` : product.pricePerKg}
                 </p>
               </div>
               
@@ -299,8 +300,8 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total Estimated Amount</span>
                       <div className="flex items-baseline gap-2">
-                         <span className="text-3xl font-black text-slate-900 leading-none">Rs {totalPrice.toLocaleString()}</span>
-                         <span className="text-xs font-bold text-slate-400">/ Total</span>
+                         <span className="text-3xl font-black text-slate-900 leading-none">{typeof totalPrice === 'number' ? `Rs ${totalPrice.toLocaleString()}` : totalPrice}</span>
+                         {typeof totalPrice === 'number' && <span className="text-xs font-bold text-slate-400">/ Total</span>}
                       </div>
                     </div>
                     <div className="hidden sm:flex flex-col items-end">

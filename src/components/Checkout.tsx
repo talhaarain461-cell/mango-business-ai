@@ -93,9 +93,11 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     }
   }, [isTandoAllahyar, formData.paymentMethod]);
 
-  const subtotal = (weightNum * selectedProduct.pricePerKg) * formData.quantity;
-  const discount = (isTandoAllahyar && formData.boxWeight) ? (300 * formData.quantity) : 0;
-  const total = Math.max(0, subtotal - discount);
+  const subtotal = typeof selectedProduct.pricePerKg === 'number' 
+    ? (weightNum * (selectedProduct.pricePerKg as number)) * formData.quantity 
+    : 'N/A';
+  const discount = (isTandoAllahyar && formData.boxWeight && typeof subtotal === 'number') ? (300 * formData.quantity) : 0;
+  const total = typeof subtotal === 'number' ? Math.max(0, (subtotal as number) - discount) : 'N/A';
 
   const availableMethods = useMemo(() => {
     const methods = Object.keys(PAYMENT_ACCOUNTS);
@@ -121,9 +123,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       `• Quantity: ${formData.quantity} Box(es)\n\n` +
       `*PAYMENT INFO:*\n` +
       `• Method: ${formData.paymentMethod}\n` +
-      `• Subtotal: Rs. ${subtotal}\n` +
-      (isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${discount}\n` : '') +
-      `*• TOTAL PAYABLE: Rs. ${total}*\n\n` +
+      `• Subtotal: ${typeof subtotal === 'number' ? `Rs. ${subtotal}` : subtotal}\n` +
+      (isTandoAllahyar && typeof subtotal === 'number' ? `• Discount (Tando Allahyar): -Rs. ${discount}\n` : '') +
+      `*• TOTAL PAYABLE: ${typeof total === 'number' ? `Rs. ${total}` : total}*\n\n` +
       (formData.paymentMethod === 'Cash on Delivery' 
         ? `_I will pay for my order upon delivery._`
         : `_I am sending the payment screenshot following this message._`);
@@ -166,10 +168,12 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   if (formState === 'success' && submittedData) {
     const submittedProduct = MANGO_PRODUCTS.find(p => p.id === submittedData.productId) || MANGO_PRODUCTS[0];
     const sWeightNum = parseInt(submittedData.boxWeight) || 0;
-    const sSubtotal = (sWeightNum * submittedProduct.pricePerKg) * submittedData.quantity;
+    const sSubtotal = typeof submittedProduct.pricePerKg === 'number' 
+      ? (sWeightNum * (submittedProduct.pricePerKg as number)) * submittedData.quantity 
+      : 'N/A';
     const sIsTandoAllahyar = submittedData.city.trim().toLowerCase() === 'tando allahyar';
-    const sDiscount = (sIsTandoAllahyar && submittedData.boxWeight) ? (300 * submittedData.quantity) : 0;
-    const sTotal = Math.max(0, sSubtotal - sDiscount);
+    const sDiscount = (sIsTandoAllahyar && submittedData.boxWeight && typeof sSubtotal === 'number') ? (300 * submittedData.quantity) : 0;
+    const sTotal = typeof sSubtotal === 'number' ? Math.max(0, (sSubtotal as number) - sDiscount) : 'N/A';
 
     return (
       <div className="min-h-screen flex flex-col items-center justify-start bg-slate-50/50 p-4 pt-12 pb-12 md:pt-20 md:pb-20">
@@ -211,7 +215,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
               </div>
               <div className="flex justify-between items-center text-base pt-3 border-t border-slate-200">
                 <span className="font-black text-slate-900 uppercase tracking-widest text-xs">Total Amount:</span>
-                <span className="font-black text-mango-dark">Rs. {sTotal}</span>
+                <span className="font-black text-mango-dark">{typeof sTotal === 'number' ? `Rs. ${sTotal}` : sTotal}</span>
               </div>
             </div>
 
@@ -226,7 +230,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   `*ORDER RE-CONFIRMATION (AAM WALA)*\n\n` +
                   `*Name:* ${submittedData.fullName}\n` +
                   `*Variety:* ${MANGO_PRODUCTS.find(p => p.id === submittedData.productId)?.name}\n` +
-                  `*Total:* Rs. ${sTotal}\n\n` +
+                  `*Total:* ${typeof sTotal === 'number' ? `Rs. ${sTotal}` : sTotal}\n\n` +
                   `_I am confirming my order again as the previous redirect might have been interrupted._`
                 )}`}
                 target="_blank"
@@ -375,10 +379,10 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                         className={`w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:border-brand-accent transition-all text-slate-900 ${!!preSelectedProduct ? 'bg-slate-50 cursor-not-allowed opacity-75' : 'cursor-pointer'}`}
                       >
                         {!!preSelectedProduct ? (
-                          <option value={preSelectedProduct}>{selectedProduct.name} (Rs. {selectedProduct.pricePerKg}/kg)</option>
+                          <option value={preSelectedProduct}>{selectedProduct.name} ({typeof selectedProduct.pricePerKg === 'number' ? `Rs. ${selectedProduct.pricePerKg}/kg` : selectedProduct.pricePerKg})</option>
                         ) : (
                           MANGO_PRODUCTS.map(p => (
-                            <option key={p.id} value={p.id}>{p.name} (Rs. {p.pricePerKg}/kg)</option>
+                            <option key={p.id} value={p.id}>{p.name} ({typeof p.pricePerKg === 'number' ? `Rs. ${p.pricePerKg}/kg` : p.pricePerKg})</option>
                           ))
                         )}
                       </select>
@@ -557,7 +561,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                           <p className="text-[9px] font-black text-brand-accent uppercase tracking-tighter mb-1.5">{selectedProduct.type}</p>
                           <p className="text-[10px] font-bold text-slate-500">{formData.boxWeight || 'Select weight'} × {formData.quantity} Box</p>
                         </div>
-                        <p className="text-sm font-black">Rs. {subtotal}</p>
+                        <p className="text-sm font-black">{typeof subtotal === 'number' ? `Rs. ${subtotal}` : subtotal}</p>
                      </div>
 
                      {isTandoAllahyar && formData.boxWeight && (
@@ -572,7 +576,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
                      <div className="flex justify-between items-center pt-4">
                         <p className="text-sm font-black uppercase tracking-widest text-slate-600">Final Total</p>
-                        <p className="text-2xl font-black text-brand-accent">Rs. {total}</p>
+                        <p className="text-2xl font-black text-brand-accent">{typeof total === 'number' ? `Rs. ${total}` : total}</p>
                      </div>
                   </div>
 

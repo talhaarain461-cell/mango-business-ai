@@ -28,11 +28,17 @@ export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
 
   const calculateItemTotal = (item: CartItem) => {
     if (item.size === 'Bulk') return 0;
+    if (typeof item.product.pricePerKg !== 'number') return 'N/A';
     const weight = parseInt(item.size.replace('kg', ''));
-    return item.product.pricePerKg * weight * item.quantity;
+    return (item.product.pricePerKg as number) * weight * item.quantity;
   };
 
-  const cartTotal = cart.reduce((total, item) => total + calculateItemTotal(item), 0);
+  const cartTotal = cart.reduce((total, item) => {
+    const itemTotal = calculateItemTotal(item);
+    if (typeof itemTotal === 'string') return 'N/A';
+    if (typeof total === 'string') return 'N/A';
+    return total + itemTotal;
+  }, 0 as number | string);
 
   return (
     <AnimatePresence>
@@ -111,7 +117,7 @@ export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
                             </button>
                           </div>
                           <div className="flex items-center gap-2 mt-1">
-                            <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">Rs {item.product.pricePerKg} / KG</p>
+                            <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">{typeof item.product.pricePerKg === 'number' ? `Rs ${item.product.pricePerKg} / KG` : item.product.pricePerKg}</p>
                             <span className="h-1 w-1 bg-slate-300 rounded-full" />
                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{item.size} Pack</p>
                           </div>
@@ -121,7 +127,7 @@ export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
                              <span className="px-3 text-xs font-black text-slate-900 py-1">Qty: {item.quantity}</span>
                           </div>
                           <p className="text-sm font-black text-slate-900">
-                             {item.size === 'Bulk' ? 'Wholesale' : `Rs ${calculateItemTotal(item).toLocaleString()}`}
+                             {item.size === 'Bulk' ? 'Wholesale' : (typeof calculateItemTotal(item) === 'number' ? `Rs ${calculateItemTotal(item).toLocaleString()}` : calculateItemTotal(item))}
                           </p>
                         </div>
                       </div>
@@ -135,7 +141,7 @@ export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
               <div className="p-6 bg-white border-t border-slate-200">
                 <div className="flex justify-between items-center mb-6">
                   <span className="text-slate-600 font-bold text-sm uppercase tracking-widest">Total Amount</span>
-                  <span className="text-2xl font-black text-infinite-night">Rs {cartTotal.toLocaleString()}</span>
+                  <span className="text-2xl font-black text-infinite-night">{typeof cartTotal === 'number' ? `Rs ${cartTotal.toLocaleString()}` : cartTotal}</span>
                 </div>
                 <button
                   onClick={() => {

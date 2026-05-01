@@ -57,7 +57,7 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         <div className="flex flex-col sm:flex-row justify-between items-start mb-1 gap-1.5">
           <h3 className="text-sm sm:text-lg font-black text-infinite-night uppercase tracking-tight leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
           <div className="bg-brand-accent/10 text-brand-accent px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black whitespace-nowrap border border-brand-accent/20">
-            Rs {product.pricePerKg}/kg
+            {typeof product.pricePerKg === 'number' ? `Rs ${product.pricePerKg}/kg` : product.pricePerKg}
           </div>
         </div>
         

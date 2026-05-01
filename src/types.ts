@@ -8,7 +8,7 @@ export type BoxSize = '5kg' | '8kg' | '10kg' | 'Bulk';
 export interface MangoProduct {
   id: string;
   name: string;
-  pricePerKg: number;
+  pricePerKg: number | string;
   availableSizes: BoxSize[];
   type: string;
   description: string;
@@ -99,7 +99,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'chaunsa',
     name: 'Chaunsa Mango',
-    pricePerKg: 500,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'King of Sweetness',
     description: 'Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
