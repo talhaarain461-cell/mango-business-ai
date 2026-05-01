@@ -21,7 +21,8 @@ jobs:
       - name: Clean Install Dependencies
         run: |
           rm -rf node_modules package-lock.json
-          npm install
+          npm install --ignore-scripts
+          npm install @tailwindcss/oxide-linux-x64-gnu --save-optional
 
       - name: Build Project
         run: npm run build
