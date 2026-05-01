@@ -8,7 +8,6 @@ import { ShoppingCart, Phone, ChevronDown, Menu, X, Facebook, Instagram, Music2,
 import { useNavigate, useLocation } from 'react-router-dom';
 import { SOCIAL_LINKS, MANGO_PRODUCTS, MangoProduct } from '../types';
 import { useCart } from '../CartContext';
-import { useUser } from '../UserContext';
 import { useReviews } from '../ReviewContext';
 import { Logo } from './Logo';
 import { Star } from 'lucide-react';
@@ -25,7 +24,6 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
   const [isShopExpanded, setIsShopExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { totalItems } = useCart();
-  const { userData } = useUser();
   const { reviews } = useReviews();
   const navigate = useNavigate();
   const location = useLocation();
@@ -163,7 +161,7 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
                   <span className="text-[6px] sm:text-[8px] font-black text-white/50 uppercase tracking-widest leading-none mb-1">Call Support</span>
                   <a href={getCallLink()} className="text-[7px] sm:text-[10px] xl:text-[11px] font-black text-white hover:text-brand-accent tracking-tight transition-colors whitespace-nowrap">{SOCIAL_LINKS.phone}</a>
                </div>
-               <a href={getWhatsAppLink(undefined, userData.fullName, userData.phone)} target="_blank" rel="noopener noreferrer" className="flex items-center p-1 sm:p-1.5 xl:p-2 bg-[#25D366] text-white rounded-lg hover:scale-110 transition-all shadow-lg group" title="WhatsApp Support">
+               <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="flex items-center p-1 sm:p-1.5 xl:p-2 bg-[#25D366] text-white rounded-lg hover:scale-110 transition-all shadow-lg group" title="WhatsApp Support">
                   <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 xl:w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-5.074 4.147-9.206 9.223-9.206 5.076 0 9.209 4.134 9.21 9.206 0 5.074-4.135 9.203-9.21 9.203z"/></svg>
                </a>
             </div>
@@ -359,7 +357,7 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
                  <span className="text-sm font-bold text-white tracking-tight">{SOCIAL_LINKS.phone}</span>
                </div>
              </a>
-             <a href={getWhatsAppLink(undefined, userData.fullName, userData.phone)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/80 hover:text-white transition-colors group">
+             <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/80 hover:text-white transition-colors group">
                <div className="w-10 h-10 rounded-full bg-[#25D366] border border-white/5 flex items-center justify-center transition-colors shadow-lg">
                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-5.074 4.147-9.206 9.223-9.206 5.076 0 9.209 4.134 9.21 9.206 0 5.074-4.135 9.203-9.21 9.203z"/></svg>
                </div>

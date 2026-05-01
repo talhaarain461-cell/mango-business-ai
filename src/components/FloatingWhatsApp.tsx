@@ -4,12 +4,9 @@
  */
 
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
-import { useUser } from '../UserContext';
 import { getWhatsAppLink } from '../lib/whatsapp';
 
 export function FloatingWhatsApp() {
-  const { userData } = useUser();
-  
   return (
     <div className="fixed bottom-8 right-8 z-50 group">
       <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -19,7 +16,7 @@ export function FloatingWhatsApp() {
       </div>
       
       <a
-        href={getWhatsAppLink(undefined, userData.fullName, userData.phone)}
+        href={getWhatsAppLink()}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-center w-16 h-16 bg-[#25D366] text-white rounded-full shadow-[0_20px_50px_rgba(15,23,42,0.3)] hover:scale-110 active:scale-90 transition-all duration-300 relative group-hover:rotate-12 border-2 border-white/20"

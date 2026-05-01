@@ -7,7 +7,6 @@ import { Phone, ArrowUp, Send, Facebook, Instagram, Music2, MapPin } from 'lucid
 import { SOCIAL_LINKS } from '../types';
 import { Logo } from './Logo';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
-import { useUser } from '../UserContext';
 import { getWhatsAppLink, getCallLink } from '../lib/whatsapp';
 
 interface FooterProps {
@@ -15,8 +14,6 @@ interface FooterProps {
 }
 
 export function Footer({ onNavigate }: FooterProps) {
-  const { userData } = useUser();
-  
   return (
     <footer className="bg-brand-primary pt-16 pb-8 text-white border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +74,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li className="flex items-start space-x-3 text-sm text-white/80">
                 <WhatsAppIcon size={16} className="text-[#25D366] shrink-0 mt-0.5" />
-                <a href={getWhatsAppLink(undefined, userData.fullName, userData.phone)} target="_blank" rel="noopener noreferrer" className="font-medium hover:text-brand-accent transition-colors">WhatsApp: {SOCIAL_LINKS.phone}</a>
+                <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="font-medium hover:text-brand-accent transition-colors">WhatsApp: {SOCIAL_LINKS.phone}</a>
               </li>
               <li className="flex items-start space-x-3 text-sm text-white/80">
                 <Phone size={16} className="text-white shrink-0 mt-0.5" />

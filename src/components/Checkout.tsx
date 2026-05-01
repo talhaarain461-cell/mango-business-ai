@@ -39,49 +39,21 @@ const PAYMENT_ACCOUNTS = {
 export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuantity, onBack, onContinueShopping }: CheckoutProps) {
   const { clearCart } = useCart();
   const { userData, setUserData } = useUser();
-  const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>(() => {
-    // Check if there's a recent successful order in local storage
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('mango_last_order');
-      if (saved) return 'success';
-    }
-    return 'idle';
-  });
-  const [submittedData, setSubmittedData] = useState<typeof formData | null>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('mango_last_order');
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch (e) {
-          return null;
-        }
-      }
-    }
-    return null;
-  });
+  const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [submittedData, setSubmittedData] = useState<typeof formData | null>(null);
 
-  // Handle scroll and success state on mount/revisit
+  // Handle scroll reset on mount
   React.useLayoutEffect(() => {
-    const saved = localStorage.getItem('mango_last_order');
-    if (saved) {
-      setFormState('success');
-      try {
-        setSubmittedData(JSON.parse(saved));
-      } catch (e) {}
-      
-      // Multi-layered scroll reset for different browser behaviors
-      const forceScroll = () => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTo(0, 0);
-        document.body.scrollTo(0, 0);
-      };
-      
-      forceScroll();
-      setTimeout(forceScroll, 10);
-      setTimeout(forceScroll, 100);
-      setTimeout(forceScroll, 300);
-    }
+    // Multi-layered scroll reset
+    const forceScroll = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTo(0, 0);
+      document.body.scrollTo(0, 0);
+    };
+    
+    forceScroll();
+    setTimeout(forceScroll, 10);
+    setTimeout(forceScroll, 100);
   }, []);
 
   // Scroll to top when form becomes success
@@ -98,12 +70,12 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     }
   }, [formState]);
   const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    address: '',
-    city: '',
+    fullName: userData.fullName || '',
+    phone: userData.phone || '',
+    address: userData.address || '',
+    city: userData.city || '',
     productId: preSelectedProduct || MANGO_PRODUCTS[0].id,
-    boxWeight: preSelectedSize || '',
+    boxWeight: '',
     quantity: preSelectedQuantity || 1,
     paymentMethod: 'Bank Transfer' as string
   });
@@ -137,49 +109,48 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     e.preventDefault();
     setFormState('sending');
     
-    // Construct WhatsApp Message
-    const message = `*NEW ORDER FROM AAM WALA*%0A%0A` +
-      `*CUSTOMER DETAILS:*%0A` +
-      `• Name: ${formData.fullName}%0A` +
-      `• Phone: ${formData.phone}%0A` +
-      `• City: ${formData.city}%0A` +
-      `• Address: ${formData.address}%0A%0A` +
-      `*ORDER DETAILS:*%0A` +
-      `• Variety: ${selectedProduct.name}%0A` +
-      `• Box Size: ${formData.boxWeight}%0A` +
-      `• Quantity: ${formData.quantity} Box(es)%0A%0A` +
-      `*PAYMENT INFO:*%0A` +
-      `• Method: ${formData.paymentMethod}%0A` +
-      `• Subtotal: Rs. ${subtotal}%0A` +
-      `${isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${discount}%0A` : ''}` +
-      `*• TOTAL PAYABLE: Rs. ${total}*%0A%0A` +
+    // Construct WhatsApp Message with proper encoding
+    const messageText = `*NEW ORDER FROM AAM WALA*\n\n` +
+      `*CUSTOMER DETAILS:*\n` +
+      `• Name: ${formData.fullName}\n` +
+      `• City: ${formData.city}\n` +
+      `• Address: ${formData.address}\n\n` +
+      `*ORDER DETAILS:*\n` +
+      `• Variety: ${selectedProduct.name}\n` +
+      `• Box Size: ${formData.boxWeight}\n` +
+      `• Quantity: ${formData.quantity} Box(es)\n\n` +
+      `*PAYMENT INFO:*\n` +
+      `• Method: ${formData.paymentMethod}\n` +
+      `• Subtotal: Rs. ${subtotal}\n` +
+      (isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${discount}\n` : '') +
+      `*• TOTAL PAYABLE: Rs. ${total}*\n\n` +
       (formData.paymentMethod === 'Cash on Delivery' 
         ? `_I will pay for my order upon delivery._`
         : `_I am sending the payment screenshot following this message._`);
-
-    // Simulate small delay then redirect
-    setTimeout(() => {
-      window.open(`${SOCIAL_LINKS.whatsapp}?text=${message}`, '_blank');
+ 
+    try {
+      const whatsappUrl = `${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(messageText)}`;
+      
+      // Save data before redirecting
+      const currentOrderData = { ...formData };
+      setSubmittedData(currentOrderData);
+      localStorage.setItem('mango_last_order', JSON.stringify(currentOrderData));
+      
+      // Reset form and UI state
       clearCart();
-      
-      // Save data for success screen summary
-      setSubmittedData({ ...formData });
-      localStorage.setItem('mango_last_order', JSON.stringify(formData));
-      
-      // Reset form to empty values for the next potential order
-      setFormData({
-        fullName: '',
-        phone: '',
-        address: '',
-        city: '',
-        productId: MANGO_PRODUCTS[0].id,
-        boxWeight: MANGO_PRODUCTS[0].availableSizes[0],
-        quantity: 1,
-        paymentMethod: 'Bank Transfer'
-      });
-      
       setFormState('success');
-    }, 1000);
+
+      // Attempt to open in a new tab first, fallback to current window
+      // Use location.assign or replace for the fallback to ensure redirect works on mobile
+      const win = window.open(whatsappUrl, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.assign(whatsappUrl);
+      }
+
+    } catch (error) {
+      console.error("WhatsApp redirect error:", error);
+      setFormState('success');
+    }
   };
 
   const backToProductButton = (
@@ -250,6 +221,21 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
             </p>
 
             <div className="flex flex-col gap-4 w-full">
+              <a 
+                href={`${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(
+                  `*ORDER RE-CONFIRMATION (AAM WALA)*\n\n` +
+                  `*Name:* ${submittedData.fullName}\n` +
+                  `*Variety:* ${MANGO_PRODUCTS.find(p => p.id === submittedData.productId)?.name}\n` +
+                  `*Total:* Rs. ${sTotal}\n\n` +
+                  `_I am confirming my order again as the previous redirect might have been interrupted._`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full px-10 py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-[#25D366] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 text-center no-underline"
+              >
+                <Phone size={20} />
+                Confirm on WhatsApp
+              </a>
               <button 
                 onClick={() => {
                   localStorage.removeItem('mango_last_order');
@@ -261,6 +247,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                 <Package size={20} />
                 Continue Shopping
               </button>
+              <p className="mt-4 text-[11px] md:text-xs text-slate-500 font-medium leading-relaxed max-w-sm mx-auto">
+                If you were unable to send the WhatsApp message due to any technical issue, you can click on “Confirm on WhatsApp” again to resend your message and confirm your order. If your message has been sent successfully, please click on “Continue Shopping.” Thank you.
+              </p>
             </div>
           </motion.div>
         </div>
@@ -275,7 +264,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Form */}
           <div className="lg:col-span-2 space-y-8">
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-8">
               
               {/* Step 1: Your Details */}
               <div className="bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-slate-200 relative overflow-hidden">
@@ -595,8 +584,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   )}
 
                   <button
+                    type="submit"
+                    form="checkout-form"
                     disabled={formState === 'sending' || !formData.fullName || !formData.phone || !formData.address || !formData.city || !formData.boxWeight}
-                    onClick={handleSubmit}
                     className="w-full py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#25D366] transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:grayscale"
                   >
                     {formState === 'sending' ? (

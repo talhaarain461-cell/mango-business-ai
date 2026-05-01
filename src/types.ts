@@ -192,7 +192,7 @@ export const SOCIAL_LINKS = {
   facebook: 'https://www.facebook.com/share/1P366h4wni/',
   instagram: 'https://www.instagram.com/aamwalapk',
   tiktok: 'https://www.tiktok.com/@aam.wala?_r=1&_t=ZS-95c0yvCUDTU',
-  whatsapp: 'https://wa.me/923063908181',
+  whatsapp: 'https://api.whatsapp.com/send?phone=923063908181',
   phone: '0306-3908181',
   email: 'aamwalastore@gmail.com'
 };

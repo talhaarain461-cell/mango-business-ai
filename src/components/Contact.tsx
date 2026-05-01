@@ -7,11 +7,9 @@ import { motion } from 'motion/react';
 import { Mail, Phone, Headphones, MapPin } from 'lucide-react';
 import { SOCIAL_LINKS } from '../types';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
-import { useUser } from '../UserContext';
 import { getWhatsAppLink, getCallLink } from '../lib/whatsapp';
 
 export function Contact() {
-  const { userData } = useUser();
   
   return (
     <section className="py-16 lg:py-24 border-t border-slate-100 bg-white">
@@ -72,7 +70,7 @@ export function Contact() {
 
           {/* WhatsApp Card - Highlighted */}
           <motion.a
-            href={getWhatsAppLink(undefined, userData.fullName, userData.phone)}
+            href={getWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 20 }}

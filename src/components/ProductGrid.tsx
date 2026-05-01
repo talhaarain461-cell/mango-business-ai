@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ProductCard } from './ProductCard';
 import { MANGO_PRODUCTS, MangoProduct, SOCIAL_LINKS } from '../types';
 import { MessageSquare, LayoutGrid, Package } from 'lucide-react';
-import { useUser } from '../UserContext';
 import { getWhatsAppLink } from '../lib/whatsapp';
 
 interface ProductGridProps {
@@ -20,7 +19,6 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ onBuyNow, onViewDetails, onNavigate, activeCategory, setActiveCategory, hideBulk = false }: ProductGridProps) {
-  const { userData } = useUser();
   return (
     <section className="py-12 lg:py-20 bg-transparent border-t border-slate-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -121,7 +119,7 @@ export function ProductGrid({ onBuyNow, onViewDetails, onNavigate, activeCategor
                   </div>
 
                   <a 
-                    href={getWhatsAppLink(undefined, userData.fullName, userData.phone)}
+                    href={getWhatsAppLink()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center space-x-4 px-10 py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-[#25D366] transition-all hover:scale-105 shadow-xl"

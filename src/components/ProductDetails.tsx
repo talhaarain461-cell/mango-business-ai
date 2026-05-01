@@ -9,7 +9,6 @@ import { MangoProduct, BoxSize } from '../types';
 import { ShoppingBag, CreditCard, ArrowLeft, Package, Star, ShieldCheck, Truck, ChevronDown, CheckCircle2, MessageSquare, Plus, Minus, X, Phone, Upload, Camera } from 'lucide-react';
 import { useCart } from '../CartContext';
 import { useReviews } from '../ReviewContext';
-import { useUser } from '../UserContext';
 import { getWhatsAppLink } from '../lib/whatsapp';
 import { Reviews } from './Reviews';
 
@@ -24,7 +23,6 @@ type TabType = typeof TABS[number];
 
 export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProps) {
   const { addToCart } = useCart();
-  const { userData } = useUser();
   const { getReviewsByProduct } = useReviews();
   const [activeImage, setActiveImage] = useState(product.image);
   const [activeTab, setActiveTab] = useState<TabType>('Description');
@@ -260,7 +258,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                     <p className="text-indigo-700 text-sm font-medium">For bulk quantity, please contact us on WhatsApp directly.</p>
                   </div>
                   <a 
-                    href={getWhatsAppLink(undefined, userData.fullName, userData.phone)} 
+                    href={getWhatsAppLink()} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-full py-4 bg-[#25D366] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#25D366] transition-all flex items-center justify-center gap-3"
