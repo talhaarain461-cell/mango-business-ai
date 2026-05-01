@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "YOUR_REAL_API_KEY",
-  authDomain: "YOUR_REAL_AUTH_DOMAIN",
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
   projectId: "review-system-184e0",
-  storageBucket: "YOUR_REAL_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_REAL_SENDER_ID",
-  appId: "YOUR_REAL_APP_ID"
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 const app = initializeApp(firebaseConfig);
