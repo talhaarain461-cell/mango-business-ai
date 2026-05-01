@@ -168,7 +168,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'langra',
     name: 'Langra Mango',
-    pricePerKg: 400,
+    pricePerKg: 'N/A',
     availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
     type: 'Aromatic Juicy Mango',
     description: 'Langra Mango – Juicy & Aromatic Summer Delight. Langra Mango is a highly juicy, sweet, and aromatic mango known for its rich flavor and smooth texture. It is loved worldwide for its natural taste and freshness.',
