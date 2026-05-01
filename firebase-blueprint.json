@@ -1,0 +1,30 @@
+{
+  "entities": {
+    "Review": {
+      "title": "Review",
+      "description": "A customer review for a specific product",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "name": { "type": "string" },
+        "rating": { "type": "number" },
+        "message": { "type": "string" },
+        "date": { "type": "string" },
+        "images": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "name", "rating", "message"]
+    }
+  },
+  "firestore": {
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Collection of all reviews"
+    }
+  }
+}
