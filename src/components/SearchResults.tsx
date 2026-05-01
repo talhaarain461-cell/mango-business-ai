@@ -98,7 +98,8 @@ export function SearchResults({ onNavigate, onBuyNow, onViewDetails }: SearchRes
                     </button>
                     <button 
                       onClick={() => onBuyNow(product)}
-                      className="flex-1 px-4 py-3 bg-brand-primary text-white hover:bg-brand-accent hover:text-brand-primary text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+                      disabled={product.id === 'saroli'}
+                      className="flex-1 px-4 py-3 bg-brand-primary text-white hover:bg-brand-accent hover:text-brand-primary text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale"
                     >
                       <ShoppingCart size={14} />
                       <span>Buy</span>

@@ -86,14 +86,16 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           <div className="flex flex-col sm:grid sm:grid-cols-2 gap-2" onClick={e => e.stopPropagation()}>
             <button 
               onClick={() => onBuyNow(product)}
-              className="w-full py-2 sm:py-3 bg-brand-primary text-white rounded-lg sm:rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center space-x-2 hover:bg-brand-primary/90 transition-all shadow-sm active:scale-95"
+              disabled={product.id === 'saroli'}
+              className="w-full py-2 sm:py-3 bg-brand-primary text-white rounded-lg sm:rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center space-x-2 hover:bg-brand-primary/90 transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale"
             >
               <CreditCard size={12} className="sm:w-[13px] sm:h-[13px]" />
               <span>Buy Now</span>
             </button>
             <button 
               onClick={handleAddToCart}
-              className="w-full py-2 sm:py-3 bg-brand-accent text-black border border-transparent rounded-lg sm:rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center space-x-2 hover:bg-[#D9A300] transition-all active:scale-95 px-1 text-center shadow-sm"
+              disabled={product.id === 'saroli'}
+              className="w-full py-2 sm:py-3 bg-brand-accent text-black border border-transparent rounded-lg sm:rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center space-x-2 hover:bg-[#D9A300] transition-all active:scale-95 px-1 text-center shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale"
             >
               <ShoppingBag size={12} className="sm:w-[13px] sm:h-[13px]" />
               <span className="sm:inline">Add to Cart</span>

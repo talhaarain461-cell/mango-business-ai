@@ -316,14 +316,16 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             <div className="grid sm:grid-cols-2 gap-4">
               <button 
                 onClick={handleBuyNow}
-                className="py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-mango-brand/90 transition-all shadow-lg active:scale-95"
+                disabled={product.id === 'saroli'}
+                className="py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-mango-brand/90 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale"
               >
                 <CreditCard size={18} />
                 <span>Quick Purchase</span>
               </button>
               <button 
                 onClick={handleAddToCart}
-                className="py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#D9A300] transition-all shadow-lg active:scale-95"
+                disabled={product.id === 'saroli'}
+                className="py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#D9A300] transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale"
               >
                 <ShoppingBag size={18} />
                 <span>Add to Cart</span>
