@@ -13,28 +13,22 @@ export function ScrollToTop() {
   }, []);
 
   useLayoutEffect(() => {
-    // Force instant scroll to top on every route change (path or search params)
-    // useLayoutEffect runs before the browser has a chance to paint
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTo(0, 0);
-      document.body.scrollTo(0, 0);
-    };
-
-    scrollToTop();
+    // Force instant scroll to top before browser paints to prevent 'jerk'
+    // We use behavior: 'instant' where supported to override any residual smooth behavior
+    const scrollOptions: ScrollToOptions = { top: 0, left: 0, behavior: 'instant' as ScrollBehavior };
     
-    // Backup for slow-loading images, layout shifts, or framer-motion animations
-    const timeoutId = setTimeout(scrollToTop, 1);
-    const timeoutIdNext = setTimeout(scrollToTop, 50);
-    const timeoutIdLong = setTimeout(scrollToTop, 200);
-    const timeoutIdExtraLong = setTimeout(scrollToTop, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-      clearTimeout(timeoutIdNext);
-      clearTimeout(timeoutIdLong);
-      clearTimeout(timeoutIdExtraLong);
-    };
+    try {
+      window.scrollTo(scrollOptions);
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+    
+    if (document.documentElement) {
+      document.documentElement.scrollTop = 0;
+    }
+    if (document.body) {
+      document.body.scrollTop = 0;
+    }
   }, [location.pathname, location.search]);
 
   return null;

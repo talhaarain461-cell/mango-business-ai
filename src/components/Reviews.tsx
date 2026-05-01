@@ -195,7 +195,7 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
                             className={`w-full p-4 pr-12 bg-slate-50 border ${productError ? 'border-red-500' : 'border-slate-100'} rounded-2xl focus:border-brand-accent outline-none transition-all text-slate-700 appearance-none font-bold text-xs uppercase tracking-tight`}
                           >
                             <option value="">Select Product</option>
-                            {MANGO_PRODUCTS.map(product => (
+                            {MANGO_PRODUCTS.filter(p => p.status === 'Available' || p.status === 'In Stock').map(product => (
                               <option key={product.id} value={product.id}>
                                 {product.name}
                               </option>

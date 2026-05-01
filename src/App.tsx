@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Routes, Route, useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductGrid } from './components/ProductGrid';
@@ -172,161 +173,171 @@ export default function App() {
     <div className="flex flex-col min-h-screen font-sans selection:bg-brand-accent/30 selection:text-slate-900 overflow-x-hidden">
       <ScrollToTop />
       <Header onNavigate={handleNavigate} onProductClick={handleViewDetails} />
-      <main>
-        <Routes>
-          <Route path="/" element={
-            <div className="flex flex-col">
-              <Hero onNavigate={handleNavigate} />
-              <ProductGrid 
-                onBuyNow={handleBuyNow} 
-                onViewDetails={handleViewDetails} 
-                onNavigate={handleNavigate}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-              />
-              <PremiumFeatures onNavigate={handleNavigate} />
-              <About />
-              <Reviews hideForm={true} limit={4} onViewMore={() => handleNavigate('reviews')} />
-            </div>
-          } />
-          
-          <Route path="/shop" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
-              <ProductGrid 
-                onBuyNow={handleBuyNow} 
-                onViewDetails={handleViewDetails} 
-                onNavigate={handleNavigate}
-                activeCategory={activeCategory}
-                setActiveCategory={setActiveCategory}
-              />
-            </div>
-          } />
+      <main className="relative">
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={location.pathname}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Routes location={location}>
+              <Route path="/" element={
+                <div className="flex flex-col">
+                  <Hero onNavigate={handleNavigate} />
+                  <ProductGrid 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                    onNavigate={handleNavigate}
+                    activeCategory={activeCategory}
+                    setActiveCategory={setActiveCategory}
+                  />
+                  <PremiumFeatures onNavigate={handleNavigate} />
+                  <About />
+                  <Reviews hideForm={true} limit={4} onViewMore={() => handleNavigate('reviews')} />
+                </div>
+              } />
+              
+              <Route path="/shop" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
+                  <ProductGrid 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                    onNavigate={handleNavigate}
+                    activeCategory={activeCategory}
+                    setActiveCategory={setActiveCategory}
+                  />
+                </div>
+              } />
 
-          <Route path="/product/:id" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <ProductPageWrapper 
-                onBack={handleBackToShop} 
-                onBuyNow={handleBuyNow} 
-                onViewDetails={handleViewDetails} 
-              />
-            </div>
-          } />
-          
-          <Route path="/product" element={<Navigate to="/shop" replace />} />
-          <Route path="/product/" element={<Navigate to="/shop" replace />} />
+              <Route path="/product/:id" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <ProductPageWrapper 
+                    onBack={handleBackToShop} 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                  />
+                </div>
+              } />
+              
+              <Route path="/product" element={<Navigate to="/shop" replace />} />
+              <Route path="/product/" element={<Navigate to="/shop" replace />} />
 
-          <Route path="/checkout" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Checkout 
-                preSelectedProduct={selectedProduct?.id} 
-                preSelectedSize={selectedSize}
-                preSelectedQuantity={selectedQuantity}
-                onBack={handleBackToProduct} 
-                onContinueShopping={() => handleNavigate('home')}
-              />
-            </div>
-          } />
+              <Route path="/checkout" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Checkout 
+                    preSelectedProduct={selectedProduct?.id} 
+                    preSelectedSize={selectedSize}
+                    preSelectedQuantity={selectedQuantity}
+                    onBack={handleBackToProduct} 
+                    onContinueShopping={() => handleNavigate('home')}
+                  />
+                </div>
+              } />
 
-          <Route path="/search" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
-              <SearchResults 
-                onNavigate={handleNavigate}
-                onBuyNow={handleBuyNow}
-                onViewDetails={handleViewDetails}
-              />
-              <ProductGrid 
-                onBuyNow={handleBuyNow} 
-                onViewDetails={handleViewDetails} 
-                onNavigate={handleNavigate}
-                activeCategory="mangoes"
-                setActiveCategory={setActiveCategory}
-                hideBulk
-              />
-            </div>
-          } />
+              <Route path="/search" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
+                  <SearchResults 
+                    onNavigate={handleNavigate}
+                    onBuyNow={handleBuyNow}
+                    onViewDetails={handleViewDetails}
+                  />
+                  <ProductGrid 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                    onNavigate={handleNavigate}
+                    activeCategory="mangoes"
+                    setActiveCategory={setActiveCategory}
+                    hideBulk
+                  />
+                </div>
+              } />
 
-          <Route path="/reviews" element={
-            <div className="pt-28 sm:pt-36 lg:pt-40 min-h-[80vh]">
-              <Reviews />
-            </div>
-          } />
+              <Route path="/reviews" element={
+                <div className="pt-28 sm:pt-36 lg:pt-40 min-h-[80vh]">
+                  <Reviews />
+                </div>
+              } />
 
-          <Route path="/blog" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
-              <BlogList onNavigate={handleNavigate} />
-              <ProductGrid 
-                onBuyNow={handleBuyNow} 
-                onViewDetails={handleViewDetails} 
-                onNavigate={handleNavigate}
-                activeCategory="mangoes"
-                setActiveCategory={setActiveCategory}
-                hideBulk
-              />
-            </div>
-          } />
+              <Route path="/blog" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
+                  <BlogList onNavigate={handleNavigate} />
+                  <ProductGrid 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                    onNavigate={handleNavigate}
+                    activeCategory="mangoes"
+                    setActiveCategory={setActiveCategory}
+                    hideBulk
+                  />
+                </div>
+              } />
 
-          <Route path="/blog/:slug" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
-              <BlogDetail onNavigate={handleNavigate} />
-              <ProductGrid 
-                onBuyNow={handleBuyNow} 
-                onViewDetails={handleViewDetails} 
-                onNavigate={handleNavigate}
-                activeCategory="mangoes"
-                setActiveCategory={setActiveCategory}
-                hideBulk
-              />
-            </div>
-          } />
+              <Route path="/blog/:slug" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
+                  <BlogDetail onNavigate={handleNavigate} />
+                  <ProductGrid 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                    onNavigate={handleNavigate}
+                    activeCategory="mangoes"
+                    setActiveCategory={setActiveCategory}
+                    hideBulk
+                  />
+                </div>
+              } />
 
-          <Route path="/delivery-policy" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Policy policyId="delivery-policy" />
-            </div>
-          } />
+              <Route path="/delivery-policy" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Policy policyId="delivery-policy" />
+                </div>
+              } />
 
-          <Route path="/return-policy" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Policy policyId="return-policy" />
-            </div>
-          } />
+              <Route path="/return-policy" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Policy policyId="return-policy" />
+                </div>
+              } />
 
-          <Route path="/privacy-policy" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Policy policyId="privacy-policy" />
-            </div>
-          } />
+              <Route path="/privacy-policy" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Policy policyId="privacy-policy" />
+                </div>
+              } />
 
-          <Route path="/terms" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Policy policyId="terms" />
-            </div>
-          } />
+              <Route path="/terms" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Policy policyId="terms" />
+                </div>
+              } />
 
-          <Route path="/faq" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <FAQ />
-            </div>
-          } />
+              <Route path="/faq" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <FAQ />
+                </div>
+              } />
 
-          <Route path="/about" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <About />
-            </div>
-          } />
+              <Route path="/about" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <About />
+                </div>
+              } />
 
-          <Route path="/contact" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Contact />
-            </div>
-          } />
+              <Route path="/contact" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Contact />
+                </div>
+              } />
 
-          <Route path="/support" element={
-            <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
-              <Contact />
-            </div>
-          } />
-        </Routes>
+              <Route path="/support" element={
+                <div className="pt-28 sm:pt-32 lg:pt-36 min-h-[80vh]">
+                  <Contact />
+                </div>
+              } />
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
       </main>
       <Footer onNavigate={handleNavigate} />
       {location.pathname === '/' && <FloatingWhatsApp />}

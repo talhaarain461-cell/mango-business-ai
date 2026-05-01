@@ -42,31 +42,12 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>('idle');
   const [submittedData, setSubmittedData] = useState<typeof formData | null>(null);
 
-  // Handle scroll reset on mount
-  React.useLayoutEffect(() => {
-    // Multi-layered scroll reset
-    const forceScroll = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTo(0, 0);
-      document.body.scrollTo(0, 0);
-    };
-    
-    forceScroll();
-    setTimeout(forceScroll, 10);
-    setTimeout(forceScroll, 100);
-  }, []);
-
-  // Scroll to top when form becomes success
-  React.useLayoutEffect(() => {
+  // Scroll to top when form becomes success is handled by the overall route change,
+  // but if we stay on the same route and just change state, we might need a smooth reset.
+  // However, normally success state transition should be smooth.
+  React.useEffect(() => {
     if (formState === 'success') {
-      const forceScroll = () => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTo(0, 0);
-        document.body.scrollTo(0, 0);
-      };
-      
-      forceScroll();
-      setTimeout(forceScroll, 100);
+      window.scrollTo(0, 0);
     }
   }, [formState]);
   const [formData, setFormData] = useState({
