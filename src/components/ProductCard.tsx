@@ -6,8 +6,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { MangoProduct } from '../types';
-import { ShoppingBag, Package, CreditCard } from 'lucide-react';
+import { ShoppingBag, Package, CreditCard, Star } from 'lucide-react';
 import { useCart } from '../CartContext';
+import { useReviews } from '../ReviewContext';
 
 interface ProductCardProps {
   product: MangoProduct;
@@ -17,6 +18,9 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { getProductRating } = useReviews();
+
+  const { average, count } = getProductRating(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -58,6 +62,24 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           <h3 className="text-sm sm:text-lg font-black text-infinite-night uppercase tracking-tight leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
           <div className="bg-brand-accent/10 text-brand-accent px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black whitespace-nowrap border border-brand-accent/20">
             {typeof product.pricePerKg === 'number' ? `Rs ${product.pricePerKg}/kg` : product.pricePerKg}
+          </div>
+        </div>
+
+        {/* Product Rating */}
+        <div className="flex items-center gap-2 mb-2">
+          <div className="flex gap-0.5">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star 
+                key={star} 
+                size={10} 
+                fill={star <= Math.round(average) ? 'currentColor' : 'none'} 
+                className={star <= Math.round(average) ? 'text-brand-accent' : 'text-slate-200'} 
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-black text-slate-900">{average > 0 ? average.toFixed(1) : '0.0'}</span>
+            <span className="text-slate-400 text-[8px] font-bold uppercase tracking-wider">({count} Reviews)</span>
           </div>
         </div>
         

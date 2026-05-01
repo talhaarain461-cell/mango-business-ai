@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { MANGO_PRODUCTS } from '../types';
-import { ShoppingCart, Eye, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, Eye, ArrowLeft, Star } from 'lucide-react';
 import { MangoProduct } from '../types';
+import { useReviews } from '../ReviewContext';
 
 interface SearchResultsProps {
   onNavigate: (target: string) => void;
@@ -13,6 +14,7 @@ interface SearchResultsProps {
 export function SearchResults({ onNavigate, onBuyNow, onViewDetails }: SearchResultsProps) {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
+  const { getProductRating } = useReviews();
 
   const searchResults = MANGO_PRODUCTS.filter(product => 
     product.name.toLowerCase().includes(query.toLowerCase()) || 
@@ -74,7 +76,31 @@ export function SearchResults({ onNavigate, onBuyNow, onViewDetails }: SearchRes
                 
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="mb-4 cursor-pointer" onClick={() => onViewDetails(product)}>
-                    <h3 className="text-xl md:text-2xl font-black text-infinite-night mb-2 leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
+                    <h3 className="text-xl md:text-2xl font-black text-infinite-night mb-1 leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
+                    
+                    {/* Product Rating */}
+                    {(() => {
+                      const { average, count } = getProductRating(product.id);
+                      return (
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="flex gap-0.5">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star 
+                                key={star} 
+                                size={12} 
+                                fill={star <= Math.round(average) ? 'currentColor' : 'none'} 
+                                className={star <= Math.round(average) ? 'text-brand-accent' : 'text-slate-200'} 
+                              />
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-black text-slate-900">{average > 0 ? average.toFixed(1) : '0.0'}</span>
+                            <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">({count} Reviews)</span>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                    
                     <p className="text-slate-600 text-sm line-clamp-2 leading-relaxed">{product.description}</p>
                   </div>
                   
