@@ -13,4 +13,7 @@ coverage/
 !.firebaserc
 
 .adal/
+.agents/
 .firebase/
+.genkit/
+.cache/
