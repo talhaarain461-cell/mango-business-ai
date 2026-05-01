@@ -13,20 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Clean Install Dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --ignore-scripts
-          npm install @tailwindcss/oxide-linux-x64-gnu --save-optional
-
-      - name: Build Project
-        run: npm run build
-
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
