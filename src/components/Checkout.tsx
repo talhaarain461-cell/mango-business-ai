@@ -202,7 +202,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
             <p className="text-slate-600 mb-10 text-base leading-relaxed font-bold">
               Thank you for trusting <span className="text-brand-accent font-black">Aam Wala</span>.<br />
-              We are verifying your payment and will contact you shortly to confirm your delivery details.
+              {submittedData.paymentMethod === 'Cash on Delivery' 
+                ? 'Your order has been successfully placed. We will contact you shortly for confirmation.'
+                : 'We are verifying your payment and will contact you shortly to confirm your delivery details.'}
             </p>
 
             <div className="flex flex-col gap-4 w-full">
