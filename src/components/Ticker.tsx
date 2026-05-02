@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Ticker = React.memo(function Ticker() {
-  const tickerText = "WE ARE LIVE NOW • ORDER YOUR PREMIUM MANGOES • ";
+   const tickerText = "PREMIUM MANGOES COMING SOON • STAY TUNED • ";
   const repeatedText = tickerText.repeat(8);
   
   return (
