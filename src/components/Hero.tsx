@@ -89,8 +89,6 @@ export function Hero({ onNavigate }: HeroProps) {
   return (
     <section 
       className="relative h-[520px] md:h-[550px] lg:h-[650px] flex items-center justify-center overflow-hidden bg-brand-primary"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background with Zoom Effect */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -192,6 +190,10 @@ export function Hero({ onNavigate }: HeroProps) {
       <div className="absolute right-4 md:right-16 bottom-4 md:bottom-20 flex items-center space-x-2 md:space-x-4 z-30">
         <button 
           onClick={prevSlide}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
           className="p-1.5 md:p-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl rounded-full text-white/70 hover:text-white transition-all group border border-white/20 shadow-xl hover:scale-110 active:scale-95"
           aria-label="Previous Slide"
         >
@@ -199,6 +201,10 @@ export function Hero({ onNavigate }: HeroProps) {
         </button>
         <button 
           onClick={nextSlide}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
           className="p-1.5 md:p-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl rounded-full text-white/70 hover:text-white transition-all group border border-white/20 shadow-xl hover:scale-110 active:scale-95"
           aria-label="Next Slide"
         >
