@@ -233,7 +233,16 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
                         className="flex items-center gap-4 p-2 rounded-2xl hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100"
                       >
                         {product.image ? (
-                          <img src={product.image} alt={product.name} className="w-14 h-14 rounded-xl object-cover bg-slate-100" />
+                          <img 
+                            src={product.image} 
+                            alt={product.name} 
+                            width={56}
+                            height={56}
+                            className="w-14 h-14 rounded-xl object-cover bg-slate-100" 
+                            loading="lazy"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                          />
                         ) : (
                           <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 text-[10px] font-bold">Img</div>
                         )}

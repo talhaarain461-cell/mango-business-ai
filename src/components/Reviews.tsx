@@ -289,7 +289,12 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
                           <img 
                             src={img} 
                             alt={`Preview ${index + 1}`} 
+                            width={96}
+                            height={96}
                             className="w-full h-full object-cover rounded-2xl border border-slate-100"
+                            loading="lazy"
+                            decoding="async"
+                            referrerPolicy="no-referrer"
                           />
                           <button 
                             type="button"
@@ -418,7 +423,12 @@ function Lightbox({ image, onClose }: { image: string; onClose: () => void }) {
         <img 
           src={image} 
           alt="Full size review" 
+          width={1200}
+          height={800}
           className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
         />
       </motion.div>
     </motion.div>

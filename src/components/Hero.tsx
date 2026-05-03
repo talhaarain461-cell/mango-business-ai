@@ -18,7 +18,7 @@ const SLIDES = [
       white: "FRESH MANGOES FROM SINDH ARE NOW READY", 
       yellow: "FIRST HARVEST ARRIVING FROM TANDO ALLAHYAR" 
     },
-    image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=1920",
+    image: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=1920&fm=webp",
     color: "from-amber-600/60"
   },
   {
@@ -31,7 +31,7 @@ const SLIDES = [
       white: "SWEET, JUICY AND FULL OF NATURAL FLAVOR", 
       yellow: "Naturally Grown with Premium Quality" 
     },
-    image: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?auto=format&fit=crop&q=80&w=1920",
+    image: "https://images.unsplash.com/photo-1591073113125-e46713c829ed?auto=format&fit=crop&q=80&w=1920&fm=webp",
     color: "from-green-600/60"
   },
   {
@@ -45,7 +45,7 @@ const SLIDES = [
       white: "GET FRESH MANGOES DELIVERED TO YOUR DOOR", 
       yellow: "FAST AND SAFE DELIVERY ALL OVER PAKISTAN" 
     },
-    image: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?auto=format&fit=crop&q=80&w=1920",
+    image: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?auto=format&fit=crop&q=80&w=1920&fm=webp",
     color: "from-blue-600/60"
   },
   {
@@ -59,7 +59,7 @@ const SLIDES = [
       white: "HAND SELECTED FOR PERFECT SIZE AND SWEETNESS", 
       yellow: "PREMIUM QUALITY FRUIT FOR YOUR HOME" 
     },
-    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&q=80&w=1920",
+    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&q=80&w=1920&fm=webp",
     color: "from-amber-500/60"
   }
 ];
@@ -82,7 +82,7 @@ export function Hero({ onNavigate }: HeroProps) {
 
   useEffect(() => {
     if (isPaused) return;
-    const timer = setInterval(nextSlide, 6000);
+    const timer = setInterval(nextSlide, 4000);
     return () => clearInterval(timer);
   }, [nextSlide, isPaused, currentSlide]);
 
@@ -111,7 +111,10 @@ export function Hero({ onNavigate }: HeroProps) {
           >
             <img 
               src={SLIDES[currentSlide].image} 
-              alt="Mango Hero" 
+              alt="Fresh premium mangoes online order Pakistan Tando Allahyar" 
+              width={1920}
+              height={1080}
+              fetchPriority={currentSlide === 0 ? "high" : "auto"}
               className="w-full h-full object-cover object-center brightness-[0.4] contrast-105"
               referrerPolicy="no-referrer"
             />

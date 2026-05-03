@@ -48,7 +48,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Best Use': 'Fresh eating'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQkH1-rI21NXeFwY93pQOwto7sXh2kDiAq4MB6NsM6llgcicewJFtQ_dsLtWLvhOOnm7_v5DdehGvRHfNV-qgxepEFmvJWqkZc-er2wrP16jW763JtY0ZcN5ptNGb1jnFMeUr-fdlYlWD1K8SwX4d06P4TYK1FRSPRhiSSM8auxZdAS4OqLdScXnm2u8A/s0/Saroli%20mango-main.png'
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQkH1-rI21NXeFwY93pQOwto7sXh2kDiAq4MB6NsM6llgcicewJFtQ_dsLtWLvhOOnm7_v5DdehGvRHfNV-qgxepEFmvJWqkZc-er2wrP16jW763JtY0ZcN5ptNGb1jnFMeUr-fdlYlWD1K8SwX4d06P4TYK1FRSPRhiSSM8auxZdAS4OqLdScXnm2u8A/s0-rw/Saroli%20mango-main.png'
   },
   {
     id: 'desi-achar',
@@ -66,10 +66,10 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Main Use': 'Pickle (Achar)'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-T6eEfXGg295uibQEQwe3pAFALJbrVng_vWPRuR24nj-KGNSxeROseBhxarWajdMjckjEvOPavJix6Wk48p2LMCY-J3OXteY_68zs6ms7aUdZH96O-Y4P9EgnyLjXd50hmxBJUEsFYVl83zq5nPlrqK2FqBwFI1cbmdWWEbdLURep_8g2mdWWBmCnBwQ/s1600/Desi%20mango-2.png',
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-T6eEfXGg295uibQEQwe3pAFALJbrVng_vWPRuR24nj-KGNSxeROseBhxarWajdMjckjEvOPavJix6Wk48p2LMCY-J3OXteY_68zs6ms7aUdZH96O-Y4P9EgnyLjXd50hmxBJUEsFYVl83zq5nPlrqK2FqBwFI1cbmdWWEbdLURep_8g2mdWWBmCnBwQ/s1600-rw/Desi%20mango-2.png',
     gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhq4Lfe39N-cbRvtWiRNyUQsHHjo7RrvYr6vU8mric691uxuf19ZTKAgMK81OBjVsVF69zzeBxuMRUNx0EE2I-tm0IbH-I-XwR_JG0CIQ3RpCWFldU4X3WV6P3H24ipRXc3e_WmKZIc5s4I817fhKiApWN5ZIJI_PVVvsvhIjmGxde4C-AgOlAJ5FZUwAk/s1600/Desi%20achari%20mango-main.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7xvmpaw_Fuiq1LgncPdJOEFtOHmOdF_a8UjxsGVZ_fmnIsBINL7rVQ6JOxAyYVr0RA8iiC9E0ytNfNdBtlwDSJ8gMVmekSrQobFisUYCKDr6sK5JGaQM3udbjwqBK_4CFg9gs-dn3uQ70HlT3s4SPjVK693PtkmgbARyx5DUYWRY4xyZI5jIg4WoCSrc/s1600/Desi%20achari%20mangoi-1.png'
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhq4Lfe39N-cbRvtWiRNyUQsHHjo7RrvYr6vU8mric691uxuf19ZTKAgMK81OBjVsVF69zzeBxuMRUNx0EE2I-tm0IbH-I-XwR_JG0CIQ3RpCWFldU4X3WV6P3H24ipRXc3e_WmKZIc5s4I817fhKiApWN5ZIJI_PVVvsvhIjmGxde4C-AgOlAJ5FZUwAk/s1600-rw/Desi%20achari%20mango-main.png',
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7xvmpaw_Fuiq1LgncPdJOEFtOHmOdF_a8UjxsGVZ_fmnIsBINL7rVQ6JOxAyYVr0RA8iiC9E0ytNfNdBtlwDSJ8gMVmekSrQobFisUYCKDr6sK5JGaQM3udbjwqBK_4CFg9gs-dn3uQ70HlT3s4SPjVK693PtkmgbARyx5DUYWRY4xyZI5jIg4WoCSrc/s1600-rw/Desi%20achari%20mangoi-1.png'
     ]
   },
   {
@@ -90,10 +90,10 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Use': 'Fresh eating & export quality'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVJ_7SXyQeA3EVHwciuZtLK9vdtKVMUtE82SaOwjpZibVdu7BJA4opnTmYGrQ4AXLvO_efGp8ZxqHFKodM1akPf669S0FIl9eVv3sFFghtEJP6Ro5N5gaMZip9q2INwHcy47vWBP6t5YVpwMTvhYI85KMUeL6cQK8snn43-P0HWC-sZHs3BVJ0X_EI2WM/s1600/sindhri-main.png',
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVJ_7SXyQeA3EVHwciuZtLK9vdtKVMUtE82SaOwjpZibVdu7BJA4opnTmYGrQ4AXLvO_efGp8ZxqHFKodM1akPf669S0FIl9eVv3sFFghtEJP6Ro5N5gaMZip9q2INwHcy47vWBP6t5YVpwMTvhYI85KMUeL6cQK8snn43-P0HWC-sZHs3BVJ0X_EI2WM/s1600-rw/sindhri-main.png',
     gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZrXdCtEZCWw747N8BRyAmDNFrcN7iSpbxr772To7P15B9LPnVIbII7qkXxr5TPuglvWFhgDzyAhr8jozUQIMQfZDRrzunRUIjfhFIO2iUH5OMNV-W2jaL7p8v1DsP2DlpzLjcRGFl61xPGZ2tcXQXgejafolP9oDIU33C3Uaw1GzTQyEwaw4WLC4Vmk8/s1600/sindhri-1.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjk8Tc1wwFu86khz-VB1kzXjIUuqIxm2Y9pUaTSlFyAO6F83Dfy59OQqnMF5Ym3RaXMXYk_ujbd9WcP3Ujsbzh2-FoOWtNIx0uro00Hb99Ay_t84hWVsTiVYPOmi-F8bO9w-BLfgyb8S8_pKxiGoHk5d3bmg32E8vlZNPep01onjQ7f03V58yJCQf-quPA/s1600/sindhri-2.png'
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZrXdCtEZCWw747N8BRyAmDNFrcN7iSpbxr772To7P15B9LPnVIbII7qkXxr5TPuglvWFhgDzyAhr8jozUQIMQfZDRrzunRUIjfhFIO2iUH5OMNV-W2jaL7p8v1DsP2DlpzLjcRGFl61xPGZ2tcXQXgejafolP9oDIU33C3Uaw1GzTQyEwaw4WLC4Vmk8/s1600-rw/sindhri-1.png',
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjk8Tc1wwFu86khz-VB1kzXjIUuqIxm2Y9pUaTSlFyAO6F83Dfy59OQqnMF5Ym3RaXMXYk_ujbd9WcP3Ujsbzh2-FoOWtNIx0uro00Hb99Ay_t84hWVsTiVYPOmi-F8bO9w-BLfgyb8S8_pKxiGoHk5d3bmg32E8vlZNPep01onjQ7f03V58yJCQf-quPA/s1600-rw/sindhri-2.png'
     ]
   },
   {
@@ -114,7 +114,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Use': 'Fresh eating & export quality mango'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s1600/Chaunsa%20mango-main.png'
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s1600-rw/Chaunsa%20mango-main.png'
   },
   {
     id: 'anwar-ratol',
@@ -134,10 +134,10 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Use': 'Fresh eating premium mango'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOqy37aB5kFHk2Gdz3ksqFpjm9Jv-He4NoQGmVNhvYF43grLGIs9yhMFDx8xv5aHbKzMyet2M8mQ4hQE82bsPLom-rDjlAGwf_stKKnvd_INJF3Hm6lbznoXJVjmJ53Sifzuu8-OUkxYH-KWPmK890We-o0o49qoBuw64nRmZ4Sps_fgAa8kuZBJG8ud0/s1600/Anwar%20ratol-main.png',
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOqy37aB5kFHk2Gdz3ksqFpjm9Jv-He4NoQGmVNhvYF43grLGIs9yhMFDx8xv5aHbKzMyet2M8mQ4hQE82bsPLom-rDjlAGwf_stKKnvd_INJF3Hm6lbznoXJVjmJ53Sifzuu8-OUkxYH-KWPmK890We-o0o49qoBuw64nRmZ4Sps_fgAa8kuZBJG8ud0/s1600-rw/Anwar%20ratol-main.png',
     gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmr6VtQBmAt_6mbDuzfYCbjELVUSoJ_FikOgZm-l9O0GF7zBHC1vhGxj_g2J7lX4nhF4d4cv3Ne9mWp7zljgkngpPiig3JUvaaecx2PbCz1cRaLyG-nZcoK6L-_Al_uNQlXq7H1fJN0xXekQRl2HT3ozXsAVxwjaTVPGxyjG0REH_pOvAJO8gnI6n2Gx8/s1600/Anwar%20ratol-2.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBmsVbG5INenM5N49YgyzjApZhYqQ179kGLLB6d3H7YHi0pvaQ3Yll1oTXkKrgiCDcfRXcjWX_ryUz9DAeN0Sq0xyArYt3TEXbjRzaGVh3E_kP6-MHokz72P4IKvcMzYyyGXSIksBvA1HbAHBP5xUkfGEoqS_2qISaqY7MVXkLQL32VS0dSXUx9vm3mbY/s1600/Anwar%20ratol-1.png'
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmr6VtQBmAt_6mbDuzfYCbjELVUSoJ_FikOgZm-l9O0GF7zBHC1vhGxj_g2J7lX4nhF4d4cv3Ne9mWp7zljgkngpPiig3JUvaaecx2PbCz1cRaLyG-nZcoK6L-_Al_uNQlXq7H1fJN0xXekQRl2HT3ozXsAVxwjaTVPGxyjG0REH_pOvAJO8gnI6n2Gx8/s1600-rw/Anwar%20ratol-2.png',
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBmsVbG5INenM5N49YgyzjApZhYqQ179kGLLB6d3H7YHi0pvaQ3Yll1oTXkKrgiCDcfRXcjWX_ryUz9DAeN0Sq0xyArYt3TEXbjRzaGVh3E_kP6-MHokz72P4IKvcMzYyyGXSIksBvA1HbAHBP5xUkfGEoqS_2qISaqY7MVXkLQL32VS0dSXUx9vm3mbY/s1600-rw/Anwar%20ratol-1.png'
     ]
   },
   {
@@ -159,10 +159,10 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Use': 'Fresh eating summer fruit'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2Q0QsmytjCz69nqBhOODrcgOfnRLZbHu6WqPepVzZCIlooiohFAqV9oEJU8W8hAdXgmTyuoVRK9EdvQt0ievaPSfuyxoArOzBXwKnaHgmuzDzOY9gpIyUX-Wm-Sf1G7yj_8cNTXLad3MZldeuFz6Bta-LZHL3czUS1J_DiFPIz5eUZFVaFCEWOayz2pw/s1600/Dasheri%20mango-1.png',
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2Q0QsmytjCz69nqBhOODrcgOfnRLZbHu6WqPepVzZCIlooiohFAqV9oEJU8W8hAdXgmTyuoVRK9EdvQt0ievaPSfuyxoArOzBXwKnaHgmuzDzOY9gpIyUX-Wm-Sf1G7yj_8cNTXLad3MZldeuFz6Bta-LZHL3czUS1J_DiFPIz5eUZFVaFCEWOayz2pw/s1600-rw/Dasheri%20mango-1.png',
     gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3_iVcoT6ROPVEio0O3Oj9fVIEuwpRDBtv1exDYf1wAVgFvrlYGbVlBdvlsUWvaU9ttSHBRapXHXgpGrnyZsL8CVk5PEHwkf5QKbPtfhbdVyx1SzRFDX7aWfXMliZLamHoKUoicZewcU86PZ_Vv3GRfHWNmSmUsEIawnmU0c3Z73sX1nG7lgqhDAdtNJA/s1600/Dasheri%20mango-main.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglTSO0evg1vvhXcxbzEXB4V2MT-nrKc05Ix-XQsIi6nTjjoQqg1rHI3R0OFVIkdxflAMIPqy50zvyuqhrZ1Cj4UtGWuLvPhH-CieE6Nmcw5wFLxxhdPl-if5Pek08ha_T_b-Q_0CyfKGkVeokZd0orKuZgXQkrWBHVj0J2PigRHFitT11MotTR77mdRE4/s1600/Dasheri%20image-2.png'
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3_iVcoT6ROPVEio0O3Oj9fVIEuwpRDBtv1exDYf1wAVgFvrlYGbVlBdvlsUWvaU9ttSHBRapXHXgpGrnyZsL8CVk5PEHwkf5QKbPtfhbdVyx1SzRFDX7aWfXMliZLamHoKUoicZewcU86PZ_Vv3GRfHWNmSmUsEIawnmU0c3Z73sX1nG7lgqhDAdtNJA/s1600-rw/Dasheri%20mango-main.png',
+      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglTSO0evg1vvhXcxbzEXB4V2MT-nrKc05Ix-XQsIi6nTjjoQqg1rHI3R0OFVIkdxflAMIPqy50zvyuqhrZ1Cj4UtGWuLvPhH-CieE6Nmcw5wFLxxhdPl-if5Pek08ha_T_b-Q_0CyfKGkVeokZd0orKuZgXQkrWBHVj0J2PigRHFitT11MotTR77mdRE4/s1600-rw/Dasheri%20image-2.png'
     ]
   },
   {
@@ -184,7 +184,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Special Feature': 'Less intense sweetness, international demand'
     },
     status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s0/Langra%20mango-main.png'
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s0-rw/Langra%20mango-main.png'
   }
 ];
 

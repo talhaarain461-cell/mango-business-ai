@@ -71,6 +71,19 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     onBuyNow(product, sizeToUse, quantity);
   };
 
+  const getProductAltText = (product: MangoProduct) => {
+    switch(product.id) {
+      case 'chaunsa': return "Chaunsa mango online order Pakistan fresh delivery";
+      case 'langra': return "Langra mango buy online Pakistan Tando Allahyar";
+      case 'dasheri': return "Dasehri mango fresh Pakistan home delivery";
+      case 'sindhri': return "Sindhri mango online Pakistan premium quality";
+      case 'desi-achar': return "Desi Achari mango Pakistan fresh order";
+      case 'saroli': return "Saroli mango buy online Pakistan";
+      case 'anwar-ratol': return "Anwar Ratol mango premium Pakistan delivery";
+      default: return "Fresh premium mangoes online order Pakistan Tando Allahyar";
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -106,11 +119,12 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     src={activeImage} 
-                    alt={product.name} 
+                    alt={getProductAltText(product)} 
+                    width={800}
+                    height={800}
                     className="w-full h-full object-cover drop-shadow-xl p-2 sm:p-4 rounded-[28px] sm:rounded-[36px]"
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="sync"
+                    loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
@@ -138,8 +152,10 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                     <img 
                       src={img} 
                       alt={`${product.name} view ${index + 1}`} 
+                      width={150}
+                      height={150}
                       className="w-full h-full object-cover bg-white rounded-lg sm:rounded-xl"
-                      loading="eager"
+                      loading="lazy"
                       decoding="async"
                       referrerPolicy="no-referrer"
                     />
@@ -316,7 +332,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             <div className="grid sm:grid-cols-2 gap-4">
               <button 
                 onClick={handleBuyNow}
-                 disabled={true}
+                disabled={true}
                 className={`py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-mango-brand/90 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed`}
               >
                 <CreditCard size={18} />
@@ -324,7 +340,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
               </button>
               <button 
                 onClick={handleAddToCart}
-                 disabled={true}
+                disabled={true}
                 className={`py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#D9A300] transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed`}
               >
                 <ShoppingBag size={18} />

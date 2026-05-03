@@ -103,7 +103,12 @@ export function ReviewCard({ review, onImageClick }: ReviewCardProps) {
               <img 
                 src={img} 
                 alt={`Review ${idx + 1}`} 
+                width={64}
+                height={64}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
               />
               {idx === 4 && remainingImagesCount > 0 && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs font-black uppercase tracking-tighter">

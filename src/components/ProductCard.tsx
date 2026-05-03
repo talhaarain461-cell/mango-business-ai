@@ -27,6 +27,19 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
     addToCart(product);
   };
 
+  const getProductAltText = (product: MangoProduct) => {
+    switch(product.id) {
+      case 'chaunsa': return "Chaunsa mango online order Pakistan fresh delivery";
+      case 'langra': return "Langra mango buy online Pakistan Tando Allahyar";
+      case 'dasheri': return "Dasehri mango fresh Pakistan home delivery";
+      case 'sindhri': return "Sindhri mango online Pakistan premium quality";
+      case 'desi-achar': return "Desi Achari mango Pakistan fresh order";
+      case 'saroli': return "Saroli mango buy online Pakistan";
+      case 'anwar-ratol': return "Anwar Ratol mango premium Pakistan delivery";
+      default: return "Fresh premium mangoes online order Pakistan Tando Allahyar";
+    }
+  };
+
   return (
     <motion.div
       onClick={() => onViewDetails(product)}
@@ -37,10 +50,11 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         {product.image ? (
           <img 
             src={product.image} 
-            alt={product.name} 
+            alt={getProductAltText(product)} 
+            width={400}
+            height={400}
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 rounded-[24px] sm:rounded-[28px]"
-            loading="eager"
-            fetchPriority="high"
+            loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
           />
