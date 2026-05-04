@@ -85,19 +85,19 @@ export const PremiumFeatures: React.FC<{ onNavigate: (target: string) => void }>
     {
       heading: "KING OF FRUITS",
       text: "Mangoes are known as the king of fruits because they are sweet, juicy, and smell amazing. Every bite is full of fresh flavor that melts in your mouth. We grow them with great care so you get the best taste and freshness in every single mango.",
-      image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiXfv2juji_ChZWO6rhwey_9wvEE0thMiuyFUiRU2Z9jTZHlQvAkW8abkdNK5OCGgAPZs-HoiSnN8uQ1IYFRmluob54qJHb1GvJb_W1R9o4gxixqOXsFYsIqPSeSyC_o3U6igEN5Lnsrf7mrA3UbrZHCUVVrAZhDJKFo-qgVur_-qnTrVoPoULsdzBGZXA/s1600/blog%20image-9.png",
+      image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiXfv2juji_ChZWO6rhwey_9wvEE0thMiuyFUiRU2Z9jTZHlQvAkW8abkdNK5OCGgAPZs-HoiSnN8uQ1IYFRmluob54qJHb1GvJb_W1R9o4gxixqOXsFYsIqPSeSyC_o3U6igEN5Lnsrf7mrA3UbrZHCUVVrAZhDJKFo-qgVur_-qnTrVoPoULsdzBGZXA/s800/blog%20image-9.png",
       reverse: false
     },
     {
       heading: "BEST EXPORT QUALITY",
       text: "We select the finest mangoes meeting international standards. Our team hand-picks them in the unripe stage, carefully inspects them, and packs them securely in high-quality packaging. This ensures freshness and safety until delivery. We focus on size and quality so that every box delivers a premium experience to our customers.",
-      image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgicPJSYXQJfkA0c4JJNS9qKMP3pHKNyhpV092syKyx6_Muax1-Xcihn7DuGlgSCilKvE8V0PPChGKg1SXHVpz7r1Z91rXDE033ssY7aRS6GXndok7bw9nHycm4TDRaaegnPgk3HEVIYqIK-R9s4rkpbFaOHq-CX_6QMMfwGxXXA5DE29QUqmCVfzyFRnE/s1600/ChatGPT%20Image%20Apr%2027,%202026,%2001_56_47%20PM.png",
+      image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgicPJSYXQJfkA0c4JJNS9qKMP3pHKNyhpV092syKyx6_Muax1-Xcihn7DuGlgSCilKvE8V0PPChGKg1SXHVpz7r1Z91rXDE033ssY7aRS6GXndok7bw9nHycm4TDRaaegnPgk3HEVIYqIK-R9s4rkpbFaOHq-CX_6QMMfwGxXXA5DE29QUqmCVfzyFRnE/s800/ChatGPT%20Image%20Apr%2027,%202026,%2001_56_47%20PM.png",
       reverse: true
     },
     {
       heading: "FRESH FROM THE FARM",
       text: "Our mangoes come directly from the famous gardens of Tando Allahyar. We handle them with care from the moment they are picked until they reach your door. This way, you get fruit that is pure, juicy, and tastes just like it was picked today.",
-      image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivw_uDF6Ncp72w1OzB3KbuPZ31RpXT6svD9l9YUhPKMjk1vOt2-ObLal-K7UAqjyS6_EQWO7PSK35IBRaq4Iy8LOcFP3J-q1JTysuszvoRsr9DAts7xdp_bM0zctX8cfQCD2d_xZjYiXsB7q_gS6ElyMpMTsTgplRGwXrBlvmiyWONUXj6hAq0JLUyjz8/s1600/IMG_20210519_201151_900.jpg",
+      image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivw_uDF6Ncp72w1OzB3KbuPZ31RpXT6svD9l9YUhPKMjk1vOt2-ObLal-K7UAqjyS6_EQWO7PSK35IBRaq4Iy8LOcFP3J-q1JTysuszvoRsr9DAts7xdp_bM0zctX8cfQCD2d_xZjYiXsB7q_gS6ElyMpMTsTgplRGwXrBlvmiyWONUXj6hAq0JLUyjz8/s800/IMG_20210519_201151_900.jpg",
       reverse: false
     }
   ];
