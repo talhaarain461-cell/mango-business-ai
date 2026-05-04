@@ -16,7 +16,7 @@ export function Logo({ className = '', onNavigate }: LogoProps) {
       {/* Premium Mango Icon with dynamic sizing */}
       <div className="flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 lg:w-15 lg:h-15 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 relative">
         <img 
-          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7AWCrfbDfY3GQH5w1pFeVZpwIiUNOdI9tqh1DhKdSmq5UEJ6TOL89FQdon6NL9d3U2gSklTKt4Ekl5zgIbHYi9qmAoy16guZEqTwtlqh55hEhN6_Cal_MCSRBF-u90yifYe5sYc9dryId_qE5rIQQZWBqA36cYO9AiksLTpd5DZ3kmEz-lByhvNGp0C8/s2000-rw/fresh-mango-fruit-healthy.png" 
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7AWCrfbDfY3GQH5w1pFeVZpwIiUNOdI9tqh1DhKdSmq5UEJ6TOL89FQdon6NL9d3U2gSklTKt4Ekl5zgIbHYi9qmAoy16guZEqTwtlqh55hEhN6_Cal_MCSRBF-u90yifYe5sYc9dryId_qE5rIQQZWBqA36cYO9AiksLTpd5DZ3kmEz-lByhvNGp0C8/s800-rw/fresh-mango-fruit-healthy.png" 
           alt="Fresh premium mangoes online order Pakistan Tando Allahyar" 
           width={240}
           height={240}
