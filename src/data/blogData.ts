@@ -12,7 +12,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "identify-export-quality-mangoes",
     title: "How to Identify True Export-Quality Mangoes Before You Buy",
-    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2A0bR11TfzJs6JrYNEnVfkzHz33cQsAlnWc8me6V-SnjtNW5yN23AT6LtXYoa4wgDDxOy4NyineBoIqGN3B6yC93ZBz_XVmnTSLPCViwLQRMAKG66zFcPu7acrF4p0nlqNGkvQdSuxXbPT2nFWgHUvRqv76snhq-z7vxGds5VcnLNZJOrgy8hJZHAPpk/s1600/How%20to%20Identify%20Real%20Export%20Quality%20Mangoes%20Before%20Buying.png",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2A0bR11TfzJs6JrYNEnVfkzHz33cQsAlnWc8me6V-SnjtNW5yN23AT6LtXYoa4wgDDxOy4NyineBoIqGN3B6yC93ZBz_XVmnTSLPCViwLQRMAKG66zFcPu7acrF4p0nlqNGkvQdSuxXbPT2nFWgHUvRqv76snhq-z7vxGds5VcnLNZJOrgy8hJZHAPpk/s800/How%20to%20Identify%20Real%20Export%20Quality%20Mangoes%20Before%20Buying.png",
     excerpt: "We select only the best mangoes from trusted orchards in Pakistan, hand-picked for size, freshness, and natural sweetness to ensure premium quality.",
     content: `
       <h2>Careful Selection for Premium Taste & Freshness</h2>
@@ -31,7 +31,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "why-tando-allahyar-mangoes-famous",
     title: "Why Mangoes from Tando Allahyar are Everyone's Favorite",
-    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfZYCqOLzjqOv5LSKD3mhvCOvVE90_ZzUIHSN7j9BcxWWEMhxqyjLT9yVzhKs-xA-qDuwUQGtQY6pVfdG2NfHmKRWO9oXN98mnQhoKNb5JTYH-lHnnsd8jZkYs8EhziBY8TBSkKFVT4xfcHc73khuZUfnpVu_lE_6lQtDa-S3No0Lv7Rcc72K2-M7poU4/s1600/Why%20Mangoes%20from%20Tando%20Allahyar%20Are%20So%20Famous.png",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfZYCqOLzjqOv5LSKD3mhvCOvVE90_ZzUIHSN7j9BcxWWEMhxqyjLT9yVzhKs-xA-qDuwUQGtQY6pVfdG2NfHmKRWO9oXN98mnQhoKNb5JTYH-lHnnsd8jZkYs8EhziBY8TBSkKFVT4xfcHc73khuZUfnpVu_lE_6lQtDa-S3No0Lv7Rcc72K2-M7poU4/s800/Why%20Mangoes%20from%20Tando%20Allahyar%20Are%20So%20Famous.png",
     excerpt: "Tando Allahyar is famous for growing the best mangoes in Pakistan. The soil and weather there make the fruit extra sweet and juicy.",
     content: `
       <h2>The Special Land of Tando Allahyar</h2>
@@ -50,7 +50,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "health-benefits-fresh-mangoes",
     title: "Why Fresh Mangoes are Good for Your Health",
-    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhT7tsScYDg-pFL7oUbHHvU2F03uTSuyaABpWUTfVwb59TCHUEIU1la4BbAr8pP-dy_z_oe_Yy9ACWP9ZZ7fxmrOXYd2Dd4l3Ql-_fIUjKkr4by98ezq9MCtED-3zoBFEQywE3KS1Y5_Z3chegLxpSQt-MbPslHCWE5uTTwiku5LM9JmiFipRfgAEiNqAQ/s1600/Health%20Benefits%20of%20Fresh%20Mangoes%20You%20Should%20Know.png",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhT7tsScYDg-pFL7oUbHHvU2F03uTSuyaABpWUTfVwb59TCHUEIU1la4BbAr8pP-dy_z_oe_Yy9ACWP9ZZ7fxmrOXYd2Dd4l3Ql-_fIUjKkr4by98ezq9MCtED-3zoBFEQywE3KS1Y5_Z3chegLxpSQt-MbPslHCWE5uTTwiku5LM9JmiFipRfgAEiNqAQ/s800/Health%20Benefits%20of%20Fresh%20Mangoes%20You%20Should%20Know.png",
     excerpt: "Fresh mangoes are full of Vitamins and natural energy. They help keep you healthy and your digestion strong.",
     content: `
       <h2>Full of Goodness</h2>
@@ -69,7 +69,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "difference-premium-vs-market-mangoes",
     title: "Why Premium Mangoes are Better Than Market Mangoes",
-    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRXprnQyGoqrxkq9OmebSp1-J7LMEadDdKZZdmXYtA3a2W2qOhoJ5rtY6zytVg_joe4yIHwn1aFPUnKL1WdA6l06vwOEqlnm4c_6puk07CqeFrPrLwpkBneuO8jRiIkSSrXsjeyRCynzNrXnfIkvpbxPUv5UX7pF-GRrXot_aQx5Ap5lcmN_5QADrXHb0/s1600/Difference%20Between%20Premium%20Mangoes%20and%20Market%20Mangoes.png",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiRXprnQyGoqrxkq9OmebSp1-J7LMEadDdKZZdmXYtA3a2W2qOhoJ5rtY6zytVg_joe4yIHwn1aFPUnKL1WdA6l06vwOEqlnm4c_6puk07CqeFrPrLwpkBneuO8jRiIkSSrXsjeyRCynzNrXnfIkvpbxPUv5UX7pF-GRrXot_aQx5Ap5lcmN_5QADrXHb0/s800/Difference%20Between%20Premium%20Mangoes%20and%20Market%20Mangoes.png",
     excerpt: "Premium mangoes are hand-picked and ripened naturally. Mangoes in the common market often don't have the same freshness or quality.",
     content: `
       <h2>Quality You Can Feel</h2>
@@ -88,7 +88,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "ensure-fresh-delivery-aam-wala",
     title: "How We Deliver Freshness to Your Door",
-    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQ2ZNQmsjLg0mena5lEEjTwpll-Rsa-ugYUk2Hw0ZfY-7VlXnByUO9sM4Ij99OmgRtbO3jf88PoLeQsKVL0jbtVDg9NpiMRsUE2d-SVYIO2skQso0CdZARKWSIIe4E3oDyoO1Y9vX-55hTy8y-T2rN2r-zbtje-m0OfWgm7g-6cNI2keUQ50mUjgYd_1U/s1600/How%20We%20Ensure%20Fresh%20Delivery%20at%20AAM%20WALA.png",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQ2ZNQmsjLg0mena5lEEjTwpll-Rsa-ugYUk2Hw0ZfY-7VlXnByUO9sM4Ij99OmgRtbO3jf88PoLeQsKVL0jbtVDg9NpiMRsUE2d-SVYIO2skQso0CdZARKWSIIe4E3oDyoO1Y9vX-55hTy8y-T2rN2r-zbtje-m0OfWgm7g-6cNI2keUQ50mUjgYd_1U/s800/How%20We%20Ensure%20Fresh%20Delivery%20at%20AAM%20WALA.png",
     excerpt: "We carefully pick, pack, and send your mangoes using fast delivery services to keep them fresh.",
     content: `
       <h2>Guaranteed Freshness</h2>
@@ -107,7 +107,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "best-way-store-mangoes-at-home",
     title: "How to Keep Your Mangoes Fresh at Home",
-    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTExJ__dKAaiF7LrZ_fBUPSTq-86SXTaGdUJX_L9IUjOyaP4267H6_GQ3DThMM92b4LzQ1LKxV-tZKHXqw99VmXiFGeSndBYJn3C3Ok1Y5peYjkr1WSVbmUE5Ln0K5Zlo7ooNSKo2NIx5A698HDizpQ0CJOoGoirMc8ypElyW-d6Y_JEzg7BqWTZF64DQ/s1600/Best%20Way%20to%20Store%20Mangoes%20at%20Home.png",
+    image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTExJ__dKAaiF7LrZ_fBUPSTq-86SXTaGdUJX_L9IUjOyaP4267H6_GQ3DThMM92b4LzQ1LKxV-tZKHXqw99VmXiFGeSndBYJn3C3Ok1Y5peYjkr1WSVbmUE5Ln0K5Zlo7ooNSKo2NIx5A698HDizpQ0CJOoGoirMc8ypElyW-d6Y_JEzg7BqWTZF64DQ/s800/Best%20Way%20to%20Store%20Mangoes%20at%20Home.png",
     excerpt: "Keep your mangoes out until they are soft. Once they are ripe, you can put them in the fridge to keep them fresh longer.",
     content: `
       <h2>The Best Way to Ripen</h2>
