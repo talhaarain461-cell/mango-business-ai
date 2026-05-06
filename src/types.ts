@@ -185,6 +185,18 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png'
+   },
+  {
+    id: 'almas',
+    name: 'Almas Mango',
+    pricePerKg: 'N/A',
+    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    type: 'Prince of Balance',
+    description: '',
+    longDescription: '',
+    specifications: {},
+    status: 'Coming Soon',
+    image: ''
   }
 ];
 
