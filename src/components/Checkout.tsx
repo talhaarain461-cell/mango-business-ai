@@ -96,6 +96,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     const messageText = `*NEW ORDER FROM AAM WALA*\n\n` +
       `*CUSTOMER DETAILS:*\n` +
       `• Name: ${formData.fullName}\n` +
+      `• Phone: ${formData.phone}\n` +
       `• City: ${formData.city}\n` +
       `• Address: ${formData.address}\n\n` +
       `*ORDER DETAILS:*\n` +
@@ -212,6 +213,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                 href={`${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(
                   `*ORDER RE-CONFIRMATION (AAM WALA)*\n\n` +
                   `*Name:* ${submittedData.fullName}\n` +
+                  `*Phone:* ${submittedData.phone}\n` +
                   `*Variety:* ${MANGO_PRODUCTS.find(p => p.id === submittedData.productId)?.name}\n` +
                   `*Total:* ${typeof sTotal === 'number' ? `Rs. ${sTotal}` : sTotal}\n\n` +
                   `_I am confirming my order again as the previous redirect might have been interrupted._`
