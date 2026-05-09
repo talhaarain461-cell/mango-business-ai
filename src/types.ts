@@ -31,6 +31,27 @@ export interface OrderFormData {
 
 export const MANGO_PRODUCTS: MangoProduct[] = [
   {
+    id: 'almas',
+    name: 'Almas Mango',
+    pricePerKg: 'N/A',
+    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    type: 'Prince of Balance',
+    description: 'Almas Mango is a Pakistani mango variety that arrives in May during the early mango season. It is known for its mild sweetness, refreshing taste, and soft juicy texture, making it a good choice for fresh eating.',
+    longDescription: 'Almas Mango – A Refreshing Start to the Season\n\nAlmas Mango is an early-season Pakistani mango variety grown in the regions of Sindh and Punjab. It usually becomes available in May and is appreciated for its light sweetness and refreshing flavor. Unlike heavily sweet mango varieties, Almas offers a softer and more balanced taste that feels light and pleasant in warm weather.\n\nThe fruit has a soft, smooth, and juicy pulp with low fiber, making it enjoyable for fresh consumption. Its skin remains green in the early stages and gradually turns light yellow when ripe. Almas Mango is commonly eaten fresh and is valued for its natural flavor, smooth texture, and seasonal freshness.\n\nIt is a suitable choice for people who prefer a mango that is not overly sweet and has a clean, refreshing taste during the beginning of the mango season.',
+    specifications: {
+      'Variety': 'Almas Mango',
+      'Taste': 'Mildly sweet and refreshing',
+      'Texture': 'Soft, smooth, and juicy',
+      'Skin Color': 'Green turning light yellow when ripe',
+      'Season': 'May (Early Mango Season)',
+      'Regions': 'Sindh and Punjab, Pakistan',
+      'Nutritional Value': 'Rich in vitamins and minerals',
+      'Best Use': 'Fresh eating'
+    },
+    status: 'In Stock',
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhULI5pKc3gOTA75pftmazdlTJI1IVzr9lHgN3azqI7O0QKdGqULL9N5yWRXAGQcTmbW-fza24ctJvclhSSin4Yu9aHdSa7f78_80QR_trviN1PE1upErTEULatuo1JwWg_lwfPdoTYJmPdARtnlKdVcyMDgy39Up_P4ybsvj7iu5q0KapryQqa-2Os2qA/s800-rw/file_00000000086071faa4a27c1f5ff0f263.png'
+  },
+  {
     id: 'saroli',
     name: 'Saroli Mango',
     pricePerKg: 'N/A',
@@ -185,27 +206,6 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png'
-   },
-  {
-    id: 'almas',
-    name: 'Almas Mango',
-    pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
-    type: 'Prince of Balance',
-    description: 'Almas Mango is a Pakistani mango variety that arrives in May during the early mango season. It is known for its mild sweetness, refreshing taste, and soft juicy texture, making it a good choice for fresh eating.',
-    longDescription: 'Almas Mango – A Refreshing Start to the Season\n\nAlmas Mango is an early-season Pakistani mango variety grown in the regions of Sindh and Punjab. It usually becomes available in May and is appreciated for its light sweetness and refreshing flavor. Unlike heavily sweet mango varieties, Almas offers a softer and more balanced taste that feels light and pleasant in warm weather.\n\nThe fruit has a soft, smooth, and juicy pulp with low fiber, making it enjoyable for fresh consumption. Its skin remains green in the early stages and gradually turns light yellow when ripe. Almas Mango is commonly eaten fresh and is valued for its natural flavor, smooth texture, and seasonal freshness.\n\nIt is a suitable choice for people who prefer a mango that is not overly sweet and has a clean, refreshing taste during the beginning of the mango season.',
-    specifications: {
-      'Variety': 'Almas Mango',
-      'Taste': 'Mildly sweet and refreshing',
-      'Texture': 'Soft, smooth, and juicy',
-      'Skin Color': 'Green turning light yellow when ripe',
-      'Season': 'May (Early Mango Season)',
-      'Regions': 'Sindh and Punjab, Pakistan',
-      'Nutritional Value': 'Rich in vitamins and minerals',
-      'Best Use': 'Fresh eating'
-    },
-    status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhULI5pKc3gOTA75pftmazdlTJI1IVzr9lHgN3azqI7O0QKdGqULL9N5yWRXAGQcTmbW-fza24ctJvclhSSin4Yu9aHdSa7f78_80QR_trviN1PE1upErTEULatuo1JwWg_lwfPdoTYJmPdARtnlKdVcyMDgy39Up_P4ybsvj7iu5q0KapryQqa-2Os2qA/s800-rw/file_00000000086071faa4a27c1f5ff0f263.png'
   }
 ];
 
