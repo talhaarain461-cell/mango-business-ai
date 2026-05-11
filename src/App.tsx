@@ -18,6 +18,7 @@ import { ProductDetails } from './components/ProductDetails';
 import { RelatedProducts } from './components/RelatedProducts';
 import { Checkout } from './components/Checkout';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { useCart } from './CartContext';
 import { SearchResults } from './components/SearchResults';
 import { BlogList } from './components/BlogList';
 import { BlogDetail } from './components/BlogDetail';
@@ -63,12 +64,12 @@ function ProductPageWrapper({ onBack, onBuyNow, onViewDetails }: { onBack: () =>
 }
 
 export default function App() {
+  const { isCartOpen, setIsCartOpen } = useCart();
   const [selectedProduct, setSelectedProduct] = React.useState<MangoProduct | null>(null);
   const [selectedSize, setSelectedSize] = React.useState<BoxSize | undefined>(undefined);
   const [selectedQuantity, setSelectedQuantity] = React.useState<number>(1);
   const [activeCategory, setActiveCategory] = React.useState<'mangoes' | 'bulk'>('mangoes');
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -344,8 +345,6 @@ export default function App() {
       <Footer onNavigate={handleNavigate} />
       {location.pathname === '/' && <FloatingWhatsApp />}
       <CartDrawer 
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
         onCheckout={() => handleNavigate('checkout')}
       />
     </div>

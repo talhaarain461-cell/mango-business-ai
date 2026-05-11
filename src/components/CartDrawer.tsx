@@ -8,23 +8,19 @@ import { ShoppingCart, X, Plus, Minus, Trash2, ArrowRight } from 'lucide-react';
 import { useCart, CartItem } from '../CartContext';
 import { useEffect } from 'react';
 
-interface CartDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onCheckout: () => void;
-}
-
-export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
-  const { cart, removeFromCart, addToCart, clearCart, totalItems } = useCart();
+export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
+  const { cart, removeFromCart, addToCart, clearCart, totalItems, isCartOpen, setIsCartOpen } = useCart();
 
   useEffect(() => {
-    if (isOpen) {
+    if (isCartOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isOpen]);
+   }, [isCartOpen]);
+
+  const onClose = () => setIsCartOpen(false);
 
   const calculateItemTotal = (item: CartItem) => {
     if (item.size === 'Bulk') return 0;
@@ -42,7 +38,7 @@ export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
 
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isCartOpen && (
         <>
           {/* Backdrop */}
           <motion.div
@@ -112,7 +108,7 @@ export function CartDrawer({ isOpen, onClose, onCheckout }: CartDrawerProps) {
                         <div>
                           <div className="flex justify-between items-start">
                             <h3 className="text-slate-900 font-black uppercase text-sm">{item.product.name}</h3>
-                            <button onClick={() => removeFromCart(item.product.id, item.size)} className="text-slate-500 hover:text-red-400 transition-colors">
+                                                       <button onClick={() => removeFromCart(item.product.id)} className="text-slate-500 hover:text-red-400 transition-colors">
                               <Trash2 size={16} />
                             </button>
                           </div>

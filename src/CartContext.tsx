@@ -10,32 +10,40 @@ export interface CartItem {
 interface CartContextType {
   cart: CartItem[];
   addToCart: (product: MangoProduct, size?: BoxSize, quantity?: number) => void;
-  removeFromCart: (productId: string, size: BoxSize) => void;
+  removeFromCart: (productId: string) => void;
   clearCart: () => void;
   totalItems: number;
+    isCartOpen: boolean;
+  setIsCartOpen: (open: boolean) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const addToCart = (product: MangoProduct, size: BoxSize = '5kg', quantity: number = 1) => {
     setCart(prev => {
-      const existing = prev.find(item => item.product.id === product.id && item.size === size);
-      if (existing) {
-        return prev.map(item =>
-          item.product.id === product.id && item.size === size
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+         // Deduplicate solely by product.id as per user request to avoid duplicate varieties
+              const existingIndex = prev.findIndex(item => item.product.id === product.id);
+      
+      if (existingIndex !== -1) {
+        const newCart = [...prev];
+        newCart[existingIndex] = {
+          ...newCart[existingIndex],
+          quantity: newCart[existingIndex].quantity + quantity
+        };
+        return newCart;
       }
       return [...prev, { product, size, quantity }];
     });
+    // Automatically open the cart drawer when an item is added
+    setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId: string, size: BoxSize) => {
-    setCart(prev => prev.filter(item => !(item.product.id === productId && item.size === size)));
+  const removeFromCart = (productId: string) => {
+    setCart(prev => prev.filter(item => item.product.id !== productId));
   };
 
   const clearCart = () => setCart([]);
@@ -43,7 +51,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, totalItems }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, totalItems, isCartOpen, setIsCartOpen }}>
       {children}
     </CartContext.Provider>
   );
