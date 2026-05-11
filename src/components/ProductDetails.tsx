@@ -332,7 +332,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             <div className="grid sm:grid-cols-2 gap-4">
               <button 
                 onClick={handleBuyNow}
-                disabled={product.id !== 'almas'}
+                disabled={product.status !== 'In Stock'}
                 className={`py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-mango-brand/90 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed`}
               >
                 <CreditCard size={18} />
@@ -340,7 +340,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
               </button>
               <button 
                 onClick={handleAddToCart}
-                disabled={product.id !== 'almas'}
+                disabled={product.status !== 'In Stock'}
                 className={`py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#D9A300] transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed`}
               >
                 <ShoppingBag size={18} />

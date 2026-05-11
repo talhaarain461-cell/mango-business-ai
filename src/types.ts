@@ -68,7 +68,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Nutritional Value': 'Rich in vitamins and minerals',
       'Best Use': 'Fresh eating'
     },
-    status: 'Coming Soon',
+    status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQkH1-rI21NXeFwY93pQOwto7sXh2kDiAq4MB6NsM6llgcicewJFtQ_dsLtWLvhOOnm7_v5DdehGvRHfNV-qgxepEFmvJWqkZc-er2wrP16jW763JtY0ZcN5ptNGb1jnFMeUr-fdlYlWD1K8SwX4d06P4TYK1FRSPRhiSSM8auxZdAS4OqLdScXnm2u8A/s800-rw/Saroli%20mango-main.png'
   },
   {
