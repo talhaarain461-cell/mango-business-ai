@@ -6,7 +6,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { MangoProduct } from '../types';
-import { ShoppingBag, Package, CreditCard, Star } from 'lucide-react';
+import { ShoppingBag, Package, CreditCard, Star, Plus } from 'lucide-react';
 import { useCart } from '../CartContext';
 import { useReviews } from '../ReviewContext';
 
@@ -46,14 +46,14 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
       className="bg-white rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200 transition-all duration-500 flex flex-col h-full hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 active:scale-[0.98] group cursor-pointer"
     >
       {/* Image Section */}
-      <div className="relative h-36 sm:h-56 overflow-hidden m-1 rounded-[24px] sm:rounded-[28px] bg-slate-50">
+      <div className="relative h-36 sm:h-56 overflow-hidden m-1 rounded-[24px] sm:rounded-[28px] bg-slate-50 group">
         {product.image ? (
           <img 
             src={product.image} 
             alt={getProductAltText(product)} 
             width={400}
             height={400}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 rounded-[24px] sm:rounded-[28px]"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 rounded-[24px] sm:rounded-[28px]"
             loading="lazy"
             decoding="async"
             referrerPolicy="no-referrer"
@@ -61,6 +61,18 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         ) : (
           <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold uppercase tracking-wider">No Image</div>
         )}
+               
+        {/* Quick Add To Cart Icon - Visible on Hover */}
+        {product.status === 'In Stock' && (
+          <button
+            onClick={handleAddToCart}
+            className="absolute top-4 right-4 w-9 h-9 sm:w-11 sm:h-11 bg-white shadow-xl rounded-full flex items-center justify-center text-brand-primary transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90"
+            title="Add to Cart"
+          >
+            <Plus size={20} strokeWidth={3} className="sm:w-6 sm:h-6" />
+          </button>
+        )}
+
         <div className="absolute top-3 left-3">
           <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm ${
             product.status === 'Coming Soon' ? 'bg-slate-600 text-white' :
@@ -119,22 +131,14 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
  
         {/* Action Buttons */}
         <div className="mt-auto">
-          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-2" onClick={e => e.stopPropagation()}>
+          <div className="flex flex-col gap-2" onClick={e => e.stopPropagation()}>
             <button 
               onClick={() => onBuyNow(product)}
               disabled={product.status !== 'In Stock'}
-              className={`w-full py-2 sm:py-3 bg-brand-primary text-white rounded-lg sm:rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center space-x-2 hover:bg-brand-primary/90 transition-all shadow-sm active:scale-95 disabled:cursor-not-allowed`}
+              className={`w-full py-3.5 sm:py-4 bg-brand-primary text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-brand-primary/95 transition-all shadow-lg shadow-brand-primary/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale disabled:shadow-none`}
             >
-              <CreditCard size={12} className="sm:w-[13px] sm:h-[13px]" />
+             <CreditCard size={14} className="sm:w-4 sm:h-4" />
               <span>Buy Now</span>
-            </button>
-            <button 
-              onClick={handleAddToCart}
-              disabled={product.status !== 'In Stock'}
-              className={`w-full py-2 sm:py-3 bg-brand-accent text-black border border-transparent rounded-lg sm:rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center justify-center space-x-2 hover:bg-[#D9A300] transition-all active:scale-95 px-1 text-center shadow-sm disabled:cursor-not-allowed`}
-            >
-              <ShoppingBag size={12} className="sm:w-[13px] sm:h-[13px]" />
-              <span className="sm:inline">Add to Cart</span>
             </button>
           </div>
         </div>
