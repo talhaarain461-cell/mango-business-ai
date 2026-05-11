@@ -463,14 +463,13 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                               <div className="text-right">
                                  <p className="text-[9px] font-black text-success/70 uppercase tracking-widest mb-0.5">City Discount</p>
                                  <p className="text-sm font-black text-success">-Rs. {itemCalculations[idx].discount}</p>
-                              </div>
-                           )}
-                        </div>
+                                </div>
+                             )}
+                          </div>
+                        )}
                       </div>
                     ))
                   )}
-                </div>
-                )}
               </div>
 
               {/* Step 3: Payment Method */}
