@@ -42,7 +42,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>('idle');
   const [submittedData, setSubmittedData] = useState<any>(null);
 
-  const initialOrderItems = useMemo(() => {
+  const [localOrderItems, setLocalOrderItems] = useState(() => {
     if (preSelectedProduct) {
       const product = MANGO_PRODUCTS.find(p => p.id === preSelectedProduct) || MANGO_PRODUCTS[0];
       return [{
@@ -56,10 +56,31 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       size: '' as BoxSize, // Force manual selection
       quantity: 1 // Start with 1, as 0 doesn't make sense for quantity
     }));
-  }, [preSelectedProduct, cart]);
+});
 
-  const [localOrderItems, setLocalOrderItems] = useState(initialOrderItems);
+  // Sync localOrderItems with cart changes (e.g. from CartDrawer)
+  React.useEffect(() => {
+    if (!preSelectedProduct) {
+      setLocalOrderItems(prev => {
+        // Store existing selections in a map for easy lookup
+        const selectionsMap = new Map();
+        prev.forEach(item => {
+          selectionsMap.set(item.product.id, { size: item.size, quantity: item.quantity });
+        });
 
+        // Return new cart items with preserved selections where available
+        return cart.map(cartItem => {
+          const selection = selectionsMap.get(cartItem.product.id);
+          return {
+            ...cartItem,
+            size: selection ? selection.size : ('' as BoxSize),
+            quantity: selection ? selection.quantity : 1
+          };
+        });
+      });
+    }
+  }, [cart, preSelectedProduct]);
+  
   const [formData, setFormData] = useState({
     fullName: userData.fullName || '',
     phone: userData.phone || '',
