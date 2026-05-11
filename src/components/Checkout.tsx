@@ -451,11 +451,14 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                           </div>
                         </div>
 
-                        <div className="flex justify-between items-center pt-4 border-t border-slate-200/60">
+                        {(localOrderItems.length > 1 || (isTandoAllahyar && item.size)) && (
+                          <div className="flex justify-between items-center pt-4 border-t border-slate-200/60">
+                             {localOrderItems.length > 1 && (
                            <div>
                               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Item Total</p>
                               <p className="text-sm font-black text-slate-900">Rs. {itemCalculations[idx].subtotal}</p>
                            </div>
+                           )}
                            {isTandoAllahyar && item.size && (
                               <div className="text-right">
                                  <p className="text-[9px] font-black text-success/70 uppercase tracking-widest mb-0.5">City Discount</p>
@@ -467,6 +470,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                     ))
                   )}
                 </div>
+                )}
               </div>
 
               {/* Step 3: Payment Method */}
