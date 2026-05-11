@@ -327,7 +327,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   />
                   <p className="text-[9px] text-slate-600 font-bold px-1 italic leading-relaxed mt-1 mb-6">
                     Write <span className="text-blue-600 font-black">Tando Allahyar</span> like this, get Cash on Delivery and a special discount.<br />
-                    This special offer is only for customers in <span className="text-blue-600 font-black">Tando Allahyar City</span>.
+                      This special offer is only for customers in <span className="text-blue-600 font-black">Tando Allahyar</span> City.
                   </p>
                 </div>
               </div>
