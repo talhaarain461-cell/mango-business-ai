@@ -56,7 +56,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       size: '' as BoxSize, // Force manual selection
       quantity: 1 // Start with 1, as 0 doesn't make sense for quantity
     }));
-});
+  });
 
   // Sync localOrderItems with cart changes (e.g. from CartDrawer)
   React.useEffect(() => {
@@ -80,7 +80,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       });
     }
   }, [cart, preSelectedProduct]);
-  
+
   const [formData, setFormData] = useState({
     fullName: userData.fullName || '',
     phone: userData.phone || '',
@@ -454,15 +454,15 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                         {(localOrderItems.length > 1 || (isTandoAllahyar && item.size)) && (
                           <div className="flex justify-between items-center pt-4 border-t border-slate-200/60">
                              {localOrderItems.length > 1 && (
-                           <div>
-                              <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Item Total</p>
-                              <p className="text-sm font-black text-slate-900">Rs. {itemCalculations[idx].subtotal}</p>
-                           </div>
-                           )}
-                           {isTandoAllahyar && item.size && (
-                              <div className="text-right">
-                                 <p className="text-[9px] font-black text-success/70 uppercase tracking-widest mb-0.5">City Discount</p>
-                                 <p className="text-sm font-black text-success">-Rs. {itemCalculations[idx].discount}</p>
+                               <div>
+                                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Item Total</p>
+                                  <p className="text-sm font-black text-slate-900">Rs. {itemCalculations[idx].subtotal}</p>
+                               </div>
+                             )}
+                             {isTandoAllahyar && item.size && (
+                                <div className="text-right">
+                                   <p className="text-[9px] font-black text-success/70 uppercase tracking-widest mb-0.5">City Discount</p>
+                                   <p className="text-sm font-black text-success">-Rs. {itemCalculations[idx].discount}</p>
                                 </div>
                              )}
                           </div>
@@ -470,6 +470,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                       </div>
                     ))
                   )}
+                </div>
               </div>
 
               {/* Step 3: Payment Method */}
