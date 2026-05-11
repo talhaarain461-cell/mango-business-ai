@@ -37,34 +37,37 @@ const PAYMENT_ACCOUNTS = {
 };
 
 export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuantity, onBack, onContinueShopping }: CheckoutProps) {
-  const { clearCart } = useCart();
+  const { cart, clearCart } = useCart();
   const { userData, setUserData } = useUser();
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>('idle');
-  const [submittedData, setSubmittedData] = useState<typeof formData | null>(null);
+  const [submittedData, setSubmittedData] = useState<any>(null);
 
-  // Scroll to top when form becomes success is handled by the overall route change,
-  // but if we stay on the same route and just change state, we might need a smooth reset.
-  // However, normally success state transition should be smooth.
-  React.useEffect(() => {
-    if (formState === 'success') {
-      window.scrollTo(0, 0);
+  const initialOrderItems = useMemo(() => {
+    if (preSelectedProduct) {
+      const product = MANGO_PRODUCTS.find(p => p.id === preSelectedProduct) || MANGO_PRODUCTS[0];
+      return [{
+        product,
+        size: '' as BoxSize, // Start empty as per request
+        quantity: 1
+      }];
     }
-  }, [formState]);
+    return cart.map(item => ({
+      ...item,
+      size: '' as BoxSize, // Force manual selection
+      quantity: 1 // Start with 1, as 0 doesn't make sense for quantity
+    }));
+  }, [preSelectedProduct, cart]);
+
+  const [localOrderItems, setLocalOrderItems] = useState(initialOrderItems);
+
   const [formData, setFormData] = useState({
     fullName: userData.fullName || '',
     phone: userData.phone || '',
     address: userData.address || '',
     city: userData.city || '',
-    productId: preSelectedProduct || MANGO_PRODUCTS[0].id,
-    boxWeight: '',
-    quantity: preSelectedQuantity || 1,
     paymentMethod: 'Bank Transfer' as string
   });
-  const selectedProduct = useMemo(() => 
-    MANGO_PRODUCTS.find(p => p.id === formData.productId) || MANGO_PRODUCTS[0]
-  , [formData.productId]);
 
-  const weightNum = parseInt(formData.boxWeight) || 0;
   const isTandoAllahyar = formData.city.trim().toLowerCase() === 'tando allahyar';
   
   // Ensure payment method is valid if city changes
@@ -74,11 +77,33 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     }
   }, [isTandoAllahyar, formData.paymentMethod]);
 
-  const subtotal = typeof selectedProduct.pricePerKg === 'number' 
-    ? (weightNum * (selectedProduct.pricePerKg as number)) * formData.quantity 
-    : 'N/A';
-  const discount = (isTandoAllahyar && formData.boxWeight && typeof subtotal === 'number') ? (300 * formData.quantity) : 0;
-  const total = typeof subtotal === 'number' ? Math.max(0, (subtotal as number) - discount) : 'N/A';
+  const updateItem = (index: number, updates: Partial<typeof localOrderItems[0]>) => {
+    setLocalOrderItems(prev => {
+      const next = [...prev];
+      next[index] = { ...next[index], ...updates };
+      return next;
+    });
+  };
+
+  const itemCalculations = useMemo(() => {
+    return localOrderItems.map(item => {
+      const weightNum = parseInt(item.size) || 0;
+      const itemSubtotal = typeof item.product.pricePerKg === 'number'
+        ? (weightNum * (item.product.pricePerKg as number)) * item.quantity
+        : 0;
+      const itemDiscount = (isTandoAllahyar && item.size) ? (300 * item.quantity) : 0;
+      return {
+        ...item,
+        subtotal: itemSubtotal,
+        discount: itemDiscount,
+        total: Math.max(0, itemSubtotal - itemDiscount)
+      };
+    });
+  }, [localOrderItems, isTandoAllahyar]);
+
+  const totalSubtotal = itemCalculations.reduce((acc, curr) => acc + curr.subtotal, 0);
+  const totalDiscount = itemCalculations.reduce((acc, curr) => acc + curr.discount, 0);
+  const finalTotal = Math.max(0, totalSubtotal - totalDiscount);
 
   const availableMethods = useMemo(() => {
     const methods = Object.keys(PAYMENT_ACCOUNTS);
@@ -92,6 +117,15 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     e.preventDefault();
     setFormState('sending');
     
+    // Construct Items Text for WhatsApp
+    const itemsText = itemCalculations.map((item, idx) => 
+      `*Item #${idx + 1}:*\n` +
+      `• Variety: ${item.product.name}\n` +
+      `• Box Size: ${item.size}\n` +
+      `• Quantity: ${item.quantity} Box(es)\n` +
+      `• Subtotal: Rs. ${item.subtotal}`
+    ).join('\n\n');
+
     // Construct WhatsApp Message with proper encoding
     const messageText = `*NEW ORDER FROM AAM WALA*\n\n` +
       `*CUSTOMER DETAILS:*\n` +
@@ -100,23 +134,21 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       `• City: ${formData.city}\n` +
       `• Address: ${formData.address}\n\n` +
       `*ORDER DETAILS:*\n` +
-      `• Variety: ${selectedProduct.name}\n` +
-      `• Box Size: ${formData.boxWeight}\n` +
-      `• Quantity: ${formData.quantity} Box(es)\n\n` +
+      `${itemsText}\n\n` +
       `*PAYMENT INFO:*\n` +
       `• Method: ${formData.paymentMethod}\n` +
-      `• Subtotal: ${typeof subtotal === 'number' ? `Rs. ${subtotal}` : subtotal}\n` +
-      (isTandoAllahyar && typeof subtotal === 'number' ? `• Discount (Tando Allahyar): -Rs. ${discount}\n` : '') +
-      `*• TOTAL PAYABLE: ${typeof total === 'number' ? `Rs. ${total}` : total}*\n\n` +
+      `• Subtotal: Rs. ${totalSubtotal}\n` +
+      (isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${totalDiscount}\n` : '') +
+      `*• TOTAL PAYABLE: Rs. ${finalTotal}*\n\n` +
       (formData.paymentMethod === 'Cash on Delivery' 
         ? `_I will pay for my order upon delivery._`
         : `_I am sending the payment screenshot following this message._`);
- 
+
     try {
       const whatsappUrl = `${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(messageText)}`;
       
       // Save data before redirecting
-      const currentOrderData = { ...formData };
+      const currentOrderData = { ...formData, items: itemCalculations };
       setSubmittedData(currentOrderData);
       localStorage.setItem('mango_last_order', JSON.stringify(currentOrderData));
       
@@ -125,7 +157,6 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       setFormState('success');
 
       // Attempt to open in a new tab first, fallback to current window
-      // Use location.assign or replace for the fallback to ensure redirect works on mobile
       const win = window.open(whatsappUrl, '_blank');
       if (!win || win.closed || typeof win.closed === 'undefined') {
         window.location.assign(whatsappUrl);
@@ -148,15 +179,6 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   );
 
   if (formState === 'success' && submittedData) {
-    const submittedProduct = MANGO_PRODUCTS.find(p => p.id === submittedData.productId) || MANGO_PRODUCTS[0];
-    const sWeightNum = parseInt(submittedData.boxWeight) || 0;
-    const sSubtotal = typeof submittedProduct.pricePerKg === 'number' 
-      ? (sWeightNum * (submittedProduct.pricePerKg as number)) * submittedData.quantity 
-      : 'N/A';
-    const sIsTandoAllahyar = submittedData.city.trim().toLowerCase() === 'tando allahyar';
-    const sDiscount = (sIsTandoAllahyar && submittedData.boxWeight && typeof sSubtotal === 'number') ? (300 * submittedData.quantity) : 0;
-    const sTotal = typeof sSubtotal === 'number' ? Math.max(0, (sSubtotal as number) - sDiscount) : 'N/A';
-
     return (
       <div className="min-h-screen flex flex-col items-center justify-start bg-slate-50/50 p-4 pt-12 pb-12 md:pt-20 md:pb-20">
         <div className="max-w-xl w-full">
@@ -187,17 +209,24 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                 <span className="font-bold text-slate-500">Customer:</span>
                 <span className="font-black text-slate-900">{submittedData.fullName}</span>
               </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-bold text-slate-500">Variety:</span>
-                <span className="font-black text-slate-900">{submittedProduct.name}</span>
+              
+              <div className="space-y-3 pt-2">
+                {submittedData.items?.map((item: any, idx: number) => (
+                  <div key={idx} className="bg-white/50 p-3 rounded-xl border border-slate-100">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-black text-xs text-slate-900">{item.product.name}</span>
+                      <span className="font-black text-xs text-mango-dark">Rs. {item.subtotal}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{item.size} × {item.quantity} Box(es)</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="font-bold text-slate-500">Package:</span>
-                <span className="font-black text-slate-900">{submittedData.quantity} × {submittedData.boxWeight}</span>
-              </div>
+
               <div className="flex justify-between items-center text-base pt-3 border-t border-slate-200">
                 <span className="font-black text-slate-900 uppercase tracking-widest text-xs">Total Amount:</span>
-                <span className="font-black text-mango-dark">{typeof sTotal === 'number' ? `Rs. ${sTotal}` : sTotal}</span>
+                <span className="font-black text-mango-dark">Rs. {submittedData.items?.reduce((acc: number, curr: any) => acc + curr.total, 0)}</span>
               </div>
             </div>
 
@@ -214,8 +243,8 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   `*ORDER RE-CONFIRMATION (AAM WALA)*\n\n` +
                   `*Name:* ${submittedData.fullName}\n` +
                   `*Phone:* ${submittedData.phone}\n` +
-                  `*Variety:* ${MANGO_PRODUCTS.find(p => p.id === submittedData.productId)?.name}\n` +
-                  `*Total:* ${typeof sTotal === 'number' ? `Rs. ${sTotal}` : sTotal}\n\n` +
+                  `*Summary:* ${submittedData.items?.map((i: any) => `${i.product.name} (${i.size}x${i.quantity})`).join(', ')}\n` +
+                  `*Total:* Rs. ${submittedData.items?.reduce((acc: number, curr: any) => acc + curr.total, 0)}\n\n` +
                   `_I am confirming my order again as the previous redirect might have been interrupted._`
                 )}`}
                 target="_blank"
@@ -327,12 +356,12 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   />
                   <p className="text-[9px] text-slate-600 font-bold px-1 italic leading-relaxed mt-1 mb-6">
                     Write <span className="text-blue-600 font-black">Tando Allahyar</span> like this, get Cash on Delivery and a special discount.<br />
-                      This special offer is only for customers in <span className="text-blue-600 font-black">Tando Allahyar</span> City.
+                    This special offer is only for customers in <span className="text-blue-600 font-black">Tando Allahyar</span> City.
                   </p>
                 </div>
               </div>
 
-              {/* Step 2: Choose Your Mangoes */}
+              {/* Step 2: Your Selected Mangoes */}
               <div className="bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-slate-200 relative overflow-hidden">
                  <div className="absolute top-0 right-0 p-4 sm:p-8">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white shadow-sm rounded-2xl flex items-center justify-center text-black font-black text-lg sm:text-xl border border-slate-100">2</div>
@@ -343,74 +372,79 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                     <Package size={24} />
                   </div>
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-black text-infinite-night uppercase tracking-tight leading-none mb-1">Choose Your Mangoes</h3>
-                    <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Pick your favorite type and weight</p>
+                    <h3 className="text-xl sm:text-2xl font-black text-infinite-night uppercase tracking-tight leading-none mb-1">Your Selected Mangoes</h3>
+                    <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Review your order items</p>
                   </div>
                 </div>
 
                 <div className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Mango Variety</label>
-                      <div className="mb-2">
-                        <span className="text-[10px] font-black text-brand-accent uppercase tracking-widest bg-brand-accent/5 px-2 py-1 rounded-md border border-brand-accent/10">
-                          {selectedProduct.type}
-                        </span>
+                  {localOrderItems.length === 0 ? (
+                    <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                      <p className="text-sm font-bold text-slate-500">Your cart is empty. Please select some mangoes.</p>
+                      <button onClick={onBack} className="mt-4 text-xs font-black text-brand-accent uppercase tracking-widest">Browse Mangoes</button>
+                    </div>
+                  ) : (
+                    localOrderItems.map((item, idx) => (
+                      <div key={idx} className="p-6 bg-slate-50 rounded-[28px] border border-slate-200 shadow-sm space-y-6">
+                        <div className="flex items-center gap-4">
+                          <img src={item.product.image} alt={item.product.name} className="w-12 h-12 object-cover rounded-xl shadow-sm border border-slate-200" />
+                          <div>
+                            <p className="text-[10px] font-black text-brand-accent uppercase tracking-widest mb-0.5">{item.product.type}</p>
+                            <p className="text-base font-black text-slate-900">{item.product.name}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 gap-6 pt-4 border-t border-slate-200/60">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Box Weight</label>
+                            <select 
+                              required
+                              value={item.size}
+                              onChange={e => updateItem(idx, { size: e.target.value as BoxSize })}
+                              className="w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:border-brand-accent transition-all cursor-pointer text-slate-900"
+                            >
+                              <option value="">Select weight</option>
+                              <option value="5kg">5 KG Box</option>
+                              <option value="8kg">8 KG Box</option>
+                              <option value="10kg">10 KG Box</option>
+                            </select>
+                          </div>
+
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Quantity</label>
+                            <div className="flex items-center gap-3">
+                              <button 
+                                type="button"
+                                onClick={() => updateItem(idx, { quantity: Math.max(1, item.quantity - 1) })}
+                                className="w-12 h-12 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-colors shadow-sm"
+                              >-</button>
+                              <div className="flex-1 text-center p-3.5 bg-white border border-slate-200 rounded-xl font-black text-slate-900 text-sm shadow-sm min-w-[60px]">
+                                {item.quantity} Box(es)
+                              </div>
+                              <button 
+                                type="button"
+                                onClick={() => updateItem(idx, { quantity: item.quantity + 1 })}
+                                className="w-12 h-12 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-colors shadow-sm"
+                              >+</button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center pt-4 border-t border-slate-200/60">
+                           <div>
+                              <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Item Total</p>
+                              <p className="text-sm font-black text-slate-900">Rs. {itemCalculations[idx].subtotal}</p>
+                           </div>
+                           {isTandoAllahyar && item.size && (
+                              <div className="text-right">
+                                 <p className="text-[9px] font-black text-success/70 uppercase tracking-widest mb-0.5">City Discount</p>
+                                 <p className="text-sm font-black text-success">-Rs. {itemCalculations[idx].discount}</p>
+                              </div>
+                           )}
+                        </div>
                       </div>
-                      <select 
-                        disabled={!!preSelectedProduct}
-                        value={formData.productId}
-                        onChange={e => setFormData({...formData, productId: e.target.value})}
-                        className={`w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:border-brand-accent transition-all text-slate-900 ${!!preSelectedProduct ? 'bg-slate-50 cursor-not-allowed opacity-75' : 'cursor-pointer'}`}
-                      >
-                        {!!preSelectedProduct ? (
-                          <option value={preSelectedProduct}>{selectedProduct.name} ({typeof selectedProduct.pricePerKg === 'number' ? `Rs. ${selectedProduct.pricePerKg}/kg` : selectedProduct.pricePerKg})</option>
-                        ) : (
-                          MANGO_PRODUCTS.map(p => (
-                            <option key={p.id} value={p.id}>{p.name} ({typeof p.pricePerKg === 'number' ? `Rs. ${p.pricePerKg}/kg` : p.pricePerKg})</option>
-                          ))
-                        )}
-                      </select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Box Weight</label>
-                      <select 
-                        required
-                        value={formData.boxWeight}
-                        onChange={e => setFormData({...formData, boxWeight: e.target.value})}
-                        className="w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:border-brand-accent transition-all cursor-pointer text-slate-900"
-                      >
-                        <option value="">Select weight</option>
-                        <option value="5kg">5 KG Box</option>
-                        <option value="8kg">8 KG Box</option>
-                        <option value="10kg">10 KG Box</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">How many boxes?</label>
-                    <div className="flex items-center gap-4">
-                      <button 
-                        type="button"
-                        onClick={() => setFormData(prev => ({...prev, quantity: Math.max(1, prev.quantity - 1)}))}
-                        className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 font-bold hover:bg-slate-200 transition-colors"
-                      >-</button>
-                      <input 
-                        type="number"
-                        min="1"
-                        value={formData.quantity}
-                        onChange={e => setFormData({...formData, quantity: parseInt(e.target.value) || 1})}
-                        className="w-24 text-center p-3 bg-white shadow-sm border border-slate-200 rounded-xl font-bold text-slate-900"
-                      />
-                      <button 
-                         type="button"
-                         onClick={() => setFormData(prev => ({...prev, quantity: prev.quantity + 1}))}
-                         className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 font-bold hover:bg-slate-200 transition-colors"
-                      >+</button>
-                    </div>
-                  </div>
+                    ))
+                  )}
                 </div>
               </div>
 
@@ -466,7 +500,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                         {formData.paymentMethod === 'Cash on Delivery' ? (
                           <div className="space-y-1">
                             <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1">Cash on Delivery</p>
-                            <p className="text-sm font-black text-slate-900">Pay Rs. {total} when your order arrives</p>
+                            <p className="text-sm font-black text-slate-900">Pay Rs. {finalTotal} when your order arrives</p>
                             <p className="text-xs font-bold text-slate-500 italic">Only for Tando Allahyar.</p>
                           </div>
                         ) : (
@@ -540,28 +574,38 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   </div>
 
                   <div className="space-y-4 mb-8">
-                     <div className="flex justify-between items-start pb-4 border-b border-slate-200">
-                        <div>
-                          <p className="text-xs font-black uppercase tracking-widest text-slate-600 mb-0.5">{selectedProduct.name}</p>
-                          <p className="text-[9px] font-black text-brand-accent uppercase tracking-tighter mb-1.5">{selectedProduct.type}</p>
-                          <p className="text-[10px] font-bold text-slate-500">{formData.boxWeight || 'Select weight'} × {formData.quantity} Box</p>
-                        </div>
-                        <p className="text-sm font-black">{typeof subtotal === 'number' ? `Rs. ${subtotal}` : subtotal}</p>
+                     <div className="border-b border-slate-200 pb-4 space-y-4">
+                        {itemCalculations.map((item, idx) => (
+                          <div key={idx} className="flex justify-between items-start">
+                             <div className="flex-1 pr-4">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-600 mb-0.5">{item.product.name}</p>
+                                <p className="text-[11px] font-bold text-slate-500">{item.size || 'Size not selected'} × {item.quantity} Box(es)</p>
+                             </div>
+                             <div className="text-right">
+                                <p className="text-sm font-black">{item.size ? `Rs. ${item.subtotal}` : '---'}</p>
+                             </div>
+                          </div>
+                        ))}
                      </div>
 
-                     {isTandoAllahyar && formData.boxWeight && (
+                     <div className="flex justify-between items-center text-slate-600">
+                        <p className="text-[10px] font-black uppercase tracking-widest">Subtotal</p>
+                        <p className="text-sm font-black text-slate-900">Rs. {totalSubtotal}</p>
+                     </div>
+
+                     {isTandoAllahyar && totalDiscount > 0 && (
                        <div className="flex justify-between items-center text-success">
                           <div className="flex items-center gap-2">
                              <CheckCircle2 size={12} />
-                             <p className="text-[10px] font-black uppercase tracking-widest text-success/80">City Discount (Rs. 300/Box)</p>
+                             <p className="text-[10px] font-black uppercase tracking-widest text-success/80">City Discount</p>
                           </div>
-                          <p className="text-sm font-black">-Rs. {discount}</p>
+                          <p className="text-sm font-black">-Rs. {totalDiscount}</p>
                        </div>
                      )}
 
-                     <div className="flex justify-between items-center pt-4">
+                     <div className="flex justify-between items-center pt-4 border-t border-slate-200">
                         <p className="text-sm font-black uppercase tracking-widest text-slate-600">Final Total</p>
-                        <p className="text-2xl font-black text-brand-accent">{typeof total === 'number' ? `Rs. ${total}` : total}</p>
+                        <p className="text-2xl font-black text-brand-accent">Rs. {finalTotal}</p>
                      </div>
                   </div>
 
@@ -575,7 +619,15 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   <button
                     type="submit"
                     form="checkout-form"
-                    disabled={formState === 'sending' || !formData.fullName || !formData.phone || !formData.address || !formData.city || !formData.boxWeight}
+                    disabled={
+                      formState === 'sending' || 
+                      !formData.fullName || 
+                      !formData.phone || 
+                      !formData.address || 
+                      !formData.city || 
+                      localOrderItems.length === 0 || 
+                      localOrderItems.some(item => !item.size)
+                    }
                     className="w-full py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#25D366] transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:grayscale"
                   >
                     {formState === 'sending' ? (
