@@ -3,12 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { MangoProduct } from '../types';
-import { ShoppingBag, Package, CreditCard, Star, Plus } from 'lucide-react';
+import { ShoppingBag, Package, CreditCard, Star, Plus, AlertTriangle, X } from 'lucide-react';
 import { useCart } from '../CartContext';
 import { useReviews } from '../ReviewContext';
+import { isPriceExpired } from '../lib/timer';
+import { getWhatsAppLink } from '../lib/whatsapp';
+import { WhatsAppIcon } from './icons/WhatsAppIcon';
 
 interface ProductCardProps {
   product: MangoProduct;
@@ -19,12 +22,37 @@ interface ProductCardProps {
 export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardProps) {
   const { addToCart } = useCart();
   const { getProductRating } = useReviews();
+  const [isExpired, setIsExpired] = useState(false);
+  const [showExpiredMessage, setShowExpiredMessage] = useState(false);
 
   const { average, count } = getProductRating(product.id);
 
+  useEffect(() => {
+    const checkExpiry = () => {
+      const expired = isPriceExpired(product.lastRateUpdate);
+      setIsExpired(expired);
+    };
+    checkExpiry();
+    const interval = setInterval(checkExpiry, 5000); // Check every 5s for main grid
+    return () => clearInterval(interval);
+  }, [product.lastRateUpdate]);
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (isExpired) {
+      setShowExpiredMessage(true);
+      return;
+    }
     addToCart(product);
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isExpired) {
+      setShowExpiredMessage(true);
+      return;
+    }
+    onBuyNow(product);
   };
 
   const getProductAltText = (product: MangoProduct) => {
@@ -61,12 +89,12 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         ) : (
           <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold uppercase tracking-wider">No Image</div>
         )}
-               
+        
         {/* Quick Add To Cart Icon - Permanently Visible */}
         {product.status === 'In Stock' && (
           <button
             onClick={handleAddToCart}
-             className="absolute top-4 right-4 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-brand-primary transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90 z-20"
+            className="absolute top-4 right-4 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-brand-primary transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90 z-20"
             title="Add to Cart"
           >
             <Plus size={16} strokeWidth={3} className="sm:w-5 sm:h-5" />
@@ -83,11 +111,72 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         </div>
       </div>
       
+      {/* Expired Message Modal/Overlay */}
+      <AnimatePresence>
+        {showExpiredMessage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowExpiredMessage(false);
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white rounded-[32px] p-8 max-w-sm w-full shadow-2xl border border-slate-100 relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setShowExpiredMessage(false)}
+                className="absolute top-6 right-6 p-2 hover:bg-slate-50 rounded-full transition-colors"
+              >
+                <X size={20} className="text-slate-400" />
+              </button>
+
+              <div className="flex flex-col items-center text-center">
+                <div className="bg-amber-100 p-4 rounded-2xl text-amber-600 mb-6">
+                  <AlertTriangle size={32} />
+                </div>
+                <h4 className="text-amber-900 font-black text-xl uppercase tracking-tight mb-2">
+                  Waiting for New Market Rate
+                </h4>
+                <p className="text-slate-600 font-medium text-sm leading-relaxed mb-8">
+                  Today's new price for {product.name} is not updated yet. Please check back later or contact us.
+                </p>
+
+                <div className="w-full pt-6 border-t border-slate-100 space-y-4">
+                  <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                    Need help or urgent order?
+                  </p>
+                  <a
+                    href={getWhatsAppLink(`Hi, I want to order ${product.name} but the market rate is being updated. Can you help?`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#1da851] transition-all shadow-md active:scale-95"
+                  >
+                    <WhatsAppIcon size={18} />
+                    Contact on WhatsApp
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="p-3 sm:p-5 lg:p-6 flex flex-col flex-grow">
         <div className="flex flex-col sm:flex-row justify-between items-start mb-1 gap-1.5">
           <h3 className="text-sm sm:text-lg font-black text-infinite-night uppercase tracking-tight leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
           <div className="bg-brand-accent/10 text-brand-accent px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black whitespace-nowrap border border-brand-accent/20">
-            {typeof product.pricePerKg === 'number' ? `Rs ${product.pricePerKg}/kg` : product.pricePerKg}
+            {typeof product.pricePerKg === 'number' ? 
+              (isExpired ? "Updating Rate" : `Rs ${product.pricePerKg}/kg`) : 
+              product.pricePerKg
+            }
           </div>
         </div>
 
@@ -133,12 +222,12 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         <div className="mt-auto">
           <div className="flex flex-col gap-2" onClick={e => e.stopPropagation()}>
             <button 
-              onClick={() => onBuyNow(product)}
+              onClick={handleBuyNow}
               disabled={product.status !== 'In Stock'}
-              className={`w-full py-3.5 sm:py-4 bg-brand-primary text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-brand-primary/95 transition-all shadow-lg shadow-brand-primary/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale disabled:shadow-none`}
+              className={`w-full py-3.5 sm:py-4 bg-brand-primary text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-brand-primary/95 transition-all shadow-lg shadow-brand-primary/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale disabled:shadow-none ${isExpired ? 'opacity-90' : ''}`}
             >
-             <CreditCard size={14} className="sm:w-4 sm:h-4" />
-              <span>Buy Now</span>
+              <CreditCard size={14} className="sm:w-4 sm:h-4" />
+              <span>{isExpired ? 'Price Expired' : 'Buy Now'}</span>
             </button>
           </div>
         </div>
