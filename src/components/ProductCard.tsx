@@ -69,7 +69,8 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
              className="absolute top-4 right-4 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-brand-primary transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90 z-20"
             title="Add to Cart"
           >
-                       <Plus size={16} strokeWidth={3} className="sm:w-5 sm:h-5" />
+            <Plus size={16} strokeWidth={3} className="sm:w-5 sm:h-5" />
+          </button>
         )}
 
         <div className="absolute top-3 left-3">
