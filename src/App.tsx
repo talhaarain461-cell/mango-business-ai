@@ -346,6 +346,7 @@ export default function App() {
       {location.pathname === '/' && <FloatingWhatsApp />}
       <CartDrawer 
         onCheckout={() => handleNavigate('checkout')}
+        onStartShopping={() => handleNavigate('shop')}
       />
     </div>
   );

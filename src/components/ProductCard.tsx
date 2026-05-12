@@ -62,15 +62,14 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold uppercase tracking-wider">No Image</div>
         )}
                
-        {/* Quick Add To Cart Icon - Visible on Hover */}
+        {/* Quick Add To Cart Icon - Permanently Visible */}
         {product.status === 'In Stock' && (
           <button
             onClick={handleAddToCart}
-            className="absolute top-4 right-4 w-9 h-9 sm:w-11 sm:h-11 bg-white shadow-xl rounded-full flex items-center justify-center text-brand-primary transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90"
+             className="absolute top-4 right-4 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-brand-primary transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90 z-20"
             title="Add to Cart"
           >
-            <Plus size={20} strokeWidth={3} className="sm:w-6 sm:h-6" />
-          </button>
+                       <Plus size={16} strokeWidth={3} className="sm:w-5 sm:h-5" />
         )}
 
         <div className="absolute top-3 left-3">

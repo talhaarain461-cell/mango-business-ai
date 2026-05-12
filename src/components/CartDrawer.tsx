@@ -8,7 +8,7 @@ import { ShoppingCart, X, Plus, Minus, Trash2, ArrowRight } from 'lucide-react';
 import { useCart, CartItem } from '../CartContext';
 import { useEffect } from 'react';
 
-export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
+export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => void, onStartShopping: () => void }) {
   const { cart, removeFromCart, addToCart, clearCart, totalItems, isCartOpen, setIsCartOpen } = useCart();
 
   useEffect(() => {
@@ -84,7 +84,10 @@ export function CartDrawer({ onCheckout }: { onCheckout: () => void }) {
                     You haven't added any fresh mangoes to your cart yet.
                   </p>
                   <button
-                    onClick={onClose}
+                    onClick={() => {
+                      onClose();
+                      onStartShopping();
+                    }}
                     className="mt-6 px-8 py-4 bg-brand-primary shadow-sm text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-primary/90 transition-all border border-transparent"
                   >
                     Start Shopping
