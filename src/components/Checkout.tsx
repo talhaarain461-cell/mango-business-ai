@@ -627,6 +627,13 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                        </div>
                      )}
 
+                     <div className="bg-brand-accent/5 border border-brand-accent/10 rounded-xl p-3 my-4 flex items-center justify-center gap-2">
+                        <Truck size={14} className="text-brand-accent" />
+                        <p className="text-[11px] font-black uppercase tracking-widest text-brand-primary">
+                           Free Delivery All Over Pakistan 🎉
+                        </p>
+                     </div>
+                     
                      <div className="flex justify-between items-center pt-4 border-t border-slate-200">
                         <p className="text-sm font-black uppercase tracking-widest text-slate-600">Final Total</p>
                         <p className="text-2xl font-black text-brand-accent">Rs. {finalTotal}</p>
