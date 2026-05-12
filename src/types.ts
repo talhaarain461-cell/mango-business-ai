@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type BoxSize = '5kg' | '8kg' | '10kg' | 'Bulk';
+export type BoxSize = '5kg' | '10kg' | 'Bulk';
 
 export interface MangoProduct {
   id: string;
@@ -34,7 +34,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'almas',
     name: 'Almas Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Prince of Balance',
     description: 'Almas Mango is a Pakistani mango variety that arrives in May during the early mango season. It is known for its mild sweetness, refreshing taste, and soft juicy texture, making it a good choice for fresh eating.',
     longDescription: 'Almas Mango – A Refreshing Start to the Season\n\nAlmas Mango is an early-season Pakistani mango variety grown in the regions of Sindh and Punjab. It usually becomes available in May and is appreciated for its light sweetness and refreshing flavor. Unlike heavily sweet mango varieties, Almas offers a softer and more balanced taste that feels light and pleasant in warm weather.\n\nThe fruit has a soft, smooth, and juicy pulp with low fiber, making it enjoyable for fresh consumption. Its skin remains green in the early stages and gradually turns light yellow when ripe. Almas Mango is commonly eaten fresh and is valued for its natural flavor, smooth texture, and seasonal freshness.\n\nIt is a suitable choice for people who prefer a mango that is not overly sweet and has a clean, refreshing taste during the beginning of the mango season.',
@@ -55,7 +55,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'saroli',
     name: 'Saroli Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Season Opener Mango',
     description: 'Saroli is one of the earliest mango varieties of the season, known for its soft texture and naturally sweet taste. It offers a refreshing and delightful start to the mango season.',
     longDescription: 'Saroli Mango – A Fresh Start to the Mango Season\n\nSaroli Mango is one of the oldest and most traditional mango varieties grown in Pakistan. It is widely known as the "season opener" because it arrives early and marks the beginning of the mango season.\n\nThis variety is naturally rich in essential vitamins and minerals, making it both nutritious and delicious. Saroli mangoes have green skin that gradually turns slightly yellowish-brown as they ripen. Inside, the pulp is soft, smooth, and juicy, offering a naturally sweet taste with a light and refreshing aroma.\n\nSaroli is highly appreciated for its balanced flavor and tender texture, making it an excellent choice for fresh consumption. Its early availability and pleasant taste make it a favorite among mango lovers who want to enjoy the first mangoes of the season.\n\nSaroli Mango is typically available in early mango season, mainly from May to June, making it one of the first varieties to arrive in the market.',
@@ -75,7 +75,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'desi-achar',
     name: 'Desi Achari Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Raw Pickle Mango (Achar Special)',
     description: 'Desi Achari Mango – Best for Pickle (Achar). Desi Achari Mango is a traditional raw mango mainly used for making pickles. It has a sour taste and strong flavor, perfect for homemade achar.',
     longDescription: 'Desi Achari Mango – Traditional Mango for Pickle Making\n\nDesi Achari Mango is a traditional mango variety in Pakistan. It is not usually eaten fresh because it is raw and sour. It is mainly used for making mango pickle (achar).\n\nThis mango is hard and firm, so it absorbs spices very well. When mixed with salt, oil, and spices, it becomes a tasty and long-lasting pickle that is very popular in desi homes.\n\nDesi Achari Mango is available in the summer season, mostly from May to July, which is the best time for making pickles.\n\nIt is mainly used for:\n\nMango pickle (achar)\nSpicy homemade pickles\nTraditional food preparation',
@@ -97,7 +97,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'sindhri',
     name: 'Sindhri Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',
     longDescription: 'Sindhri Mango is one of the most famous mango varieties in Pakistan. It is mainly grown in Sindh, especially in Tando Allahyar and Sindhri areas, which are known for producing high-quality export mangoes.\n\nThis mango is large, oval-shaped, very sweet, and highly fragrant. Because of its rich taste and strong aroma, it is considered one of the best mangoes in the country and is loved all over Pakistan as well as exported internationally.\n\nSindhri Mango is a highly demanded variety and is often called the "Queen of Mangoes" due to its premium taste and quality.\n\nIt is available in the mango season, mainly from May to June.\n\nIt is:\n\nSweet and juicy\nHighly aromatic\nExport quality fruit\nOne of the most popular mangoes in Pakistan',
@@ -121,7 +121,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'chaunsa',
     name: 'Chaunsa Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'King of Sweetness',
     description: 'Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
     longDescription: 'Chaunsa Mango is a gift from nature, known for its exceptional sweetness, rich nutrition, and smooth texture. Its delicious taste makes it one of the most popular mango varieties in the world.\n\nIt is one of the most exported Pakistani mangoes, widely shipped to Europe, America, and the Middle East due to its high quality and demand.\n\nThe word "Chaunsa" means "to suck," which describes the best way to enjoy it. The ideal method is to gently squeeze the ripe mango until it becomes soft, then open a small hole at the top and enjoy the sweet juice inside.\n\nChaunsa has a low-fiber, smooth pulp, making it very easy and enjoyable to eat.\n\nIn Pakistan, Chaunsa is a late-season mango and is usually available in the last phase of the mango season, mainly from July to August.\n\nThe Chaunsa from Tando Allahyar (Sindh) is especially famous for its premium quality and export standards.\n\nIt is:\n\nVery sweet and juicy\nSmooth and low-fiber\nHighly aromatic\nOne of the top export mangoes',
@@ -141,7 +141,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'anwar-ratol',
     name: 'Anwar Ratol Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Mini Powerhouse Mango',
     description: 'Anwar Ratol Mango – Mini Powerhouse of Sweetness. Anwar Ratol is a small, yellow mango known for its extreme sweetness and smooth, fiberless pulp. It is one of the most loved mango varieties in Pakistan.',
     longDescription: 'Anwar Ratol Mango is a small-sized, yellow mango variety famous for its rich sweetness and soft, fiberless pulp. It is often called a "mini powerhouse" because of its strong natural sweetness in a small fruit.\n\nThis mango is mainly grown in Punjab and Sindh regions of Pakistan and is highly popular due to its unique taste and smooth texture.\n\nAnwar Ratol is extremely sweet, juicy, and melts easily in the mouth. It is best enjoyed fresh when fully ripe. Because of its low fiber content, it is very smooth and easy to eat.\n\nThis mango is available in the mid mango season, mainly from June to July.\n\nIt is:\n\nVery sweet and juicy\nSmooth and fiberless\nSmall in size but rich in taste\nOne of the most popular premium mangoes in Pakistan',
@@ -165,7 +165,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'dasheri',
     name: 'Dasheri Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Classic Summer Mango',
     description: 'Dasheri Mango – Sweet & Juicy Summer Delight. Dasheri Mango is a popular summer fruit known for its sweet taste, smooth texture, and juicy pulp. It is a refreshing and healthy mango variety loved by everyone.',
     longDescription: 'Dasheri Mango is one of the most loved mango varieties in South Asia, known for its rich sweetness and soft, smooth flesh. It is a valuable summer fruit enjoyed for its delicious taste and refreshing juice.\n\nThis mango is also known by different regional names such as Dasheri, Dashari, and Desheri. It is widely grown and enjoyed across Pakistan and India.\n\nDasheri Mango is rich in fiber, which helps support digestion. It is also a good source of Vitamin C, which helps strengthen the immune system. In addition, it contains important nutrients like Vitamin A, Vitamin E, iron, calcium, folate, zinc, and other minerals that support overall body health.\n\nThe skin of Dasheri Mango also contains natural antioxidants that may help reduce inflammation and support good health.\n\nDasheri Mango is available in the summer season, mainly from June to July. It is best enjoyed fresh when fully ripe, offering a sweet, juicy, and aromatic flavor.\n\nIt is:\n\nVery sweet and juicy\nSoft and smooth in texture\nHealthy and nutrient-rich\nA classic summer mango variety',
@@ -190,7 +190,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'langra',
     name: 'Langra Mango',
     pricePerKg: 'N/A',
-    availableSizes: ['5kg', '8kg', '10kg', 'Bulk'],
+    availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Aromatic Juicy Mango',
     description: 'Langra Mango – Juicy & Aromatic Summer Delight. Langra Mango is a highly juicy, sweet, and aromatic mango known for its rich flavor and smooth texture. It is loved worldwide for its natural taste and freshness.',
     longDescription: 'Langra Mango is one of the most famous mango varieties from Pakistan. Its name "Langra" means "lame," and it is widely known for its traditional value and unique identity.\n\nThis mango is available in the summer season, mainly from May to July. It is greenish in color and ranges from medium to large size. Its shape is usually slightly oval and natural.\n\nLangra Mango has a rich, juicy pulp with a strong aroma and sweet taste. It is less intensely sweet compared to some other varieties, which makes it especially popular among international customers.\n\nIt is carefully handled during harvesting and packing to maintain its natural freshness, shape, and quality for export markets around the world.\n\nLangra Mango is:\n\nVery juicy and aromatic\nMedium to large in size\nGreenish skin with yellowish pulp when ripe\nFamous for its natural and balanced sweetness\nOne of the most popular export mangoes',

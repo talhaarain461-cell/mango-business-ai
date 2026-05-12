@@ -426,7 +426,6 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                             >
                               <option value="">Select weight</option>
                               <option value="5kg">5 KG Box</option>
-                              <option value="8kg">8 KG Box</option>
                               <option value="10kg">10 KG Box</option>
                             </select>
                           </div>
