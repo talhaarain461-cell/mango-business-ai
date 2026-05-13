@@ -143,10 +143,10 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
                   <AlertTriangle size={32} />
                 </div>
                 <h4 className="text-amber-900 font-black text-xl uppercase tracking-tight mb-2">
-                  Waiting for New Market Rate
+                  ⚠ Waiting for New Market Rate
                 </h4>
                 <p className="text-slate-600 font-medium text-sm leading-relaxed mb-8">
-                  Today's new price for {product.name} is not updated yet. Please check back later or contact us.
+                  Today's new price is not updated yet.
                 </p>
 
                 <div className="w-full pt-6 border-t border-slate-100 space-y-4">
@@ -154,7 +154,7 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
                     Need help or urgent order?
                   </p>
                   <a
-                    href={getWhatsAppLink(`Hi, I want to order ${product.name} but the market rate is being updated. Can you help?`)}
+                    href={getWhatsAppLink("Hello, I visited Aam Wala Online Store and I want to order mangoes. Please guide me.")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-3 py-4 bg-[#25D366] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#1da851] transition-all shadow-md active:scale-95"

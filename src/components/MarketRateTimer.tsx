@@ -8,7 +8,7 @@ import { Clock, AlertTriangle } from 'lucide-react';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
 import { getWhatsAppLink } from '../lib/whatsapp';
 import { MangoProduct } from '../types';
-import { getNextMarketRateExpiry, formatTimeLeft, isPriceExpired } from '../lib/timer';
+import { getNextMarketRateExpiry, getTimeParts } from '../lib/timer';
 
 interface MarketRateTimerProps {
   product: MangoProduct;
@@ -31,7 +31,11 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
 
     const calculate = () => {
       const expiry = getNextMarketRateExpiry(product.lastRateUpdate);
-      if (!expiry) return;
+      if (!expiry) {
+        setExpired(true);
+        if (onExpiryStateChange) onExpiryStateChange(true);
+        return;
+      }
 
       const now = new Date();
       const diff = expiry.getTime() - now.getTime();
@@ -51,6 +55,8 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
   }, [product.lastRateUpdate, isApplicable, onExpiryStateChange]);
 
   if (!isApplicable) return null;
+ 
+  const timeParts = getTimeParts(timeLeft);
 
   if (expired) {
     return (
@@ -72,7 +78,7 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
                 Need help or urgent order?
               </p>
               <a
-                href={getWhatsAppLink(`Hi, I want to order ${product.name} but the market rate is currently being updated. Can you help?`)}
+                href={getWhatsAppLink("Hello, I visited Aam Wala Online Store and I want to order mangoes. Please guide me.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#1da851] transition-all shadow-sm w-fit"
@@ -95,17 +101,36 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
             <Clock size={16} />
           </div>
           <div>
-            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-0.5">
+           <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">
               Current Market Rate Expires In
             </p>
-            <div className="flex items-baseline gap-1">
-              <span className="text-xl font-black text-brand-primary font-mono tabular-nums">
-                {formatTimeLeft(timeLeft)}
-              </span>
-              <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter">
-                HH:MM:SS
-              </span>
-            </div>
+                      <div className="flex items-center gap-3">
+              <div className="flex flex-col items-center">
+                <span className="text-xl font-black text-brand-primary font-mono tabular-nums leading-none">
+                  {timeParts.h}
+                </span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter mt-1">
+                  HRS
+                </span>
+              </div>
+              <span className="text-lg font-black text-slate-300 -mt-4">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-xl font-black text-brand-primary font-mono tabular-nums leading-none">
+                  {timeParts.m}
+                </span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter mt-1">
+                  MIN
+                </span>
+              </div>
+              <span className="text-lg font-black text-slate-300 -mt-4">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-xl font-black text-brand-primary font-mono tabular-nums leading-none">
+                  {timeParts.s}
+                </span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-tighter mt-1">
+                  SEC
+                </span>
+              </div>
           </div>
         </div>
         <div className="hidden sm:block text-right">
