@@ -32,7 +32,8 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
   const [selectedSize, setSelectedSize] = useState<BoxSize | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [isExpired, setIsExpired] = useState(false);
-  
+  const isInStock = product.status === 'In Stock';
+  const displayStatus = product.status;
   const productReviews = getReviewsByProduct(product.id);
   const averageRating = productReviews.length ? (productReviews.reduce((acc, rev) => acc + rev.rating, 0) / productReviews.length).toFixed(1) : '0.0';
   const totalReviews = productReviews.length;
@@ -135,9 +136,11 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                 )}
               </AnimatePresence>
               <div className={`absolute top-6 left-6 sm:top-8 sm:left-8 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-widest shadow-sm z-10 ${
-                product.status === 'Coming Soon' ? 'bg-indigo-600 text-white' : 'bg-brand-accent text-slate-900'
+                displayStatus === 'Coming Soon' ? 'bg-indigo-600 text-white' : 
+                displayStatus === 'Out of Stock' ? 'bg-red-600 text-white' :
+                'bg-brand-accent text-slate-900'
               }`}>
-                {product.status}
+                {displayStatus}
               </div>
             </motion.div>
             
@@ -341,16 +344,20 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             <div className="grid sm:grid-cols-2 gap-4">
               <button 
                 onClick={handleBuyNow}
-                disabled={product.status !== 'In Stock' || isExpired}
-                className={`py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-mango-brand/90 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale`}
+                disabled={!isInStock || isExpired}
+                className={`py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed ${
+                  isInStock ? 'hover:bg-mango-brand/90 disabled:opacity-50 disabled:grayscale' : 'opacity-80'
+                }`}
               >
                 <CreditCard size={18} />
                 <span>Quick Purchase</span>
               </button>
               <button 
               onClick={handleAddToCart}
-              disabled={product.status !== 'In Stock' || isExpired}
-              className={`py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#D9A300] transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale`}
+               disabled={!isInStock || isExpired}
+                className={`py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed ${
+                  isInStock ? 'hover:bg-[#D9A300] disabled:opacity-50 disabled:grayscale' : 'opacity-80'
+                }`}
               >
                 <ShoppingBag size={18} />
                 <span>Add to Cart</span>

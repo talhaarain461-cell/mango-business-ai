@@ -20,12 +20,12 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
   const [expired, setExpired] = useState<boolean>(false);
 
   // System Details:
-  // No timer if Coming Soon, Out of Stock, or NA
+  // Timer starts if In Stock AND has a price AND has a market rate update date
   const isApplicable = 
     product.status === 'In Stock' && 
     product.pricePerKg !== 'N/A' && 
-    product.pricePerKg !== 'NA';
-
+    product.pricePerKg !== 'NA' &&
+    !!product.lastRateUpdate;
   useEffect(() => {
     if (!isApplicable) return;
 

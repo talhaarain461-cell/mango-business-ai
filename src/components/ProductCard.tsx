@@ -26,16 +26,24 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
   const [showExpiredMessage, setShowExpiredMessage] = useState(false);
 
   const { average, count } = getProductRating(product.id);
+  
+  const isInStock = product.status === 'In Stock';
+  const hasMarketRate = !!product.lastRateUpdate;
 
   useEffect(() => {
+      if (!hasMarketRate) {
+      setIsExpired(false);
+      return;
+    }
+
     const checkExpiry = () => {
       const expired = isPriceExpired(product.lastRateUpdate);
       setIsExpired(expired);
     };
     checkExpiry();
-    const interval = setInterval(checkExpiry, 5000); // Check every 5s for main grid
+       const interval = setInterval(checkExpiry, 5000);
     return () => clearInterval(interval);
-  }, [product.lastRateUpdate]);
+  }, [product.lastRateUpdate, hasMarketRate]);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -90,23 +98,32 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs font-bold uppercase tracking-wider">No Image</div>
         )}
         
-        {/* Quick Add To Cart Icon - Permanently Visible */}
-        {product.status === 'In Stock' && (
-          <button
-            onClick={handleAddToCart}
-            className="absolute top-4 right-4 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-brand-primary transition-all duration-300 hover:bg-brand-accent hover:text-black active:scale-90 z-20"
-            title="Add to Cart"
+        {/* Quick Add To Cart Icon */}
+        <button
+          onClick={(e) => {
+            if (!isInStock) {
+              e.stopPropagation();
+              return;
+            }
+            handleAddToCart(e);
+          }}
+          disabled={!isInStock}
+          className={`absolute top-4 right-4 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-brand-primary transition-all duration-300 z-20 ${
+            isInStock ? 'hover:bg-brand-accent hover:text-black active:scale-90' : 'opacity-80 cursor-not-allowed'
+          }`}
+          title={isInStock ? "Add to Cart" : product.status}
           >
             <Plus size={16} strokeWidth={3} className="sm:w-5 sm:h-5" />
           </button>
-        )}
+        
 
         <div className="absolute top-3 left-3">
           <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm ${
             product.status === 'Coming Soon' ? 'bg-slate-600 text-white' :
+            product.status === 'Out of Stock' ? 'bg-red-600 text-white' :
             'bg-mango-brand text-white'
           }`}>
-            {product.status}
+          {product.status}
           </span>
         </div>
       </div>
@@ -222,13 +239,17 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
         <div className="mt-auto">
           <div className="flex flex-col gap-2" onClick={e => e.stopPropagation()}>
             <button 
-              onClick={handleBuyNow}
-              disabled={product.status !== 'In Stock'}
-              className={`w-full py-3.5 sm:py-4 bg-brand-primary text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-brand-primary/95 transition-all shadow-lg shadow-brand-primary/20 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale disabled:shadow-none ${isExpired ? 'opacity-90' : ''}`}
+                onClick={(e) => {
+                if (!isInStock) return;
+                handleBuyNow(e);
+              }}
+              disabled={!isInStock}
+              className={`w-full py-3.5 sm:py-4 bg-brand-primary text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest flex items-center justify-center hover:bg-brand-primary/95 transition-all shadow-lg active:scale-95 ${
+                isInStock ? (isExpired ? 'opacity-90 shadow-brand-primary/20' : 'shadow-brand-primary/20') : 'opacity-80 cursor-not-allowed grayscale-[20%]'
+              }`}
             >
-              <CreditCard size={14} className="sm:w-4 sm:h-4" />
-              <span>{isExpired ? 'Price Expired' : 'Buy Now'}</span>
-            </button>
+               <span>{isExpired ? 'Price Expired' : 'Buy Now'}</span>
+               </button>
           </div>
         </div>
       </div>
