@@ -131,6 +131,7 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
                   SEC
                 </span>
               </div>
+            </div>
           </div>
         </div>
         <div className="hidden sm:block text-right">
