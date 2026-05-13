@@ -18,6 +18,7 @@ import { ProductDetails } from './components/ProductDetails';
 import { RelatedProducts } from './components/RelatedProducts';
 import { Checkout } from './components/Checkout';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { FeaturedProduct } from './components/FeaturedProduct';
 import { useCart } from './CartContext';
 import { SearchResults } from './components/SearchResults';
 import { BlogList } from './components/BlogList';
@@ -189,6 +190,10 @@ export default function App() {
                 <div className="flex flex-col">
                   <Hero onNavigate={handleNavigate} />
                   <Ticker />
+                  <FeaturedProduct 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                  />
                   <ProductGrid 
                     onBuyNow={handleBuyNow} 
                     onViewDetails={handleViewDetails} 
@@ -204,6 +209,10 @@ export default function App() {
               
               <Route path="/shop" element={
                 <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
+                <FeaturedProduct 
+                  onBuyNow={handleBuyNow} 
+                  onViewDetails={handleViewDetails} 
+                />
                   <ProductGrid 
                     onBuyNow={handleBuyNow} 
                     onViewDetails={handleViewDetails} 

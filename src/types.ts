@@ -18,6 +18,8 @@ export interface MangoProduct {
   image: string;
   gallery?: string[];
   lastRateUpdate?: string; // ISO date string
+    isFeatured?: boolean;
+  featuredBadge?: string;
 }
 
 export interface OrderFormData {
@@ -115,6 +117,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVJ_7SXyQeA3EVHwciuZtLK9vdtKVMUtE82SaOwjpZibVdu7BJA4opnTmYGrQ4AXLvO_efGp8ZxqHFKodM1akPf669S0FIl9eVv3sFFghtEJP6Ro5N5gaMZip9q2INwHcy47vWBP6t5YVpwMTvhYI85KMUeL6cQK8snn43-P0HWC-sZHs3BVJ0X_EI2WM/s800-rw/sindhri-main.png',
+    isFeatured: true,
+    featuredBadge: 'Most Popular',
     gallery: [
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZrXdCtEZCWw747N8BRyAmDNFrcN7iSpbxr772To7P15B9LPnVIbII7qkXxr5TPuglvWFhgDzyAhr8jozUQIMQfZDRrzunRUIjfhFIO2iUH5OMNV-W2jaL7p8v1DsP2DlpzLjcRGFl61xPGZ2tcXQXgejafolP9oDIU33C3Uaw1GzTQyEwaw4WLC4Vmk8/s800-rw/sindhri-1.png',
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjk8Tc1wwFu86khz-VB1kzXjIUuqIxm2Y9pUaTSlFyAO6F83Dfy59OQqnMF5Ym3RaXMXYk_ujbd9WcP3Ujsbzh2-FoOWtNIx0uro00Hb99Ay_t84hWVsTiVYPOmi-F8bO9w-BLfgyb8S8_pKxiGoHk5d3bmg32E8vlZNPep01onjQ7f03V58yJCQf-quPA/s800-rw/sindhri-2.png'

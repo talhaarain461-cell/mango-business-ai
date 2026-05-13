@@ -16,8 +16,7 @@ interface RelatedProductsProps {
 export function RelatedProducts({ currentProductId, onBuyNow, onViewDetails }: RelatedProductsProps) {
   // Filter out the current product and get up to 4 related products
   const relatedProducts = MANGO_PRODUCTS
-    .filter(product => product.id !== currentProductId);
-
+    .filter(product => product.id !== currentProductId && !product.isFeatured);
   if (relatedProducts.length === 0) return null;
 
   return (

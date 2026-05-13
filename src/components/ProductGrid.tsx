@@ -71,7 +71,7 @@ export function ProductGrid({ onBuyNow, onViewDetails, onNavigate, activeCategor
               exit={{ opacity: 0, x: 20 }}
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mb-16"
             >
-              {MANGO_PRODUCTS.map((product, index) => (
+              {MANGO_PRODUCTS.filter(p => !p.isFeatured).map((product, index) => (
                 <motion.div
                   key={product.id}
                   initial={{ opacity: 0, y: 20 }}
