@@ -275,28 +275,12 @@ export default function App() {
               <Route path="/blog" element={
                 <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
                   <BlogList onNavigate={handleNavigate} />
-                  <ProductGrid 
-                    onBuyNow={handleBuyNow} 
-                    onViewDetails={handleViewDetails} 
-                    onNavigate={handleNavigate}
-                    activeCategory="mangoes"
-                    setActiveCategory={setActiveCategory}
-                    hideBulk
-                  />
                 </div>
               } />
 
               <Route path="/blog/:slug" element={
                 <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
                   <BlogDetail onNavigate={handleNavigate} />
-                  <ProductGrid 
-                    onBuyNow={handleBuyNow} 
-                    onViewDetails={handleViewDetails} 
-                    onNavigate={handleNavigate}
-                    activeCategory="mangoes"
-                    setActiveCategory={setActiveCategory}
-                    hideBulk
-                  />
                 </div>
               } />
 

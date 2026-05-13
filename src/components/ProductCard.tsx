@@ -74,7 +74,7 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
       className="bg-white rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200 transition-all duration-500 flex flex-col h-full hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 active:scale-[0.98] group cursor-pointer"
     >
       {/* Image Section */}
-      <div className="relative h-36 sm:h-56 overflow-hidden m-1 rounded-[24px] sm:rounded-[28px] bg-slate-50 group">
+       <div className="relative aspect-square sm:aspect-[4/3] overflow-hidden m-1 rounded-[24px] sm:rounded-[28px] bg-slate-50 group">
         {product.image ? (
           <img 
             src={product.image} 

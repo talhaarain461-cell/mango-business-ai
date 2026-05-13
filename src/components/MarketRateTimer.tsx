@@ -95,14 +95,14 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
 
   return (
     <div className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 my-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-brand-accent/10 p-2 rounded-xl text-brand-accent">
             <Clock size={16} />
           </div>
           <div>
            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">
-              Current Market Rate Expires In
+            Offer Ends In
             </p>
                       <div className="flex items-center gap-3">
               <div className="flex flex-col items-center">
@@ -134,12 +134,12 @@ export function MarketRateTimer({ product, onExpiryStateChange }: MarketRateTime
             </div>
           </div>
         </div>
-        <div className="hidden sm:block text-right">
+          <div className="sm:text-right border-t border-slate-200/60 pt-3 sm:pt-0 sm:border-0 flex flex-col sm:items-end">
           <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">
-            Next Update At
+            Next Price Update At
           </p>
           <p className="text-[10px] font-black text-slate-900 uppercase tracking-tight">
-            9:00 AM Tomorrow
+            9:00 AM
           </p>
         </div>
       </div>

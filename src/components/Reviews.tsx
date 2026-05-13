@@ -60,6 +60,18 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
     const selectedProduct = MANGO_PRODUCTS.find(p => p.id === newReview.productId);
     if (!selectedProduct) return;
 
+    let formattedDate = '';
+    if (newReview.date) {
+      // Input is YYYY-MM-DD
+      const [year, month, day] = newReview.date.split('-');
+      formattedDate = `${day}-${month}-${year}`;
+    } else {
+      const day = selectedDate.getDate().toString().padStart(2, '0');
+      const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+      const year = selectedDate.getFullYear();
+      formattedDate = `${day}-${month}-${year}`;
+    }
+
     setIsUploading(true);
     try {
       await addReview({
@@ -68,7 +80,7 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
         name: newReview.name || 'Customer',
         rating: newReview.rating,
         message: newReview.message || '',
-        date: selectedDate.toLocaleDateString(),
+        date: formattedDate,
         images: newReview.images
       });
       setNewReview({ name: '', rating: 5, message: '', date: '', productId: productId || '', images: [] });
@@ -434,4 +446,3 @@ function Lightbox({ image, onClose }: { image: string; onClose: () => void }) {
     </motion.div>
   );
 }
-

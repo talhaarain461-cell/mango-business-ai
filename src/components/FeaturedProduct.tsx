@@ -61,7 +61,7 @@ export function FeaturedProduct({ onBuyNow, onViewDetails }: FeaturedProductProp
           </motion.p>
         </div>
 
-        <div className="max-w-md mx-auto">
+          <div className="max-w-[280px] sm:max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}

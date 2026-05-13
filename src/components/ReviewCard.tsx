@@ -17,6 +17,40 @@ export function ReviewCard({ review, onImageClick }: ReviewCardProps) {
   const hasImages = review.images && review.images.length > 0;
   const maxLines = hasImages ? 3 : 4;
 
+  const formattedDate = (() => {
+    if (!review.date) {
+      if (review.createdAt && typeof review.createdAt.toDate === 'function') {
+        const d = review.createdAt.toDate();
+        const day = d.getDate().toString().padStart(2, '0');
+        const month = (d.getMonth() + 1).toString().padStart(2, '0');
+        const year = d.getFullYear();
+        return `${day}-${month}-${year}`;
+      }
+      return '';
+    }
+
+    // Try to normalize delimiters to dash
+    let dateStr = review.date.replace(/\//g, '-');
+    
+    // If it's already DD-MM-YYYY, return it
+    if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) return dateStr;
+    
+    // Handle ISO date or other parsable strings
+    try {
+      const date = new Date(review.date);
+      if (!isNaN(date.getTime())) {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      }
+    } catch (e) {
+      console.error("Date parsing error:", e);
+    }
+    
+    return review.date;
+  })();
+
   useEffect(() => {
     if (textRef.current) {
       const lineHeight = parseInt(getComputedStyle(textRef.current).lineHeight);
@@ -56,7 +90,7 @@ export function ReviewCard({ review, onImageClick }: ReviewCardProps) {
                   />
                 ))}
               </div>
-              <span className="text-[9px] text-white/40 font-bold uppercase tracking-widest">{review.date}</span>
+              <span className="text-[9px] text-white/40 font-bold uppercase tracking-widest">{formattedDate}</span>
             </div>
           </div>
         </div>
