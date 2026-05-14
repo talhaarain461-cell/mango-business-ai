@@ -17,8 +17,8 @@ export interface MangoProduct {
   status: 'Available' | 'In Stock' | 'Out of Stock' | 'Pre-Order Opening Soon' | 'Coming Soon';
   image: string;
   gallery?: string[];
-  lastRateUpdate?: string; // ISO date string
-    isFeatured?: boolean;
+  lastRateUpdate?: string;
+  isFeatured?: boolean;
   featuredBadge?: string;
 }
 
@@ -53,7 +53,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhULI5pKc3gOTA75pftmazdlTJI1IVzr9lHgN3azqI7O0QKdGqULL9N5yWRXAGQcTmbW-fza24ctJvclhSSin4Yu9aHdSa7f78_80QR_trviN1PE1upErTEULatuo1JwWg_lwfPdoTYJmPdARtnlKdVcyMDgy39Up_P4ybsvj7iu5q0KapryQqa-2Os2qA/s800-rw/file_00000000086071faa4a27c1f5ff0f263.png',
-    lastRateUpdate: new Date().toISOString()
+    lastRateUpdate: "2025-05-14T10:00:00"
   },
   {
     id: 'saroli',
@@ -74,7 +74,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQkH1-rI21NXeFwY93pQOwto7sXh2kDiAq4MB6NsM6llgcicewJFtQ_dsLtWLvhOOnm7_v5DdehGvRHfNV-qgxepEFmvJWqkZc-er2wrP16jW763JtY0ZcN5ptNGb1jnFMeUr-fdlYlWD1K8SwX4d06P4TYK1FRSPRhiSSM8auxZdAS4OqLdScXnm2u8A/s800-rw/Saroli%20mango-main.png',
-    lastRateUpdate: new Date().toISOString()
+    lastRateUpdate: "2025-05-14T10:00:00"
   },
   {
     id: 'desi-achar',
@@ -143,7 +143,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s800-rw/Chaunsa%20mango-main.png',
-    lastRateUpdate: new Date().toISOString()
+    lastRateUpdate: "2025-05-14T10:00:00"
   },
   {
     id: 'anwar-ratol',
@@ -164,7 +164,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOqy37aB5kFHk2Gdz3ksqFpjm9Jv-He4NoQGmVNhvYF43grLGIs9yhMFDx8xv5aHbKzMyet2M8mQ4hQE82bsPLom-rDjlAGwf_stKKnvd_INJF3Hm6lbznoXJVjmJ53Sifzuu8-OUkxYH-KWPmK890We-o0o49qoBuw64nRmZ4Sps_fgAa8kuZBJG8ud0/s800-rw/Anwar%20ratol-main.png',
-    lastRateUpdate: new Date().toISOString(),
+    lastRateUpdate: "2025-05-14T10:00:00",
     gallery: [
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmr6VtQBmAt_6mbDuzfYCbjELVUSoJ_FikOgZm-l9O0GF7zBHC1vhGxj_g2J7lX4nhF4d4cv3Ne9mWp7zljgkngpPiig3JUvaaecx2PbCz1cRaLyG-nZcoK6L-_Al_uNQlXq7H1fJN0xXekQRl2HT3ozXsAVxwjaTVPGxyjG0REH_pOvAJO8gnI6n2Gx8/s800-rw/Anwar%20ratol-2.png',
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBmsVbG5INenM5N49YgyzjApZhYqQ179kGLLB6d3H7YHi0pvaQ3Yll1oTXkKrgiCDcfRXcjWX_ryUz9DAeN0Sq0xyArYt3TEXbjRzaGVh3E_kP6-MHokz72P4IKvcMzYyyGXSIksBvA1HbAHBP5xUkfGEoqS_2qISaqY7MVXkLQL32VS0dSXUx9vm3mbY/s800-rw/Anwar%20ratol-1.png'
@@ -190,7 +190,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2Q0QsmytjCz69nqBhOODrcgOfnRLZbHu6WqPepVzZCIlooiohFAqV9oEJU8W8hAdXgmTyuoVRK9EdvQt0ievaPSfuyxoArOzBXwKnaHgmuzDzOY9gpIyUX-Wm-Sf1G7yj_8cNTXLad3MZldeuFz6Bta-LZHL3czUS1J_DiFPIz5eUZFVaFCEWOayz2pw/s800-rw/Dasheri%20mango-1.png',
-    lastRateUpdate: new Date().toISOString(),
+    lastRateUpdate: "2025-05-14T10:00:00",
     gallery: [
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3_iVcoT6ROPVEio0O3Oj9fVIEuwpRDBtv1exDYf1wAVgFvrlYGbVlBdvlsUWvaU9ttSHBRapXHXgpGrnyZsL8CVk5PEHwkf5QKbPtfhbdVyx1SzRFDX7aWfXMliZLamHoKUoicZewcU86PZ_Vv3GRfHWNmSmUsEIawnmU0c3Z73sX1nG7lgqhDAdtNJA/s800-rw/Dasheri%20mango-main.png',
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglTSO0evg1vvhXcxbzEXB4V2MT-nrKc05Ix-XQsIi6nTjjoQqg1rHI3R0OFVIkdxflAMIPqy50zvyuqhrZ1Cj4UtGWuLvPhH-CieE6Nmcw5wFLxxhdPl-if5Pek08ha_T_b-Q_0CyfKGkVeokZd0orKuZgXQkrWBHVj0J2PigRHFitT11MotTR77mdRE4/s800-rw/Dasheri%20image-2.png'
@@ -216,7 +216,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png',
-    lastRateUpdate: new Date().toISOString()
+    lastRateUpdate: "2025-05-14T10:00:00"
   }
 ];
 
