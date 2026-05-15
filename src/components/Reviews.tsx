@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MANGO_PRODUCTS } from '../types';
 import { ReviewCard } from './ReviewCard';
 import { ReviewModal } from './ReviewModal';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../firebase';
 
 interface ReviewsProps {
   hideForm?: boolean;
@@ -62,7 +60,6 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
 
     let formattedDate = '';
     if (newReview.date) {
-      // Input is YYYY-MM-DD
       const [year, month, day] = newReview.date.split('-');
       formattedDate = `${day}-${month}-${year}`;
     } else {
@@ -113,9 +110,20 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
     
     try {
       const uploadPromises = files.map(async (file) => {
-        const fileRef = ref(storage, `reviews/${Date.now()}_${file.name}`);
-        const snapshot = await uploadBytes(fileRef, file);
-        return await getDownloadURL(snapshot.ref);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'reviews_upload');
+        formData.append('cloud_name', 'dvm1xghh5');
+
+        const response = await fetch(
+          'https://api.cloudinary.com/v1_1/dvm1xghh5/image/upload',
+          {
+            method: 'POST',
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        return data.secure_url;
       });
 
       const urls = await Promise.all(uploadPromises);
@@ -275,7 +283,7 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Add Photos (Max 2MB/each)</label>
+                    <label className="block text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Add Photos (Max 5MB/each)</label>
                     <div className="flex flex-wrap gap-4 items-start">
                       <label className="flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed border-slate-100 rounded-2xl cursor-pointer hover:border-brand-accent hover:bg-brand-accent/5 transition-all group relative overflow-hidden shrink-0">
                         <div className="flex flex-col items-center justify-center">
@@ -360,7 +368,6 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
           </div>
         ) : (
           <div className="relative">
-            {/* Grid for desktop, Slider for mobile/homepage behavior */}
             <div className={`grid gap-6 ${
               hideForm ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
             }`}>
@@ -373,7 +380,6 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
               ))}
             </div>
 
-            {/* View More System */}
             {filteredReviews.length > displayReviews.length && (
               <div className="text-center mt-12">
                 <button 
@@ -388,7 +394,6 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
         )}
       </div>
 
-      {/* Persistence Modal */}
       <ReviewModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -397,7 +402,6 @@ export function Reviews({ hideForm = false, limit = 3, onViewMore, productId }: 
         title={productId ? `Reviews for ${MANGO_PRODUCTS.find(p => p.id === productId)?.name}` : "All Customer Stories"}
       />
 
-      {/* Unified Lightbox */}
       <AnimatePresence>
         {selectedReviewImage && (
           <Lightbox 
