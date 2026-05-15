@@ -36,11 +36,14 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.documentElement.style.overflow = 'unset';
     };
   }, [isMenuOpen]);
 
@@ -272,109 +275,115 @@ export function Header({ onNavigate, onProductClick }: HeaderProps) {
         onClick={() => setIsMenuOpen(false)}
       />
       
-      {/* Side Menu Content Panel */}
-      <div className={`absolute top-0 right-0 bottom-0 w-[60vw] max-w-[320px] bg-brand-primary border-l border-white/10 shadow-2xl transition-transform duration-500 ease-out flex flex-col pt-24 px-6 overflow-y-auto ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      {/* Side Menu Content Panel - Optimized for single screen fitment */}
+      <div className={`absolute top-0 right-0 bottom-0 w-[80vw] sm:w-[60vw] max-w-[320px] bg-brand-primary border-l border-white/10 shadow-2xl transition-transform duration-500 ease-out flex flex-col h-full overflow-hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         
-        <div className="absolute top-6 right-6">
+        {/* Fixed Header within Sidebar */}
+        <div className="flex items-center justify-between p-6 shrink-0">
+          <div className="pt-2">
+            <Logo onNavigate={(page) => { handleMobileNav(page as any); setIsMenuOpen(false); }} />
+          </div>
           <button onClick={() => setIsMenuOpen(false)} className="p-2 text-white/70 hover:text-white transition-colors bg-white/5 rounded-full hover:bg-white/10">
             <X size={20} />
           </button>
         </div>
-
-        <div className="mb-10 pl-1 text-left">
-          <Logo onNavigate={(page) => { handleMobileNav(page as any); setIsMenuOpen(false); }} />
-        </div>
         
-        <nav className="flex flex-col space-y-1">
-          {navItems.map((item) => {
-            let isActive = false;
-            if (item.target === 'home' && location.pathname === '/') isActive = true;
-            else if (item.target === 'shop' && location.pathname === '/shop') isActive = true;
-            else if (item.target === 'blog' && location.pathname.startsWith('/blog')) isActive = true;
-            else if (item.target === 'about' && location.pathname === '/about') isActive = true;
-            else if (item.target === 'contact' && location.pathname === '/contact') isActive = true;
-            else if (item.target === 'reviews' && location.pathname === '/reviews') isActive = true;
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col px-6">
+          <nav className="flex flex-col space-y-0.5 sm:space-y-1 mb-4">
+            {navItems.map((item) => {
+              let isActive = false;
+              if (item.target === 'home' && location.pathname === '/') isActive = true;
+              else if (item.target === 'shop' && location.pathname === '/shop') isActive = true;
+              else if (item.target === 'blog' && location.pathname.startsWith('/blog')) isActive = true;
+              else if (item.target === 'about' && location.pathname === '/about') isActive = true;
+              else if (item.target === 'contact' && location.pathname === '/contact') isActive = true;
+              else if (item.target === 'reviews' && location.pathname === '/reviews') isActive = true;
 
-            const isShop = item.target === 'shop';
+              const isShop = item.target === 'shop';
 
-            return (
-              <div key={item.label}>
-                <button
-                  onClick={() => isShop ? setIsShopExpanded(!isShopExpanded) : handleMobileNav(item.target)}
-                  className={`w-full py-4 px-3 text-left text-base font-bold rounded-xl transition-all flex items-center justify-between group ${isActive ? 'text-brand-accent bg-white/5' : 'text-white hover:text-brand-accent hover:bg-white/5'}`}
-                >
-                  <div className="flex items-center gap-2">
-                    <span>{item.label}</span>
-                    {item.target === 'reviews' && totalReviews > 0 && (
-                      <span className="flex items-center gap-0.5 px-2 py-0.5 bg-brand-accent text-mango-brand text-[10px] font-black rounded-lg">
-                        <Star size={10} fill="currentColor" />
-                        {averageRating}
-                      </span>
-                    )}
-                  </div>
-                  {isShop ? (
-                    <ChevronDown size={16} className={`text-brand-accent transition-transform duration-300 ${isShopExpanded ? 'rotate-180' : ''}`} />
-                  ) : (
-                    <ChevronDown size={16} className={`-rotate-90 transition-all ${isActive ? 'text-brand-accent opacity-100 translate-x-1' : 'text-brand-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-1'}`} />
-                  )}
-                </button>
-                
-                {isShop && (
-                  <div className={`overflow-hidden transition-all duration-300 ${isShopExpanded ? 'max-h-40 opacity-100 mt-1 mb-2' : 'max-h-0 opacity-0'}`}>
-                    <div className="flex flex-col pl-4 space-y-1">
-                      <button
-                        onClick={() => handleMobileNav('shop')}
-                        className="w-full py-3 px-3 text-left text-sm font-medium text-white/70 hover:text-brand-accent hover:bg-white/5 rounded-xl transition-all"
-                      >
-                        Catalog
-                      </button>
-                      <button
-                        onClick={() => handleMobileNav('bulk')}
-                        className="w-full py-3 px-3 text-left text-sm font-medium text-white/70 hover:text-brand-accent hover:bg-white/5 rounded-xl transition-all"
-                      >
-                        Buy in Bulk
-                      </button>
+              return (
+                <div key={item.label}>
+                  <button
+                    onClick={() => isShop ? setIsShopExpanded(!isShopExpanded) : handleMobileNav(item.target)}
+                    className={`w-full py-3 sm:py-4 px-3 text-left text-base font-bold rounded-xl transition-all flex items-center justify-between group ${isActive ? 'text-brand-accent bg-white/5' : 'text-white hover:text-brand-accent hover:bg-white/5'}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>{item.label}</span>
+                      {item.target === 'reviews' && totalReviews > 0 && (
+                        <span className="flex items-center gap-0.5 px-2 py-0.5 bg-brand-accent text-mango-brand text-[10px] font-black rounded-lg">
+                          <Star size={10} fill="currentColor" />
+                          {averageRating}
+                        </span>
+                      )}
                     </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
+                    {isShop ? (
+                      <ChevronDown size={16} className={`text-brand-accent transition-transform duration-300 ${isShopExpanded ? 'rotate-180' : ''}`} />
+                    ) : (
+                      <ChevronDown size={16} className={`-rotate-90 transition-all ${isActive ? 'text-brand-accent opacity-100 translate-x-1' : 'text-brand-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-1'}`} />
+                    )}
+                  </button>
+                  
+                  {isShop && (
+                    <div className={`overflow-hidden transition-all duration-300 ${isShopExpanded ? 'max-h-40 opacity-100 mt-1 mb-2' : 'max-h-0 opacity-0'}`}>
+                      <div className="flex flex-col pl-4 space-y-1">
+                        <button
+                          onClick={() => handleMobileNav('shop')}
+                          className="w-full py-2 sm:py-3 px-3 text-left text-sm font-medium text-white/70 hover:text-brand-accent hover:bg-white/5 rounded-xl transition-all"
+                        >
+                          Catalog
+                        </button>
+                        <button
+                          onClick={() => handleMobileNav('bulk')}
+                          className="w-full py-2 sm:py-3 px-3 text-left text-sm font-medium text-white/70 hover:text-brand-accent hover:bg-white/5 rounded-xl transition-all"
+                        >
+                          Buy in Bulk
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
 
-        {/* Social Media Section for Mobile Sidebar */}
-        <div className="flex items-center gap-4 px-4 py-8 mt-4 border-t border-white/5">
-          <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center bg-[#1877F2] text-white rounded-xl shadow-xl hover:scale-110 transition-all duration-200" title="Facebook">
-            <Facebook size={20} fill="white" />
-          </a>
-          <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center bg-gradient-to-tr from-[#FFB000] via-[#FF0069] to-[#8000FF] text-white rounded-xl shadow-xl hover:scale-110 transition-all duration-200" title="Instagram">
-            <Instagram size={20} />
-          </a>
-          <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center bg-black text-white rounded-xl shadow-xl hover:scale-110 transition-all duration-200" title="TikTok">
-            <Music2 size={20} />
-          </a>
-        </div>
-        
-        <div className="mt-auto py-8">
-          <div className="flex flex-col gap-4 px-3">
-             <a href={getCallLink()} className="flex items-center gap-3 text-white/80 hover:text-white transition-colors group">
-               <div className="w-10 h-10 rounded-full bg-white/10 border border-white/5 flex items-center justify-center transition-colors shadow-lg">
-                 <Phone size={16} className="text-brand-accent" />
-               </div>
-               <div className="flex flex-col">
-                 <span className="text-[10px] font-black uppercase tracking-widest text-white/60">Call Support</span>
-                 <span className="text-sm font-bold text-white tracking-tight">{SOCIAL_LINKS.phone}</span>
-               </div>
-             </a>
-             <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/80 hover:text-white transition-colors group">
-               <div className="w-10 h-10 rounded-full bg-[#25D366] border border-white/5 flex items-center justify-center transition-colors shadow-lg">
-                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-5.074 4.147-9.206 9.223-9.206 5.076 0 9.209 4.134 9.21 9.206 0 5.074-4.135 9.203-9.21 9.203z"/></svg>
-               </div>
-               <div className="flex flex-col">
-                 <span className="text-[10px] font-black uppercase tracking-widest text-white/60">WhatsApp Support</span>
-                 <span className="text-sm font-bold text-white tracking-tight">Send a Message</span>
-               </div>
-             </a>
+          {/* Spacer if needed to push content down or keep it compact */}
+          <div className="flex-1" />
+
+          {/* Social Media Section for Mobile Sidebar */}
+          <div className="flex items-center gap-3 py-4 sm:py-6 border-t border-white/5 shrink-0">
+            <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center bg-[#1877F2] text-white rounded-xl shadow-xl hover:scale-110 transition-all duration-200" title="Facebook">
+              <Facebook size={18} fill="white" />
+            </a>
+            <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center bg-gradient-to-tr from-[#FFB000] via-[#FF0069] to-[#8000FF] text-white rounded-xl shadow-xl hover:scale-110 transition-all duration-200" title="Instagram">
+              <Instagram size={18} />
+            </a>
+            <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center bg-black text-white rounded-xl shadow-xl hover:scale-110 transition-all duration-200" title="TikTok">
+              <Music2 size={18} />
+            </a>
+          </div>
+          
+          <div className="py-4 sm:py-6 border-t border-white/5 shrink-0">
+            <div className="flex flex-col gap-3">
+               <a href={getCallLink()} className="flex items-center gap-3 text-white/80 hover:text-white transition-colors group">
+                 <div className="w-9 h-9 rounded-full bg-white/10 border border-white/5 flex items-center justify-center transition-colors shadow-lg">
+                   <Phone size={14} className="text-brand-accent" />
+                 </div>
+                 <div className="flex flex-col">
+                   <span className="text-[9px] font-black uppercase tracking-widest text-white/60 leading-none mb-0.5">Call Support</span>
+                   <span className="text-[13px] font-bold text-white tracking-tight leading-none">{SOCIAL_LINKS.phone}</span>
+                 </div>
+               </a>
+               <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white/80 hover:text-white transition-colors group">
+                 <div className="w-9 h-9 rounded-full bg-[#25D366] border border-white/5 flex items-center justify-center transition-colors shadow-lg">
+                   <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-5.074 4.147-9.206 9.223-9.206 5.076 0 9.209 4.134 9.21 9.206 0 5.074-4.135 9.203-9.21 9.203z"/></svg>
+                 </div>
+                 <div className="flex flex-col">
+                   <span className="text-[9px] font-black uppercase tracking-widest text-white/60 leading-none mb-0.5">WhatsApp Support</span>
+                   <span className="text-[13px] font-bold text-white tracking-tight leading-none">Send a Message</span>
+                 </div>
+               </a>
+            </div>
           </div>
         </div>
       </div>
