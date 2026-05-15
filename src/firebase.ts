@@ -5,7 +5,7 @@ import { getStorage } from 'firebase/storage';
 import firebaseConfig from '../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
-// Using the custom database ID from config
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+export const db = getFirestore(app);
 export const auth = getAuth(app);
-export const storage = getStorage(app);
+export const storage = getStorage(app, "gs://review-system-184e0.firebasestorage.app");
