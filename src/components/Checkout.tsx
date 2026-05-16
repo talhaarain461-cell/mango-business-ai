@@ -134,12 +134,8 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     return methods;
   }, [isTandoAllahyar]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormState('sending');
-    
-    // Construct Items Text for WhatsApp
-    const itemsText = itemCalculations.map((item, idx) => 
+  const generateWhatsAppMessage = (data: any) => {
+     const itemsText = data.items.map((item: any, idx: number) =>  
       `*Item #${idx + 1}:*\n` +
       `• Variety: ${item.product.name}\n` +
       `• Box Size: ${item.size}\n` +
@@ -147,29 +143,44 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       `• Subtotal: Rs. ${item.subtotal}`
     ).join('\n\n');
 
-    // Construct WhatsApp Message with proper encoding
-    const messageText = `*NEW ORDER FROM AAM WALA*\n\n` +
-      `*CUSTOMER DETAILS:*\n` +
-      `• Name: ${formData.fullName}\n` +
-      `• Phone: ${formData.phone}\n` +
-      `• City: ${formData.city}\n` +
-      `• Address: ${formData.address}\n\n` +
+    return `*NEW ORDER FROM AAM WALA*\n\n` +
+       `*CUSTOMER DETAILS:*\n` +
+      `• Name: ${data.fullName}\n` +
+      `• Phone: ${data.phone}\n` +
+      `• City: ${data.city}\n` +
+      `• Address: ${data.address}\n\n` +
       `*ORDER DETAILS:*\n` +
       `${itemsText}\n\n` +
       `*PAYMENT INFO:*\n` +
-      `• Method: ${formData.paymentMethod}\n` +
-      `• Subtotal: Rs. ${totalSubtotal}\n` +
-      (isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${totalDiscount}\n` : '') +
-      `*• TOTAL PAYABLE: Rs. ${finalTotal}*\n\n` +
-      (formData.paymentMethod === 'Cash on Delivery' 
+      `• Method: ${data.paymentMethod}\n` +
+      `• Subtotal: Rs. ${data.totalSubtotal}\n` +
+      (data.isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${data.totalDiscount}\n` : '') +
+      `*• TOTAL PAYABLE: Rs. ${data.finalTotal}*\n\n` +
+      (data.paymentMethod === 'Cash on Delivery'
         ? `_I will pay for my order upon delivery._`
         : `_I am sending the payment screenshot following this message._`);
+        };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormState('sending');
+    
+    const currentOrderData = { 
+      ...formData, 
+      items: itemCalculations,
+      totalSubtotal,
+      totalDiscount,
+      finalTotal,
+      isTandoAllahyar
+       };
+
+    // Construct WhatsApp Message using the shared generator
+    const messageText = generateWhatsAppMessage(currentOrderData);
 
     try {
       const whatsappUrl = `${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(messageText)}`;
       
       // Save data before redirecting
-      const currentOrderData = { ...formData, items: itemCalculations };
       setSubmittedData(currentOrderData);
       localStorage.setItem('mango_last_order', JSON.stringify(currentOrderData));
       
@@ -260,14 +271,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
             <div className="flex flex-col gap-4 w-full">
               <a 
-                href={`${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(
-                  `*ORDER RE-CONFIRMATION (AAM WALA)*\n\n` +
-                  `*Name:* ${submittedData.fullName}\n` +
-                  `*Phone:* ${submittedData.phone}\n` +
-                  `*Summary:* ${submittedData.items?.map((i: any) => `${i.product.name} (${i.size}x${i.quantity})`).join(', ')}\n` +
-                  `*Total:* Rs. ${submittedData.items?.reduce((acc: number, curr: any) => acc + curr.total, 0)}\n\n` +
-                  `_I am confirming my order again as the previous redirect might have been interrupted._`
-                )}`}
+                 href={`${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(generateWhatsAppMessage(submittedData))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full px-10 py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-[#25D366] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 text-center no-underline"
