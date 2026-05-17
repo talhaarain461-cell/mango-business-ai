@@ -115,7 +115,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
         itemSubtotal = (typeof item.product.price10kg === 'number' ? item.product.price10kg : 0) * item.quantity;
       }
       
-      const itemDiscount = (isTandoAllahyar && item.size) ? (300 * item.quantity) : 0;
+      const itemDiscount = (isTandoAllahyar && item.size) ? (400 * item.quantity) : 0;
       return {
         ...item,
         subtotal: itemSubtotal,
