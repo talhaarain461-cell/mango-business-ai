@@ -223,7 +223,7 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           </p>
 
           {/* Box Options */}
-          <div className="hidden sm:block mb-4">
+          <div className="mb-4">
             <div className="flex items-center justify-between mb-2 text-slate-600">
               <p className="text-[9px] font-black uppercase tracking-widest flex items-center gap-2">
                 <Package size={13} className="text-brand-accent" /> AVAILABLE PACKS
