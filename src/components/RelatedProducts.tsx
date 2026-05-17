@@ -14,10 +14,23 @@ interface RelatedProductsProps {
 }
 
 export function RelatedProducts({ currentProductId, onBuyNow, onViewDetails }: RelatedProductsProps) {
-  // Filter out the current product and get up to 4 related products
-  const relatedProducts = MANGO_PRODUCTS
-    .filter(product => product.id !== currentProductId && !product.isFeatured);
-  if (relatedProducts.length === 0) return null;
+  // Filter logic:
+  // 1. Always include Sindhri Mango at the first position (unless we are on the Sindhri page)
+  // 2. Add other products to fill up to 4 items
+  
+  const sindhri = MANGO_PRODUCTS.find(p => p.id === 'sindhri');
+  const otherProducts = MANGO_PRODUCTS.filter(p => p.id !== currentProductId && p.id !== 'sindhri');
+  
+  const finalRelated = [];
+  
+  if (sindhri && currentProductId !== 'sindhri') {
+    finalRelated.push(sindhri);
+  }
+  
+  // Fill the rest with all other products
+  finalRelated.push(...otherProducts);
+
+  if (finalRelated.length === 0) return null;
 
   return (
     <section className="py-16 lg:py-24 bg-transparent border-t border-slate-200/50">
@@ -37,7 +50,7 @@ export function RelatedProducts({ currentProductId, onBuyNow, onViewDetails }: R
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8">
-          {relatedProducts.map((product, index) => (
+          {finalRelated.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}

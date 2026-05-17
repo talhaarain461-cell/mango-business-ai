@@ -108,8 +108,11 @@ export function SearchResults({ onNavigate, onBuyNow, onViewDetails }: SearchRes
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Price</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xl font-black text-brand-accent">{typeof product.pricePerKg === 'number' ? `Rs. ${product.pricePerKg}` : product.pricePerKg}</span>
-                        {typeof product.pricePerKg === 'number' && <span className="text-sm font-bold text-slate-500">/ KG</span>}
+                        <span className="text-xl font-black text-brand-accent">
+                          {typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
+                            ? `Rs ${product.price5kg} - ${product.price10kg}` 
+                            : "N/A"}
+                        </span>
                       </div>
                     </div>
                   </div>

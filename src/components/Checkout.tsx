@@ -108,10 +108,13 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
   const itemCalculations = useMemo(() => {
     return localOrderItems.map(item => {
-      const weightNum = parseInt(item.size) || 0;
-      const itemSubtotal = typeof item.product.pricePerKg === 'number'
-        ? (weightNum * (item.product.pricePerKg as number)) * item.quantity
-        : 0;
+      let itemSubtotal = 0;
+      if (item.size === '5kg') {
+        itemSubtotal = (typeof item.product.price5kg === 'number' ? item.product.price5kg : 0) * item.quantity;
+      } else if (item.size === '10kg') {
+        itemSubtotal = (typeof item.product.price10kg === 'number' ? item.product.price10kg : 0) * item.quantity;
+      }
+      
       const itemDiscount = (isTandoAllahyar && item.size) ? (300 * item.quantity) : 0;
       return {
         ...item,

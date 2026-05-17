@@ -8,7 +8,8 @@ export type BoxSize = '5kg' | '10kg' | 'Bulk';
 export interface MangoProduct {
   id: string;
   name: string;
-  pricePerKg: number | string;
+  price5kg: number | string;
+  price10kg: number | string;
   availableSizes: BoxSize[];
   type: string;
   description: string;
@@ -36,7 +37,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'almas',
     name: 'Almas Mango',
-    pricePerKg: 350,
+    price5kg: 1500,
+    price10kg: 2800,
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Prince of Balance',
     description: 'Almas Mango is a Pakistani mango variety that arrives in May during the early mango season. It is known for its mild sweetness, refreshing taste, and soft juicy texture, making it a good choice for fresh eating.',
@@ -53,12 +55,13 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     },
     status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhULI5pKc3gOTA75pftmazdlTJI1IVzr9lHgN3azqI7O0QKdGqULL9N5yWRXAGQcTmbW-fza24ctJvclhSSin4Yu9aHdSa7f78_80QR_trviN1PE1upErTEULatuo1JwWg_lwfPdoTYJmPdARtnlKdVcyMDgy39Up_P4ybsvj7iu5q0KapryQqa-2Os2qA/s800-rw/file_00000000086071faa4a27c1f5ff0f263.png',
-    lastRateUpdate: "2025-05-14T10:00:00"
+    lastRateUpdate: "2026-05-14T10:00:00"
   },
   {
     id: 'saroli',
     name: 'Saroli Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Season Opener Mango',
     description: 'Saroli is one of the earliest mango varieties of the season, known for its soft texture and naturally sweet taste. It offers a refreshing and delightful start to the mango season.',
@@ -79,7 +82,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'desi-achar',
     name: 'Desi Achari Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Raw Pickle Mango (Achar Special)',
     description: 'Desi Achari Mango – Best for Pickle (Achar). Desi Achari Mango is a traditional raw mango mainly used for making pickles. It has a sour taste and strong flavor, perfect for homemade achar.',
@@ -101,7 +105,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'sindhri',
     name: 'Sindhri Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',
@@ -127,7 +132,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'chaunsa',
     name: 'Chaunsa Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'King of Sweetness',
     description: 'Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
@@ -148,7 +154,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'anwar-ratol',
     name: 'Anwar Ratol Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Mini Powerhouse Mango',
     description: 'Anwar Ratol Mango – Mini Powerhouse of Sweetness. Anwar Ratol is a small, yellow mango known for its extreme sweetness and smooth, fiberless pulp. It is one of the most loved mango varieties in Pakistan.',
@@ -173,7 +180,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'dasheri',
     name: 'Dasheri Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Classic Summer Mango',
     description: 'Dasheri Mango – Sweet & Juicy Summer Delight. Dasheri Mango is a popular summer fruit known for its sweet taste, smooth texture, and juicy pulp. It is a refreshing and healthy mango variety loved by everyone.',
@@ -199,7 +207,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'langra',
     name: 'Langra Mango',
-    pricePerKg: 'N/A',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
     availableSizes: ['5kg', '10kg', 'Bulk'],
     type: 'Aromatic Juicy Mango',
     description: 'Langra Mango – Juicy & Aromatic Summer Delight. Langra Mango is a highly juicy, sweet, and aromatic mango known for its rich flavor and smooth texture. It is loved worldwide for its natural taste and freshness.',

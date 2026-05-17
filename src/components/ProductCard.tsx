@@ -193,9 +193,9 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           <div className="flex flex-col sm:flex-row justify-between items-start mb-1 gap-1.5">
             <h3 className="text-sm sm:text-lg font-black text-infinite-night uppercase tracking-tight leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
             <div className="bg-brand-accent/10 text-brand-accent px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black whitespace-nowrap border border-brand-accent/20">
-              {typeof product.pricePerKg === 'number' ? 
-                (isExpired ? "Updating Rate" : `Rs ${product.pricePerKg}/kg`) : 
-                product.pricePerKg
+               {typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? 
+                (isExpired ? "Updating Rate" : `Rs ${product.price5kg} - ${product.price10kg}`) : 
+                "N/A"
               }
             </div>
           </div>
@@ -226,13 +226,13 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
           <div className="hidden sm:block mb-4">
             <div className="flex items-center justify-between mb-2 text-slate-600">
               <p className="text-[9px] font-black uppercase tracking-widest flex items-center gap-2">
-                <Package size={13} className="text-brand-accent" /> Available Packs
+                <Package size={13} className="text-brand-accent" /> AVAILABLE PACKS
               </p>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {product.availableSizes.map(size => (
                 <span key={size} className="px-2.5 py-1 bg-slate-50 text-slate-600 rounded-lg text-[9px] font-black uppercase border border-slate-200">
-                  {size}
+                  {size === 'Bulk' ? 'BULK' : size.toUpperCase()}
                 </span>
               ))}
             </div>

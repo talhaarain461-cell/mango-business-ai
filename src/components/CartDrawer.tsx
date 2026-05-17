@@ -24,9 +24,9 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
 
   const calculateItemTotal = (item: CartItem) => {
     if (item.size === 'Bulk') return 0;
-    if (typeof item.product.pricePerKg !== 'number') return 'N/A';
-    const weight = parseInt(item.size.replace('kg', ''));
-    return (item.product.pricePerKg as number) * weight * item.quantity;
+     const price = item.size === '5kg' ? item.product.price5kg : item.product.price10kg;
+    if (typeof price !== 'number') return 'N/A';
+    return price * item.quantity;
   };
 
   const cartTotal = cart.reduce((total, item) => {
@@ -116,7 +116,11 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                             </button>
                           </div>
                           <div className="flex items-center gap-2 mt-1">
-                            <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">{typeof item.product.pricePerKg === 'number' ? `Rs ${item.product.pricePerKg} / KG` : item.product.pricePerKg}</p>
+                            <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">
+                              {typeof item.product.price5kg === 'number' && typeof item.product.price10kg === 'number' 
+                                ? `Rs ${item.product.price5kg} - ${item.product.price10kg}` 
+                                : "N/A"}
+                            </p>
                             <span className="h-1 w-1 bg-slate-300 rounded-full" />
                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{item.size} Pack</p>
                           </div>
