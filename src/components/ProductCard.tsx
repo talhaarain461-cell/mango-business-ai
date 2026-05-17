@@ -29,7 +29,7 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
   const { average, count } = getProductRating(product.id);
 
   const isInStock = product.status === 'In Stock';
-  const hasMarketRate = !!product.lastRateUpdate;
+  const hasMarketRate = !!product.lastRateUpdate && typeof product.price5kg === 'number' && typeof product.price10kg === 'number';
 
   useEffect(() => {
     if (!hasMarketRate) {
