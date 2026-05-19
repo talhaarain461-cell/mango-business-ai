@@ -53,7 +53,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Nutritional Value': 'Rich in vitamins and minerals',
       'Best Use': 'Fresh eating'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhULI5pKc3gOTA75pftmazdlTJI1IVzr9lHgN3azqI7O0QKdGqULL9N5yWRXAGQcTmbW-fza24ctJvclhSSin4Yu9aHdSa7f78_80QR_trviN1PE1upErTEULatuo1JwWg_lwfPdoTYJmPdARtnlKdVcyMDgy39Up_P4ybsvj7iu5q0KapryQqa-2Os2qA/s800-rw/file_00000000086071faa4a27c1f5ff0f263.png',
     lastRateUpdate: "2026-05-17T10:00:00"
   },
@@ -75,7 +75,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Nutritional Value': 'Rich in vitamins and minerals',
       'Best Use': 'Fresh eating'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQkH1-rI21NXeFwY93pQOwto7sXh2kDiAq4MB6NsM6llgcicewJFtQ_dsLtWLvhOOnm7_v5DdehGvRHfNV-qgxepEFmvJWqkZc-er2wrP16jW763JtY0ZcN5ptNGb1jnFMeUr-fdlYlWD1K8SwX4d06P4TYK1FRSPRhiSSM8auxZdAS4OqLdScXnm2u8A/s800-rw/Saroli%20mango-main.png',
     lastRateUpdate: "2025-05-14T10:00:00"
   },
@@ -95,7 +95,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Season': 'May to July',
       'Main Use': 'Pickle (Achar)'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-T6eEfXGg295uibQEQwe3pAFALJbrVng_vWPRuR24nj-KGNSxeROseBhxarWajdMjckjEvOPavJix6Wk48p2LMCY-J3OXteY_68zs6ms7aUdZH96O-Y4P9EgnyLjXd50hmxBJUEsFYVl83zq5nPlrqK2FqBwFI1cbmdWWEbdLURep_8g2mdWWBmCnBwQ/s800-rw/Desi%20mango-2.png',
     gallery: [
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhq4Lfe39N-cbRvtWiRNyUQsHHjo7RrvYr6vU8mric691uxuf19ZTKAgMK81OBjVsVF69zzeBxuMRUNx0EE2I-tm0IbH-I-XwR_JG0CIQ3RpCWFldU4X3WV6P3H24ipRXc3e_WmKZIc5s4I817fhKiApWN5ZIJI_PVVvsvhIjmGxde4C-AgOlAJ5FZUwAk/s800-rw/Desi%20achari%20mango-main.png',
@@ -147,7 +147,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Export': 'Europe, USA, Middle East',
       'Use': 'Fresh eating & export quality mango'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s800-rw/Chaunsa%20mango-main.png',
     lastRateUpdate: "2025-05-14T10:00:00"
   },
@@ -169,7 +169,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Origin': 'Punjab & Sindh (Pakistan)',
       'Use': 'Fresh eating premium mango'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOqy37aB5kFHk2Gdz3ksqFpjm9Jv-He4NoQGmVNhvYF43grLGIs9yhMFDx8xv5aHbKzMyet2M8mQ4hQE82bsPLom-rDjlAGwf_stKKnvd_INJF3Hm6lbznoXJVjmJ53Sifzuu8-OUkxYH-KWPmK890We-o0o49qoBuw64nRmZ4Sps_fgAa8kuZBJG8ud0/s800-rw/Anwar%20ratol-main.png',
     lastRateUpdate: "2025-05-14T10:00:00",
     gallery: [
@@ -196,9 +196,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Benefits': 'Supports digestion and immunity',
       'Use': 'Fresh eating summer fruit'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2Q0QsmytjCz69nqBhOODrcgOfnRLZbHu6WqPepVzZCIlooiohFAqV9oEJU8W8hAdXgmTyuoVRK9EdvQt0ievaPSfuyxoArOzBXwKnaHgmuzDzOY9gpIyUX-Wm-Sf1G7yj_8cNTXLad3MZldeuFz6Bta-LZHL3czUS1J_DiFPIz5eUZFVaFCEWOayz2pw/s800-rw/Dasheri%20mango-1.png',
-    lastRateUpdate: "2025-05-14T10:00:00",
     gallery: [
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3_iVcoT6ROPVEio0O3Oj9fVIEuwpRDBtv1exDYf1wAVgFvrlYGbVlBdvlsUWvaU9ttSHBRapXHXgpGrnyZsL8CVk5PEHwkf5QKbPtfhbdVyx1SzRFDX7aWfXMliZLamHoKUoicZewcU86PZ_Vv3GRfHWNmSmUsEIawnmU0c3Z73sX1nG7lgqhDAdtNJA/s800-rw/Dasheri%20mango-main.png',
       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglTSO0evg1vvhXcxbzEXB4V2MT-nrKc05Ix-XQsIi6nTjjoQqg1rHI3R0OFVIkdxflAMIPqy50zvyuqhrZ1Cj4UtGWuLvPhH-CieE6Nmcw5wFLxxhdPl-if5Pek08ha_T_b-Q_0CyfKGkVeokZd0orKuZgXQkrWBHVj0J2PigRHFitT11MotTR77mdRE4/s800-rw/Dasheri%20image-2.png'
@@ -223,7 +222,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Use': 'Fresh eating & export quality mango',
       'Special Feature': 'Less intense sweetness, international demand'
     },
-    status: 'Out of Stock',
+    status: 'Coming Soon',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png',
     lastRateUpdate: "2025-05-14T10:00:00"
   }
