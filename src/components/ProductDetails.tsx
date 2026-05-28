@@ -11,7 +11,6 @@ import { useCart } from '../CartContext';
 import { useReviews } from '../ReviewContext';
 import { getWhatsAppLink } from '../lib/whatsapp';
 import { Reviews } from './Reviews';
-import { MarketRateTimer } from './MarketRateTimer';
 import { WhatsAppIcon } from './icons/WhatsAppIcon';
 
 interface ProductDetailsProps {
@@ -31,7 +30,6 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
   
   const [selectedSize, setSelectedSize] = useState<BoxSize | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [isExpired, setIsExpired] = useState(false);
   
   const isInStock = product.status === 'In Stock';
   const displayStatus = product.status;
@@ -334,12 +332,6 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                       <span className="text-[9px] font-black text-brand-accent uppercase tracking-widest px-2 py-1 bg-brand-accent/5 rounded-md border border-brand-accent/10">Order Live Summary</span>
                     </div>
                   </div>
-                  
-                  {/* Market Rate Timer */}
-                  <MarketRateTimer 
-                    product={product} 
-                    onExpiryStateChange={setIsExpired}
-                  />
                 </div>
               )}
             </div>
@@ -348,7 +340,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             <div className="grid sm:grid-cols-2 gap-4">
               <button 
                 onClick={handleBuyNow}
-                disabled={!isInStock || isExpired}
+                disabled={!isInStock}
                 className={`py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed ${
                   isInStock ? 'hover:bg-mango-brand/90 disabled:opacity-50 disabled:grayscale' : 'opacity-80'
                 }`}
@@ -358,7 +350,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
               </button>
               <button 
                 onClick={handleAddToCart}
-                disabled={!isInStock || isExpired}
+                disabled={!isInStock}
                 className={`py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed ${
                   isInStock ? 'hover:bg-[#D9A300] disabled:opacity-50 disabled:grayscale' : 'opacity-80'
                 }`}
