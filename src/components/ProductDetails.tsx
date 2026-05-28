@@ -361,7 +361,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             </div>
             {!selectedSize && (
               <p className="mt-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 animate-pulse">
-                Please select a pack size to proceed
+                 Please click Quick Purchase to proceed.
               </p>
             )}
           </motion.div>
