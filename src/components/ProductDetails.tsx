@@ -60,19 +60,39 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
 
   const totalPrice = useMemo(() => {
     if (!selectedSize || selectedSize === 'Bulk') return 0;
+    
+    if (product.id === 'sindhri') {
+      const sizeLower = selectedSize.toLowerCase();
+      if (sizeLower.includes('5kg')) return 1400 * quantity;
+      if (sizeLower.includes('8kg')) return 2200 * quantity;
+      if (sizeLower.includes('10kg')) return 2600 * quantity;
+    }
+
     const price = selectedSize === '5kg' ? product.price5kg : product.price10kg;
     if (typeof price !== 'number') return 'N/A';
     return price * quantity;
-  }, [selectedSize, quantity, product.price5kg, product.price10kg]);
+  }, [selectedSize, quantity, product.id, product.price5kg, product.price10kg]);
+
+  const mapSizeForOrder = (size: string) => {
+    if (product.id === 'sindhri') {
+      const sizeLower = size.toLowerCase();
+      if (sizeLower.includes('5kg')) return '5kg wood petti';
+      if (sizeLower.includes('8kg')) return '8kg wood petti';
+      if (sizeLower.includes('10kg')) return '10kg wood petti';
+    }
+    return size;
+  };
 
   const handleAddToCart = () => {
     const sizeToUse = selectedSize || product.availableSizes[0];
-    addToCart(product, sizeToUse, quantity);
+    const finalSize = mapSizeForOrder(sizeToUse);
+    addToCart(product, finalSize as BoxSize, quantity);
   };
 
   const handleBuyNow = () => {
     const sizeToUse = selectedSize || product.availableSizes[0];
-    onBuyNow(product, sizeToUse, quantity);
+    const finalSize = mapSizeForOrder(sizeToUse);
+    onBuyNow(product, finalSize as BoxSize, quantity);
   };
 
   const getProductAltText = (product: MangoProduct) => {
@@ -361,7 +381,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
             </div>
             {!selectedSize && (
               <p className="mt-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 animate-pulse">
-                 Please click Quick Purchase to proceed.
+                Please click Quick Purchase to proceed.
               </p>
             )}
           </motion.div>

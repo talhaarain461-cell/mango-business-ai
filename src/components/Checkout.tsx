@@ -109,10 +109,21 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   const itemCalculations = useMemo(() => {
     return localOrderItems.map(item => {
       let itemSubtotal = 0;
-      if (item.size === '5kg') {
-        itemSubtotal = (typeof item.product.price5kg === 'number' ? item.product.price5kg : 0) * item.quantity;
-      } else if (item.size === '10kg') {
-        itemSubtotal = (typeof item.product.price10kg === 'number' ? item.product.price10kg : 0) * item.quantity;
+      const sizeLower = (item.size || '').toLowerCase();
+      if (item.product.id === 'sindhri') {
+        if (sizeLower.includes('5kg')) {
+          itemSubtotal = 1400 * item.quantity;
+        } else if (sizeLower.includes('8kg')) {
+          itemSubtotal = 2200 * item.quantity;
+        } else if (sizeLower.includes('10kg')) {
+          itemSubtotal = 2600 * item.quantity;
+        }
+      } else {
+        if (sizeLower === '5kg') {
+          itemSubtotal = (typeof item.product.price5kg === 'number' ? item.product.price5kg : 0) * item.quantity;
+        } else if (sizeLower === '10kg') {
+          itemSubtotal = (typeof item.product.price10kg === 'number' ? item.product.price10kg : 0) * item.quantity;
+        }
       }
       
       const itemDiscount = (isTandoAllahyar && item.size) ? (400 * item.quantity) : 0;
@@ -138,7 +149,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   }, [isTandoAllahyar]);
 
   const generateWhatsAppMessage = (data: any) => {
-     const itemsText = data.items.map((item: any, idx: number) =>  
+    const itemsText = data.items.map((item: any, idx: number) => 
       `*Item #${idx + 1}:*\n` +
       `• Variety: ${item.product.name}\n` +
       `• Box Size: ${item.size}\n` +
@@ -147,7 +158,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     ).join('\n\n');
 
     return `*NEW ORDER FROM AAM WALA*\n\n` +
-       `*CUSTOMER DETAILS:*\n` +
+      `*CUSTOMER DETAILS:*\n` +
       `• Name: ${data.fullName}\n` +
       `• Phone: ${data.phone}\n` +
       `• City: ${data.city}\n` +
@@ -159,10 +170,10 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       `• Subtotal: Rs. ${data.totalSubtotal}\n` +
       (data.isTandoAllahyar ? `• Discount (Tando Allahyar): -Rs. ${data.totalDiscount}\n` : '') +
       `*• TOTAL PAYABLE: Rs. ${data.finalTotal}*\n\n` +
-      (data.paymentMethod === 'Cash on Delivery'
+      (data.paymentMethod === 'Cash on Delivery' 
         ? `_I will pay for my order upon delivery._`
         : `_I am sending the payment screenshot following this message._`);
-        };
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,7 +186,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       totalDiscount,
       finalTotal,
       isTandoAllahyar
-       };
+    };
 
     // Construct WhatsApp Message using the shared generator
     const messageText = generateWhatsAppMessage(currentOrderData);
@@ -274,7 +285,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
             <div className="flex flex-col gap-4 w-full">
               <a 
-                 href={`${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(generateWhatsAppMessage(submittedData))}`}
+                href={`${SOCIAL_LINKS.whatsapp}&text=${encodeURIComponent(generateWhatsAppMessage(submittedData))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full px-10 py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-[#25D366] transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 text-center no-underline"
@@ -432,8 +443,18 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                               className="w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:border-brand-accent transition-all cursor-pointer text-slate-900"
                             >
                               <option value="">Select weight</option>
-                              <option value="5kg">5 KG Box</option>
-                              <option value="10kg">10 KG Box</option>
+                              {item.product.id === 'sindhri' ? (
+                                <>
+                                  <option value="5kg wood petti">5 KG Box</option>
+                                  <option value="8kg wood petti">8 KG Box</option>
+                                  <option value="10kg wood petti">10 KG Wood Petti</option>
+                                </>
+                              ) : (
+                                <>
+                                  <option value="5kg">5 KG Box</option>
+                                  <option value="10kg">10 KG Box</option>
+                                </>
+                              )}
                             </select>
                           </div>
 
@@ -640,7 +661,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                            Free Delivery All Over Pakistan 🎉
                         </p>
                      </div>
-                     
+
                      <div className="flex justify-between items-center pt-4 border-t border-slate-200">
                         <p className="text-sm font-black uppercase tracking-widest text-slate-600">Final Total</p>
                         <p className="text-2xl font-black text-brand-accent">Rs. {finalTotal}</p>

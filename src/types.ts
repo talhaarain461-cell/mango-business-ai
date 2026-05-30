@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type BoxSize = '5kg' | '10kg' | 'Bulk';
+export type BoxSize = '5kg' | '10kg' | 'Bulk' | '5kg Box' | '8kg Box' | '10kg WP' | '5kg wood petti' | '8kg wood petti' | '10kg wood petti' | string;
 
 export interface MangoProduct {
   id: string;
   name: string;
   price5kg: number | string;
   price10kg: number | string;
+  price8kg?: number | string;
   availableSizes: BoxSize[];
   type: string;
   description: string;
@@ -105,9 +106,10 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'sindhri',
     name: 'Sindhri Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    availableSizes: ['5kg', '10kg', 'Bulk'],
+    price5kg: 1400,
+    price10kg: 2600,
+    price8kg: 2200,
+    availableSizes: ['5kg Box', '8kg Box', '10kg WP', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',
     longDescription: 'Sindhri Mango is one of the most famous mango varieties in Pakistan. It is mainly grown in Sindh, especially in Tando Allahyar and Sindhri areas, which are known for producing high-quality export mangoes.\n\nThis mango is large, oval-shaped, very sweet, and highly fragrant. Because of its rich taste and strong aroma, it is considered one of the best mangoes in the country and is loved all over Pakistan as well as exported internationally.\n\nSindhri Mango is a highly demanded variety and is often called the "Queen of Mangoes" due to its premium taste and quality.\n\nIt is available in the mango season, mainly from May to June.\n\nIt is:\n\nSweet and juicy\nHighly aromatic\nExport quality fruit\nOne of the most popular mangoes in Pakistan',
@@ -120,7 +122,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Origin': 'Tando Allahyar, Sindh (Pakistan)',
       'Use': 'Fresh eating & export quality'
     },
-    status: 'Coming Soon',
+    status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVJ_7SXyQeA3EVHwciuZtLK9vdtKVMUtE82SaOwjpZibVdu7BJA4opnTmYGrQ4AXLvO_efGp8ZxqHFKodM1akPf669S0FIl9eVv3sFFghtEJP6Ro5N5gaMZip9q2INwHcy47vWBP6t5YVpwMTvhYI85KMUeL6cQK8snn43-P0HWC-sZHs3BVJ0X_EI2WM/s800-rw/sindhri-main.png',
     isFeatured: true,
     featuredBadge: 'Most Popular',

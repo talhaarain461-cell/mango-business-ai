@@ -18,13 +18,21 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-   }, [isCartOpen]);
+  }, [isCartOpen]);
 
   const onClose = () => setIsCartOpen(false);
 
   const calculateItemTotal = (item: CartItem) => {
     if (item.size === 'Bulk') return 0;
-     const price = item.size === '5kg' ? item.product.price5kg : item.product.price10kg;
+    
+    if (item.product.id === 'sindhri') {
+      const sizeLower = (item.size || '').toLowerCase();
+      if (sizeLower.includes('5kg')) return 1400 * item.quantity;
+      if (sizeLower.includes('8kg')) return 2200 * item.quantity;
+      if (sizeLower.includes('10kg')) return 2600 * item.quantity;
+    }
+    
+    const price = item.size === '5kg' ? item.product.price5kg : item.product.price10kg;
     if (typeof price !== 'number') return 'N/A';
     return price * item.quantity;
   };
@@ -111,7 +119,7 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                         <div>
                           <div className="flex justify-between items-start">
                             <h3 className="text-slate-900 font-black uppercase text-sm">{item.product.name}</h3>
-                                                       <button onClick={() => removeFromCart(item.product.id)} className="text-slate-500 hover:text-red-400 transition-colors">
+                            <button onClick={() => removeFromCart(item.product.id)} className="text-slate-500 hover:text-red-400 transition-colors">
                               <Trash2 size={16} />
                             </button>
                           </div>
@@ -122,7 +130,9 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                                 : "N/A"}
                             </p>
                             <span className="h-1 w-1 bg-slate-300 rounded-full" />
-                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{item.size} Pack</p>
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                              {item.size.toLowerCase().includes('wood petti') ? item.size : `${item.size} Pack`}
+                            </p>
                           </div>
                         </div>
                         <div className="flex items-center justify-between mt-3">
