@@ -86,6 +86,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     phone: userData.phone || '',
     address: userData.address || '',
     city: userData.city || '',
+    province: '',
     paymentMethod: 'Bank Transfer' as string
   });
 
@@ -161,8 +162,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       `*CUSTOMER DETAILS:*\n` +
       `• Name: ${data.fullName}\n` +
       `• Phone: ${data.phone}\n` +
+      `• Address: ${data.address}\n` +
       `• City: ${data.city}\n` +
-      `• Address: ${data.address}\n\n` +
+      `• Province: ${data.province || 'N/A'}\n\n` +
       `*ORDER DETAILS:*\n` +
       `${itemsText}\n\n` +
       `*PAYMENT INFO:*\n` +
@@ -254,6 +256,16 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
               <div className="flex justify-between items-center text-sm">
                 <span className="font-bold text-slate-500">Customer:</span>
                 <span className="font-black text-slate-900">{submittedData.fullName}</span>
+              </div>
+              {submittedData.province && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-bold text-slate-500">Province:</span>
+                  <span className="font-black text-slate-900">{submittedData.province}</span>
+                </div>
+              )}
+              <div className="flex justify-between items-center text-sm">
+                <span className="font-bold text-slate-500">City:</span>
+                <span className="font-black text-slate-900">{submittedData.city}</span>
               </div>
               
               <div className="space-y-3 pt-2">
@@ -397,6 +409,23 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                     Write <span className="text-blue-600 font-black">Tando Allahyar</span> like this, get Cash on Delivery and a special discount.<br />
                     This special offer is only for customers in <span className="text-blue-600 font-black">Tando Allahyar</span> City.
                   </p>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">Province</label>
+                  <select 
+                    required
+                    value={formData.province}
+                    onChange={e => setFormData({...formData, province: e.target.value})}
+                    className="w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:ring-4 focus:ring-brand-accent/10 focus:border-brand-accent transition-all cursor-pointer text-slate-900 focus:border-brand-accent"
+                  >
+                    <option value="">Select Province</option>
+                    <option value="SINDH">SINDH</option>
+                    <option value="PUNJAB">PUNJAB</option>
+                    <option value="BALOCHISTAN">BALOCHISTAN</option>
+                    <option value="KPK">KPK</option>
+                    <option value="ICT ISLAMABAD">ICT ISLAMABAD</option>
+                  </select>
                 </div>
               </div>
 
