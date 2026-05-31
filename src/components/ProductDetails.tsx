@@ -63,9 +63,9 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     
     if (product.id === 'sindhri') {
       const sizeLower = selectedSize.toLowerCase();
-      if (sizeLower.includes('5kg')) return 1400 * quantity;
-      if (sizeLower.includes('8kg')) return 2200 * quantity;
-      if (sizeLower.includes('10kg')) return 2600 * quantity;
+      if (sizeLower.includes('5kg')) return 1800 * quantity;
+      if (sizeLower.includes('8kg')) return 2700 * quantity;
+      if (sizeLower.includes('10kg')) return 2700 * quantity;
     }
 
     const price = selectedSize === '5kg' ? product.price5kg : product.price10kg;

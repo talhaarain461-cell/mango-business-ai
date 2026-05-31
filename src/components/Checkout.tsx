@@ -113,11 +113,11 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       const sizeLower = (item.size || '').toLowerCase();
       if (item.product.id === 'sindhri') {
         if (sizeLower.includes('5kg')) {
-          itemSubtotal = 1400 * item.quantity;
+          itemSubtotal = 1800 * item.quantity;
         } else if (sizeLower.includes('8kg')) {
-          itemSubtotal = 2200 * item.quantity;
+          itemSubtotal = 2700 * item.quantity;
         } else if (sizeLower.includes('10kg')) {
-          itemSubtotal = 2600 * item.quantity;
+          itemSubtotal = 2700 * item.quantity;
         }
       } else {
         if (sizeLower === '5kg') {

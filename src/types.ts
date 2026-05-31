@@ -106,9 +106,9 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'sindhri',
     name: 'Sindhri Mango',
-    price5kg: 1400,
-    price10kg: 2600,
-    price8kg: 2200,
+    price5kg: 1800,
+    price10kg: 2700,
+    price8kg: 2700,
     availableSizes: ['5kg Box', '8kg Box', '10kg WP', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',

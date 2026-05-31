@@ -27,9 +27,9 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
     
     if (item.product.id === 'sindhri') {
       const sizeLower = (item.size || '').toLowerCase();
-      if (sizeLower.includes('5kg')) return 1400 * item.quantity;
-      if (sizeLower.includes('8kg')) return 2200 * item.quantity;
-      if (sizeLower.includes('10kg')) return 2600 * item.quantity;
+      if (sizeLower.includes('5kg')) return 1800 * item.quantity;
+      if (sizeLower.includes('8kg')) return 2700 * item.quantity;
+      if (sizeLower.includes('10kg')) return 2700 * item.quantity;
     }
     
     const price = item.size === '5kg' ? item.product.price5kg : item.product.price10kg;
