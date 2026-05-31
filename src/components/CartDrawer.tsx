@@ -119,7 +119,7 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                         <div>
                           <div className="flex justify-between items-start">
                             <h3 className="text-slate-900 font-black uppercase text-sm">{item.product.name}</h3>
-                            <button onClick={() => removeFromCart(item.product.id)} className="text-slate-500 hover:text-red-400 transition-colors">
+                            <button onClick={() => removeFromCart(item.product.id, item.size)} className="text-slate-500 hover:text-red-400 transition-colors">
                               <Trash2 size={16} />
                             </button>
                           </div>

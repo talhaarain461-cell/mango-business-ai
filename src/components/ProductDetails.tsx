@@ -73,26 +73,14 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     return price * quantity;
   }, [selectedSize, quantity, product.id, product.price5kg, product.price10kg]);
 
-  const mapSizeForOrder = (size: string) => {
-    if (product.id === 'sindhri') {
-      const sizeLower = size.toLowerCase();
-      if (sizeLower.includes('5kg')) return '5kg wood petti';
-      if (sizeLower.includes('8kg')) return '8kg wood petti';
-      if (sizeLower.includes('10kg')) return '10kg wood petti';
-    }
-    return size;
-  };
-
   const handleAddToCart = () => {
     const sizeToUse = selectedSize || product.availableSizes[0];
-    const finalSize = mapSizeForOrder(sizeToUse);
-    addToCart(product, finalSize as BoxSize, quantity);
+    addToCart(product, sizeToUse as BoxSize, quantity);
   };
 
   const handleBuyNow = () => {
     const sizeToUse = selectedSize || product.availableSizes[0];
-    const finalSize = mapSizeForOrder(sizeToUse);
-    onBuyNow(product, finalSize as BoxSize, quantity);
+    onBuyNow(product, sizeToUse as BoxSize, quantity);
   };
 
   const getProductAltText = (product: MangoProduct) => {

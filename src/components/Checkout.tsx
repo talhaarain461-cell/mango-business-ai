@@ -42,19 +42,29 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   const [formState, setFormState] = useState<'idle' | 'sending' | 'success'>('idle');
   const [submittedData, setSubmittedData] = useState<any>(null);
 
+  // Helper to map product page selection sizes to checkout size formats
+  const getCheckoutSize = (productId: string, size: BoxSize): BoxSize => {
+    if (productId !== 'sindhri') return size;
+    const s = (size || '').toLowerCase();
+    if (s.includes('5')) return '5kg Box';
+    if (s.includes('8')) return '8kg Box';
+    if (s.includes('10')) return '10kg wood petti';
+    return size;
+  };
+
   const [localOrderItems, setLocalOrderItems] = useState(() => {
     if (preSelectedProduct) {
       const product = MANGO_PRODUCTS.find(p => p.id === preSelectedProduct) || MANGO_PRODUCTS[0];
       return [{
         product,
-        size: '' as BoxSize, // Start empty as per request
-        quantity: 1
+        size: (product.id === 'sindhri' && preSelectedSize ? getCheckoutSize(product.id, preSelectedSize) : preSelectedSize || '') as BoxSize,
+        quantity: preSelectedQuantity || 1
       }];
     }
     return cart.map(item => ({
       ...item,
-      size: '' as BoxSize, // Force manual selection
-      quantity: 1 // Start with 1, as 0 doesn't make sense for quantity
+      size: (item.product.id === 'sindhri' ? getCheckoutSize(item.product.id, item.size) : item.size) as BoxSize,
+      quantity: item.quantity
     }));
   });
 
@@ -62,19 +72,24 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   React.useEffect(() => {
     if (!preSelectedProduct) {
       setLocalOrderItems(prev => {
-        // Store existing selections in a map for easy lookup
+        // Store existing selections in a map for easy lookup (unique by both product.id and size)
         const selectionsMap = new Map();
         prev.forEach(item => {
-          selectionsMap.set(item.product.id, { size: item.size, quantity: item.quantity });
+          selectionsMap.set(`${item.product.id}-${item.size}`, { size: item.size, quantity: item.quantity });
         });
 
         // Return new cart items with preserved selections where available
         return cart.map(cartItem => {
-          const selection = selectionsMap.get(cartItem.product.id);
+          const expectedSize = cartItem.product.id === 'sindhri' 
+            ? getCheckoutSize(cartItem.product.id, cartItem.size) 
+            : cartItem.size;
+          
+          const key = `${cartItem.product.id}-${expectedSize}`;
+          const selection = selectionsMap.get(key);
           return {
             ...cartItem,
-            size: selection ? selection.size : ('' as BoxSize),
-            quantity: selection ? selection.quantity : 1
+            size: selection ? selection.size : expectedSize,
+            quantity: selection ? selection.quantity : cartItem.quantity
           };
         });
       });
@@ -149,11 +164,20 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     return methods;
   }, [isTandoAllahyar]);
 
+  const mapWhatsAppSize = (productId: string, size: string): string => {
+    if (productId !== 'sindhri') return size;
+    const s = (size || '').toLowerCase();
+    if (s.includes('5')) return '5kg wood petti';
+    if (s.includes('8')) return '8kg wood petti';
+    if (s.includes('10')) return '10kg wood petti';
+    return size;
+  };
+
   const generateWhatsAppMessage = (data: any) => {
     const itemsText = data.items.map((item: any, idx: number) => 
       `*Item #${idx + 1}:*\n` +
       `• Variety: ${item.product.name}\n` +
-      `• Box Size: ${item.size}\n` +
+      `• Box Size: ${mapWhatsAppSize(item.product.id, item.size)}\n` +
       `• Quantity: ${item.quantity} Box(es)\n` +
       `• Subtotal: Rs. ${item.subtotal}`
     ).join('\n\n');
@@ -474,9 +498,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                               <option value="">Select weight</option>
                               {item.product.id === 'sindhri' ? (
                                 <>
-                                  <option value="5kg wood petti">5 KG Box</option>
-                                  <option value="8kg wood petti">8 KG Box</option>
-                                  <option value="10kg wood petti">10 KG Wood Petti</option>
+                                  <option value="5kg Box">5kg box</option>
+                                  <option value="8kg Box">8kg box</option>
+                                  <option value="10kg wood petti">10 kg wood petti</option>
                                 </>
                               ) : (
                                 <>
