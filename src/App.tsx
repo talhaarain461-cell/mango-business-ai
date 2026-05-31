@@ -70,7 +70,7 @@ export default function App() {
   const [selectedSize, setSelectedSize] = React.useState<BoxSize | undefined>(undefined);
   const [selectedQuantity, setSelectedQuantity] = React.useState<number>(1);
   const [activeCategory, setActiveCategory] = React.useState<'mangoes' | 'bulk'>('mangoes');
-
+  
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -109,6 +109,15 @@ export default function App() {
       setTimeout(preloadImages, 1000);
     }
   }, []);
+
+  // Clear single-product buy now selection when navigating to other pages
+  React.useEffect(() => {
+    if (location.pathname !== '/checkout') {
+      setSelectedProduct(null);
+      setSelectedSize(undefined);
+      setSelectedQuantity(1);
+    }
+  }, [location.pathname]);
 
   const handleNavigate = (target: string) => {
     // Always close drawer upon navigation to any destination
@@ -209,10 +218,10 @@ export default function App() {
               
               <Route path="/shop" element={
                 <div className="pt-28 sm:pt-32 lg:pt-36 flex flex-col">
-                <FeaturedProduct 
-                  onBuyNow={handleBuyNow} 
-                  onViewDetails={handleViewDetails} 
-                />
+                  <FeaturedProduct 
+                    onBuyNow={handleBuyNow} 
+                    onViewDetails={handleViewDetails} 
+                  />
                   <ProductGrid 
                     onBuyNow={handleBuyNow} 
                     onViewDetails={handleViewDetails} 

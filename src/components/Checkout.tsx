@@ -666,7 +666,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
           {/* Sidebar: Final Total */}
           <div className="lg:col-span-1">
-            <div className="sticky top-40 space-y-6">
+            <div className="lg:sticky lg:top-40 space-y-6">
               <div className="bg-white rounded-[32px] p-8 text-slate-900 shadow-md relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-mango-brand/5 rounded-full blur-[60px] -mr-16 -mt-16" />
                 
