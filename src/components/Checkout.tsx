@@ -142,7 +142,9 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
         }
       }
       
-      const itemDiscount = (isTandoAllahyar && item.size) ? (400 * item.quantity) : 0;
+      const is5kg = sizeLower.includes('5kg') || sizeLower === '5kg';
+      const discountRate = is5kg ? 400 : 500;
+      const itemDiscount = (isTandoAllahyar && item.size) ? (discountRate * item.quantity) : 0;
       return {
         ...item,
         subtotal: itemSubtotal,
