@@ -217,9 +217,15 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                 </p>
                 <div className="h-1 w-1 bg-slate-300 rounded-full" />
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                  {typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
-                    ? `Rs ${product.price5kg} - ${product.price10kg}` 
-                    : "N/A"}
+                  {product.id === 'sindhri' ? (
+                    typeof product.price8kg === 'number' && typeof product.price10kg === 'number' 
+                      ? `Rs ${product.price8kg} - ${product.price10kg}` 
+                      : "N/A"
+                  ) : (
+                    typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
+                      ? `Rs ${product.price5kg} - ${product.price10kg}` 
+                      : "N/A"
+                  )}
                 </p>
               </div>
               
