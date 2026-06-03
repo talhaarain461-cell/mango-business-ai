@@ -46,9 +46,8 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   const getCheckoutSize = (productId: string, size: BoxSize): BoxSize => {
     if (productId !== 'sindhri') return size;
     const s = (size || '').toLowerCase();
-    if (s.includes('5')) return '5kg Box';
     if (s.includes('8')) return '8kg Box';
-    if (s.includes('10')) return '10kg wood petti';
+    if (s.includes('10')) return '10kg Box';
     return size;
   };
 
@@ -127,10 +126,8 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       let itemSubtotal = 0;
       const sizeLower = (item.size || '').toLowerCase();
       if (item.product.id === 'sindhri') {
-        if (sizeLower.includes('5kg')) {
-          itemSubtotal = 1800 * item.quantity;
-        } else if (sizeLower.includes('8kg')) {
-          itemSubtotal = 2700 * item.quantity;
+        if (sizeLower.includes('8kg')) {
+          itemSubtotal = 2500 * item.quantity;
         } else if (sizeLower.includes('10kg')) {
           itemSubtotal = 2700 * item.quantity;
         }
@@ -169,9 +166,8 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   const mapWhatsAppSize = (productId: string, size: string): string => {
     if (productId !== 'sindhri') return size;
     const s = (size || '').toLowerCase();
-    if (s.includes('5')) return '5kg wood petti';
-    if (s.includes('8')) return '8kg wood petti';
-    if (s.includes('10')) return '10kg wood petti';
+    if (s.includes('8')) return '8kg Box';
+    if (s.includes('10')) return '10kg Box';
     return size;
   };
 
@@ -500,9 +496,8 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                               <option value="">Select weight</option>
                               {item.product.id === 'sindhri' ? (
                                 <>
-                                  <option value="5kg Box">5kg box</option>
                                   <option value="8kg Box">8kg box</option>
-                                  <option value="10kg wood petti">10 kg wood petti</option>
+                                  <option value="10kg Box">10kg box</option>
                                 </>
                               ) : (
                                 <>

@@ -27,8 +27,7 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
     
     if (item.product.id === 'sindhri') {
       const sizeLower = (item.size || '').toLowerCase();
-      if (sizeLower.includes('5kg')) return 1800 * item.quantity;
-      if (sizeLower.includes('8kg')) return 2700 * item.quantity;
+      if (sizeLower.includes('8kg')) return 2500 * item.quantity;
       if (sizeLower.includes('10kg')) return 2700 * item.quantity;
     }
     
@@ -125,13 +124,19 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                           </div>
                           <div className="flex items-center gap-2 mt-1">
                             <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">
-                              {typeof item.product.price5kg === 'number' && typeof item.product.price10kg === 'number' 
-                                ? `Rs ${item.product.price5kg} - ${item.product.price10kg}` 
-                                : "N/A"}
+                              {item.product.id === 'sindhri' ? (
+                                typeof item.product.price8kg === 'number' && typeof item.product.price10kg === 'number' 
+                                  ? `Rs ${item.product.price8kg} - ${item.product.price10kg}` 
+                                  : "N/A"
+                              ) : (
+                                typeof item.product.price5kg === 'number' && typeof item.product.price10kg === 'number' 
+                                  ? `Rs ${item.product.price5kg} - ${item.product.price10kg}` 
+                                  : "N/A"
+                              )}
                             </p>
                             <span className="h-1 w-1 bg-slate-300 rounded-full" />
                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                              {item.size.toLowerCase().includes('wood petti') ? item.size : `${item.size} Pack`}
+                              {item.size.toLowerCase().includes('wood petti') || item.size.toLowerCase().includes('box') || item.size.toLowerCase().includes('bulk') ? item.size : `${item.size} Pack`}
                             </p>
                           </div>
                         </div>

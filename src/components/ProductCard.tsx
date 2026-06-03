@@ -106,10 +106,15 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
               ? 'bg-transparent text-slate-950 border-transparent shadow-none font-black text-xs sm:text-sm px-0 py-0'
               : 'bg-brand-accent/10 text-brand-accent border-brand-accent/20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black border'
           } whitespace-nowrap`}>
-            {typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? 
-              `Rs ${product.price5kg} - ${product.price10kg}` : 
-              "N/A"
-            }
+            {product.id === 'sindhri' ? (
+              typeof product.price8kg === 'number' && typeof product.price10kg === 'number' ? 
+                `Rs ${product.price8kg} - ${product.price10kg}` : 
+                "N/A"
+            ) : (
+              typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? 
+                `Rs ${product.price5kg} - ${product.price10kg}` : 
+                "N/A"
+            )}
           </div>
         </div>
 

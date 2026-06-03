@@ -63,15 +63,14 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     
     if (product.id === 'sindhri') {
       const sizeLower = selectedSize.toLowerCase();
-      if (sizeLower.includes('5kg')) return 1800 * quantity;
-      if (sizeLower.includes('8kg')) return 2700 * quantity;
+      if (sizeLower.includes('8kg')) return 2500 * quantity;
       if (sizeLower.includes('10kg')) return 2700 * quantity;
     }
 
     const price = selectedSize === '5kg' ? product.price5kg : product.price10kg;
     if (typeof price !== 'number') return 'N/A';
     return price * quantity;
-  }, [selectedSize, quantity, product.id, product.price5kg, product.price10kg]);
+  }, [selectedSize, quantity, product.id, product.price5kg, product.price10kg, product.price8kg]);
 
   const handleAddToCart = () => {
     const sizeToUse = selectedSize || product.availableSizes[0];

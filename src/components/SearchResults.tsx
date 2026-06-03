@@ -109,9 +109,15 @@ export function SearchResults({ onNavigate, onBuyNow, onViewDetails }: SearchRes
                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Price</span>
                       <div className="flex items-center gap-2">
                         <span className={`text-xl font-black ${product.id === 'sindhri' ? 'text-slate-950 font-black' : 'text-brand-accent'}`}>
-                          {typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
-                            ? `Rs ${product.price5kg} - ${product.price10kg}` 
-                            : "N/A"}
+                          {product.id === 'sindhri' ? (
+                            typeof product.price8kg === 'number' && typeof product.price10kg === 'number' 
+                              ? `Rs ${product.price8kg} - ${product.price10kg}` 
+                              : "N/A"
+                          ) : (
+                            typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
+                              ? `Rs ${product.price5kg} - ${product.price10kg}` 
+                              : "N/A"
+                          )}
                         </span>
                       </div>
                     </div>

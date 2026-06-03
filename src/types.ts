@@ -106,10 +106,10 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'sindhri',
     name: 'Sindhri Mango',
-    price5kg: 1800,
+    price5kg: 'N/A',
     price10kg: 2700,
-    price8kg: 2700,
-    availableSizes: ['5kg Box', '8kg Box', '10kg WP', 'Bulk'],
+    price8kg: 2500,
+    availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',
     longDescription: 'Sindhri Mango is one of the most famous mango varieties in Pakistan. It is mainly grown in Sindh, especially in Tando Allahyar and Sindhri areas, which are known for producing high-quality export mangoes.\n\nThis mango is large, oval-shaped, very sweet, and highly fragrant. Because of its rich taste and strong aroma, it is considered one of the best mangoes in the country and is loved all over Pakistan as well as exported internationally.\n\nSindhri Mango is a highly demanded variety and is often called the "Queen of Mangoes" due to its premium taste and quality.\n\nIt is available in the mango season, mainly from May to June.\n\nIt is:\n\nSweet and juicy\nHighly aromatic\nExport quality fruit\nOne of the most popular mangoes in Pakistan',
