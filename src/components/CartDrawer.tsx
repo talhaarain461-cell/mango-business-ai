@@ -25,7 +25,7 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
   const calculateItemTotal = (item: CartItem) => {
     if (item.size === 'Bulk') return 0;
     
-    if (item.product.id === 'sindhri') {
+    if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
       const sizeLower = (item.size || '').toLowerCase();
       if (sizeLower.includes('8kg')) return 2500 * item.quantity;
       if (sizeLower.includes('10kg')) return 2700 * item.quantity;
@@ -124,7 +124,7 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                           </div>
                           <div className="flex items-center gap-2 mt-1">
                             <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">
-                              {item.product.id === 'sindhri' ? (
+                              {['sindhri', 'langra', 'chaunsa'].includes(item.product.id) ? (
                                 typeof item.product.price8kg === 'number' && typeof item.product.price10kg === 'number' 
                                   ? `Rs ${item.product.price8kg} - ${item.product.price10kg}` 
                                   : "N/A"

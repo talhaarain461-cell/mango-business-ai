@@ -44,7 +44,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
   // Helper to map product page selection sizes to checkout size formats
   const getCheckoutSize = (productId: string, size: BoxSize): BoxSize => {
-    if (productId !== 'sindhri') return size;
+    if (!['sindhri', 'langra', 'chaunsa'].includes(productId)) return size;
     const s = (size || '').toLowerCase();
     if (s.includes('8')) return '8kg Box';
     if (s.includes('10')) return '10kg Box';
@@ -56,13 +56,13 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       const product = MANGO_PRODUCTS.find(p => p.id === preSelectedProduct) || MANGO_PRODUCTS[0];
       return [{
         product,
-        size: (product.id === 'sindhri' && preSelectedSize ? getCheckoutSize(product.id, preSelectedSize) : preSelectedSize || '') as BoxSize,
+        size: (['sindhri', 'langra', 'chaunsa'].includes(product.id) && preSelectedSize ? getCheckoutSize(product.id, preSelectedSize) : preSelectedSize || '') as BoxSize,
         quantity: preSelectedQuantity || 1
       }];
     }
     return cart.map(item => ({
       ...item,
-      size: (item.product.id === 'sindhri' ? getCheckoutSize(item.product.id, item.size) : item.size) as BoxSize,
+      size: (['sindhri', 'langra', 'chaunsa'].includes(item.product.id) ? getCheckoutSize(item.product.id, item.size) : item.size) as BoxSize,
       quantity: item.quantity
     }));
   });
@@ -79,7 +79,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
 
         // Return new cart items with preserved selections where available
         return cart.map(cartItem => {
-          const expectedSize = cartItem.product.id === 'sindhri' 
+          const expectedSize = ['sindhri', 'langra', 'chaunsa'].includes(cartItem.product.id) 
             ? getCheckoutSize(cartItem.product.id, cartItem.size) 
             : cartItem.size;
           
@@ -125,7 +125,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
     return localOrderItems.map(item => {
       let itemSubtotal = 0;
       const sizeLower = (item.size || '').toLowerCase();
-      if (item.product.id === 'sindhri') {
+      if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
         if (sizeLower.includes('8kg')) {
           itemSubtotal = 2500 * item.quantity;
         } else if (sizeLower.includes('10kg')) {
@@ -164,7 +164,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
   }, [isTandoAllahyar]);
 
   const mapWhatsAppSize = (productId: string, size: string): string => {
-    if (productId !== 'sindhri') return size;
+    if (!['sindhri', 'langra', 'chaunsa'].includes(productId)) return size;
     const s = (size || '').toLowerCase();
     if (s.includes('8')) return '8kg Box';
     if (s.includes('10')) return '10kg Box';
@@ -494,7 +494,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                               className="w-full p-4 bg-white shadow-sm border border-slate-200 rounded-2xl font-bold text-sm outline-none focus:border-brand-accent transition-all cursor-pointer text-slate-900"
                             >
                               <option value="">Select weight</option>
-                              {item.product.id === 'sindhri' ? (
+                              {['sindhri', 'langra', 'chaunsa'].includes(item.product.id) ? (
                                 <>
                                   <option value="8kg Box">8kg box</option>
                                   <option value="10kg Box">10kg box</option>

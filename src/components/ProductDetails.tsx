@@ -61,7 +61,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
   const totalPrice = useMemo(() => {
     if (!selectedSize || selectedSize === 'Bulk') return 0;
     
-    if (product.id === 'sindhri') {
+    if (['sindhri', 'langra', 'chaunsa'].includes(product.id)) {
       const sizeLower = selectedSize.toLowerCase();
       if (sizeLower.includes('8kg')) return 2500 * quantity;
       if (sizeLower.includes('10kg')) return 2700 * quantity;
@@ -217,7 +217,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                 </p>
                 <div className="h-1 w-1 bg-slate-300 rounded-full" />
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                  {product.id === 'sindhri' ? (
+                  {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
                     typeof product.price8kg === 'number' && typeof product.price10kg === 'number' 
                       ? `Rs ${product.price8kg} - ${product.price10kg}` 
                       : "N/A"
