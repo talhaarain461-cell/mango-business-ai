@@ -5,10 +5,12 @@
 
 import { motion } from 'motion/react';
 import { ShieldCheck, Truck, Star, Heart } from 'lucide-react';
+import { FarmPartner } from './FarmPartner';
 
 export function About() {
   return (
-    <section className="py-16 lg:py-24 bg-white border-t border-slate-100">
+    <>
+      <section className="py-16 lg:py-24 bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Story, Mission, Vision Grid */}
@@ -126,5 +128,7 @@ export function About() {
         </div>
       </div>
     </section>
+    <FarmPartner />
+    </>
   );
 }
