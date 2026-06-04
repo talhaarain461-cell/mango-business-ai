@@ -14,20 +14,28 @@ interface RelatedProductsProps {
 }
 
 export function RelatedProducts({ currentProductId, onBuyNow, onViewDetails }: RelatedProductsProps) {
-  // Filter logic:
-  // 1. Always include Sindhri Mango at the first position (unless we are on the Sindhri page)
-  // 2. Add other products to fill up to 4 items
+  // Preferred order:
+  // 1. Sindhri (1st)
+  // 2. Langra (2nd)
+  // 3. Chaunsa (3rd)
   
-  const sindhri = MANGO_PRODUCTS.find(p => p.id === 'sindhri');
-  const otherProducts = MANGO_PRODUCTS.filter(p => p.id !== currentProductId && p.id !== 'sindhri');
+  const preferredIds = ['sindhri', 'langra', 'chaunsa'];
+  const finalRelated: MangoProduct[] = [];
   
-  const finalRelated = [];
+  // Add preferred products first if they exist and are not the current product
+  preferredIds.forEach(id => {
+    if (id !== currentProductId) {
+      const prod = MANGO_PRODUCTS.find(p => p.id === id);
+      if (prod) {
+        finalRelated.push(prod);
+      }
+    }
+  });
   
-  if (sindhri && currentProductId !== 'sindhri') {
-    finalRelated.push(sindhri);
-  }
-  
-  // Fill the rest with all other products
+  // Fill the rest with all other products of the store
+  const otherProducts = MANGO_PRODUCTS.filter(
+    p => !preferredIds.includes(p.id) && p.id !== currentProductId
+  );
   finalRelated.push(...otherProducts);
 
   if (finalRelated.length === 0) return null;
