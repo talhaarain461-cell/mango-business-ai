@@ -63,8 +63,8 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     
     if (['sindhri', 'langra', 'chaunsa'].includes(product.id)) {
       const sizeLower = selectedSize.toLowerCase();
-      if (sizeLower.includes('8kg')) return 2500 * quantity;
-      if (sizeLower.includes('10kg')) return 2700 * quantity;
+      if (sizeLower.includes('8kg')) return 2600 * quantity;
+      if (sizeLower.includes('10kg')) return 2800 * quantity;
     }
 
     const price = selectedSize === '5kg' ? product.price5kg : product.price10kg;

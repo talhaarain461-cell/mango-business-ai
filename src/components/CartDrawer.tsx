@@ -27,8 +27,8 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
     
     if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
       const sizeLower = (item.size || '').toLowerCase();
-      if (sizeLower.includes('8kg')) return 2500 * item.quantity;
-      if (sizeLower.includes('10kg')) return 2700 * item.quantity;
+      if (sizeLower.includes('8kg')) return 2600 * item.quantity;
+      if (sizeLower.includes('10kg')) return 2800 * item.quantity;
     }
     
     const price = item.size === '5kg' ? item.product.price5kg : item.product.price10kg;
