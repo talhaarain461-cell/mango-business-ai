@@ -28,11 +28,11 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
     if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
       const sizeLower = (item.size || '').toLowerCase();
       if (sizeLower.includes('8kg')) {
-        const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : 2700;
+        const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : 2450;
         return p * item.quantity;
       }
       if (sizeLower.includes('10kg')) {
-        const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 3050;
+        const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 2650;
         return p * item.quantity;
       }
     }
