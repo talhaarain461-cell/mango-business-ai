@@ -68,7 +68,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
         return p * quantity;
       }
       if (sizeLower.includes('10kg')) {
-        const p = typeof product.price10kg === 'number' ? product.price10kg : 3000;
+        const p = typeof product.price10kg === 'number' ? product.price10kg : 3050;
         return p * quantity;
       }
     }

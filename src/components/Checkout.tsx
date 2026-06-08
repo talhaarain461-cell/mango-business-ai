@@ -130,7 +130,7 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
           const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : 2700;
           itemSubtotal = p * item.quantity;
         } else if (sizeLower.includes('10kg')) {
-          const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 3000;
+          const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 3050;
           itemSubtotal = p * item.quantity;
         }
       } else {

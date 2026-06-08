@@ -32,7 +32,7 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
         return p * item.quantity;
       }
       if (sizeLower.includes('10kg')) {
-        const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 3000;
+        const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 3050;
         return p * item.quantity;
       }
     }

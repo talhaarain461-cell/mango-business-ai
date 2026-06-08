@@ -86,7 +86,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'sindhri',
     name: 'Sindhri Mango',
     price5kg: 'N/A',
-    price10kg: 3000,
+    price10kg: 3050,
     price8kg: 2700,
     availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
     type: 'Queen of Mangoes',
