@@ -64,11 +64,11 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     if (['sindhri', 'langra', 'chaunsa'].includes(product.id)) {
       const sizeLower = selectedSize.toLowerCase();
       if (sizeLower.includes('8kg')) {
-        const p = typeof product.price8kg === 'number' ? product.price8kg : 2800;
+        const p = typeof product.price8kg === 'number' ? product.price8kg : 2700;
         return p * quantity;
       }
       if (sizeLower.includes('10kg')) {
-        const p = typeof product.price10kg === 'number' ? product.price10kg : 3100;
+        const p = typeof product.price10kg === 'number' ? product.price10kg : 3000;
         return p * quantity;
       }
     }
