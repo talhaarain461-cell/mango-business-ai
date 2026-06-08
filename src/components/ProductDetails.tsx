@@ -3,240 +3,578 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type BoxSize = '5kg' | '10kg' | 'Bulk' | '5kg Box' | '8kg Box' | '10kg WP' | '5kg wood petti' | '8kg wood petti' | '10kg wood petti' | string;
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { MangoProduct, BoxSize } from '../types';
+import { ShoppingBag, CreditCard, ArrowLeft, Package, Star, ShieldCheck, Truck, ChevronDown, CheckCircle2, MessageSquare, Plus, Minus, X, Phone, Upload, Camera, AlertTriangle } from 'lucide-react';
+import { useCart } from '../CartContext';
+import { useReviews } from '../ReviewContext';
+import { getWhatsAppLink } from '../lib/whatsapp';
+import { Reviews } from './Reviews';
+import { WhatsAppIcon } from './icons/WhatsAppIcon';
 
-export interface MangoProduct {
-  id: string;
-  name: string;
-  price5kg: number | string;
-  price10kg: number | string;
-  price8kg?: number | string;
-  availableSizes: BoxSize[];
-  type: string;
-  description: string;
-  longDescription?: string;
-  specifications?: Record<string, string>;
-  status: 'Available' | 'In Stock' | 'Out of Stock' | 'Pre-Order Opening Soon' | 'Coming Soon';
-  image: string;
-  gallery?: string[];
-  lastRateUpdate?: string;
-  isFeatured?: boolean;
-  featuredBadge?: string;
+interface ProductDetailsProps {
+  product: MangoProduct;
+  onBack: () => void;
+  onBuyNow: (product: MangoProduct, size?: BoxSize, quantity?: number) => void;
 }
 
-export interface OrderFormData {
-  fullName: string;
-  phone: string;
-  address: string;
-  city: string;
-  productId: string;
-  boxWeight: string;
-  paymentMethod: 'Bank Transfer' | 'JazzCash' | 'Easypaisa';
+const TABS = ['Description', 'Additional Information', 'Payment & Delivery', 'Reviews'] as const;
+type TabType = typeof TABS[number];
+
+export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProps) {
+  const { addToCart } = useCart();
+  const { getReviewsByProduct } = useReviews();
+  const [activeImage, setActiveImage] = useState(product.image);
+  const [activeTab, setActiveTab] = useState<TabType>('Description');
+  
+  const [selectedSize, setSelectedSize] = useState<BoxSize | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  
+  const isInStock = product.status === 'In Stock';
+  const displayStatus = product.status;
+
+  const productReviews = getReviewsByProduct(product.id);
+  const averageRating = productReviews.length ? (productReviews.reduce((acc, rev) => acc + rev.rating, 0) / productReviews.length).toFixed(1) : '0.0';
+  const totalReviews = productReviews.length;
+  
+  const ratingCounts = [5, 4, 3, 2, 1].map(stars => ({
+    stars,
+    count: productReviews.filter(r => r.rating === stars).length,
+    percentage: productReviews.length ? (productReviews.filter(r => r.rating === stars).length / productReviews.length) * 100 : 0
+  }));
+  
+  const todayDateStr = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    setActiveImage(product.image);
+    handleReset();
+  }, [product.id, product.image]);
+
+  const allImages = [product.image, ...(product.gallery || [])];
+
+  const handleReset = () => {
+    setSelectedSize(null);
+    setQuantity(1);
+  };
+
+  const totalPrice = useMemo(() => {
+    if (!selectedSize || selectedSize === 'Bulk') return 0;
+    
+    if (['sindhri', 'langra', 'chaunsa'].includes(product.id)) {
+      const sizeLower = selectedSize.toLowerCase();
+      if (sizeLower.includes('8kg')) {
+        const p = typeof product.price8kg === 'number' ? product.price8kg : 2450;
+        return p * quantity;
+      }
+      if (sizeLower.includes('10kg')) {
+        const p = typeof product.price10kg === 'number' ? product.price10kg : 2650;
+        return p * quantity;
+      }
+    }
+
+    const price = selectedSize === '5kg' ? product.price5kg : product.price10kg;
+    if (typeof price !== 'number') return 'N/A';
+    return price * quantity;
+  }, [selectedSize, quantity, product.id, product.price5kg, product.price10kg, product.price8kg]);
+
+  const handleAddToCart = () => {
+    const sizeToUse = selectedSize || product.availableSizes[0];
+    addToCart(product, sizeToUse as BoxSize, quantity);
+  };
+
+  const handleBuyNow = () => {
+    const sizeToUse = selectedSize || product.availableSizes[0];
+    onBuyNow(product, sizeToUse as BoxSize, quantity);
+  };
+
+  const getProductAltText = (product: MangoProduct) => {
+    switch(product.id) {
+      case 'chaunsa': return "Chaunsa mango online order Pakistan fresh delivery";
+      case 'langra': return "Langra mango buy online Pakistan Tando Allahyar";
+      case 'dasheri': return "Dasehri mango fresh Pakistan home delivery";
+      case 'sindhri': return "Sindhri mango online Pakistan premium quality";
+      case 'desi-achar': return "Desi Achari mango Pakistan fresh order";
+      case 'saroli': return "Saroli mango buy online Pakistan";
+      case 'anwar-ratol': return "Anwar Ratol mango premium Pakistan delivery";
+      default: return "Fresh premium mangoes online order Pakistan Tando Allahyar";
+    }
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="bg-white pt-8 pb-24 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Back Button */}
+        <button 
+          onClick={onBack}
+          className="mb-6 flex items-center gap-2 text-slate-600 hover:text-brand-accent transition-colors font-black text-[10px] uppercase tracking-widest group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <span>Back to Catalog</span>
+        </button>
+
+        {/* TOP SECTION */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-16 sm:mb-24">
+          {/* Image Section */}
+          <div className="flex flex-col gap-4">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="relative rounded-[32px] sm:rounded-[40px] overflow-hidden border border-slate-200 shadow-md aspect-square lg:aspect-auto lg:h-[600px] bg-white"
+            >
+              <AnimatePresence mode="wait">
+                {activeImage ? (
+                  <motion.img 
+                    key={activeImage}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    src={activeImage} 
+                    alt={getProductAltText(product)} 
+                    width={800}
+                    height={800}
+                    className="w-full h-full object-cover drop-shadow-xl p-2 sm:p-4 rounded-[28px] sm:rounded-[36px]"
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 font-bold uppercase tracking-widest text-sm">No Image</div>
+                )}
+              </AnimatePresence>
+              <div className={`absolute top-6 left-6 sm:top-8 sm:left-8 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-widest shadow-sm z-10 ${
+                displayStatus === 'Coming Soon' ? 'bg-indigo-600 text-white' : 
+                displayStatus === 'Out of Stock' ? 'bg-red-600 text-white' :
+                'bg-brand-accent text-slate-900'
+              }`}>
+                {displayStatus}
+              </div>
+            </motion.div>
+            
+            {/* Gallery Thumbnails */}
+            {allImages.length > 1 && (
+              <div className="grid grid-cols-4 gap-3 sm:gap-4">
+                {allImages.filter(img => img && img.trim() !== '').map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(img)}
+                    className={`relative rounded-xl sm:rounded-2xl overflow-hidden aspect-square border-2 transition-all p-1 ${
+                      activeImage === img ? 'border-brand-accent shadow-sm scale-95' : 'border-transparent hover:border-slate-300'
+                    }`}
+                  >
+                    <img 
+                      src={img} 
+                      alt={`${product.name} view ${index + 1}`} 
+                      width={150}
+                      height={150}
+                      className="w-full h-full object-cover bg-white rounded-lg sm:rounded-xl"
+                      loading="lazy"
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Info Section */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex flex-col h-full"
+          >
+            <div className="mb-6">
+              <div className="flex items-center gap-2 text-brand-accent mb-2">
+                <Star size={14} fill="currentColor" />
+                <span className="text-[9px] font-black uppercase tracking-[0.3em]">Premium Selection</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-infinite-night uppercase tracking-tight mb-3 leading-tight">
+                {product.name}
+              </h1>
+              
+              {/* Product Rating */}
+              <div className="flex items-center gap-3 mb-4 bg-white/50 px-4 py-2 rounded-full border border-slate-100 w-fit">
+                <div className="flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star 
+                      key={star} 
+                      size={14} 
+                      fill={star <= Math.round(Number(averageRating)) ? 'currentColor' : 'none'} 
+                      className={star <= Math.round(Number(averageRating)) ? 'text-brand-accent' : 'text-slate-200'} 
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-black text-slate-900">{averageRating}</span>
+                  <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">({totalReviews} Reviews)</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 mb-6">
+                <p className="text-[10px] font-black text-brand-accent uppercase tracking-widest">
+                  {product.type}
+                </p>
+                <div className="h-1 w-1 bg-slate-300 rounded-full" />
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                  {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
+                    typeof product.price8kg === 'number' && typeof product.price10kg === 'number' 
+                      ? `Rs ${product.price8kg} - ${product.price10kg}` 
+                      : "N/A"
+                  ) : (
+                    typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
+                      ? `Rs ${product.price5kg} - ${product.price10kg}` 
+                      : "N/A"
+                  )}
+                </p>
+              </div>
+              
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-medium mb-8">
+                {product.description}
+              </p>
+            </div>
+
+            {/* NEW ORDERING SYSTEM */}
+            <div className="bg-white border-2 border-slate-100 rounded-[32px] p-6 sm:p-8 mb-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)] relative overflow-hidden">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-[10px] sm:text-[11px] font-black text-slate-900 uppercase tracking-[0.2em] flex items-center gap-2">
+                  <Package size={16} className="text-brand-accent" /> Select Your Pack
+                </h3>
+                {(selectedSize || quantity > 1) && (
+                  <button 
+                    onClick={handleReset}
+                    className="p-2 hover:bg-red-50 text-red-500 rounded-full transition-colors group"
+                    title="Reset Selection"
+                  >
+                    <X size={16} className="group-hover:rotate-90 transition-transform duration-300" />
+                  </button>
+                )}
+              </div>
+
+              {/* Pack Sizes */}
+              <div className="grid grid-cols-4 gap-2 mb-6">
+                {product.availableSizes.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`relative py-2.5 px-2 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-1 group ${
+                      selectedSize === size 
+                        ? 'border-brand-accent bg-brand-accent/5 shadow-[0_4px_20px_rgba(251,191,36,0.1)]' 
+                        : 'border-slate-100 bg-slate-50 hover:border-slate-200 text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    <span className={`text-[11px] sm:text-xs font-black uppercase tracking-tight ${selectedSize === size ? 'text-brand-accent' : 'text-slate-900'}`}>
+                      {size}
+                    </span>
+                    <span className="text-[8px] font-bold uppercase tracking-tight opacity-50">
+                      {size === 'Bulk' ? 'Whol.' : 'Pack'}
+                    </span>
+                    {selectedSize === size && (
+                      <motion.div 
+                        layoutId="activeSize"
+                        className="absolute -top-1 -right-1 bg-brand-accent text-white rounded-full p-1 shadow-sm"
+                      >
+                        <CheckCircle2 size={12} fill="currentColor" className="text-white" />
+                      </motion.div>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* Bulk Logic */}
+              {selectedSize === 'Bulk' && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 flex flex-col items-center text-center gap-4 mb-8"
+                >
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                    <Phone size={24} className="text-indigo-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-indigo-900 font-black uppercase text-[11px] tracking-widest mb-1">Bulk Quantity Inquiries</h4>
+                    <p className="text-indigo-700 text-sm font-medium">For bulk quantity, please contact us on WhatsApp directly.</p>
+                  </div>
+                  <a 
+                    href={getWhatsAppLink()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full py-4 bg-[#25D366] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#25D366] transition-all flex items-center justify-center gap-3"
+                  >
+                    <MessageSquare size={16} />
+                    Contact on WhatsApp
+                  </a>
+                </motion.div>
+              )}
+
+              {selectedSize !== 'Bulk' && (
+                <div className="space-y-6 transition-opacity duration-300">
+                  {/* Quantity Stepper */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-5 bg-slate-50 rounded-2xl border border-slate-100 pointer-events-auto">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Set Quantity</span>
+                      <span className="text-xs font-bold text-slate-900">How many boxes?</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <button 
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className={`p-2 rounded-lg border-2 border-slate-200 transition-all ${quantity > 1 ? 'hover:border-brand-accent hover:text-brand-accent bg-white' : 'opacity-50 cursor-not-allowed bg-slate-100'}`}
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="text-2xl font-black text-slate-900 min-w-[2rem] text-center">{quantity}</span>
+                      <button 
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="p-2 rounded-lg border-2 border-slate-200 hover:border-brand-accent hover:text-brand-accent transition-all bg-white"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Price Calculation */}
+                  <div className="flex items-center justify-between pt-6 border-t border-slate-100">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Total Estimated Amount</span>
+                      <div className="flex items-baseline gap-2">
+                         <span className="text-3xl font-black text-slate-900 leading-none">{typeof totalPrice === 'number' ? `Rs ${totalPrice.toLocaleString()}` : totalPrice}</span>
+                         {typeof totalPrice === 'number' && <span className="text-xs font-bold text-slate-400">/ Total</span>}
+                      </div>
+                    </div>
+                    <div className="hidden sm:flex flex-col items-end">
+                      <span className="text-[9px] font-black text-brand-accent uppercase tracking-widest px-2 py-1 bg-brand-accent/5 rounded-md border border-brand-accent/10">Order Live Summary</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Actions */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <button 
+                onClick={handleBuyNow}
+                disabled={!isInStock}
+                className={`py-5 bg-mango-brand text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed ${
+                  isInStock ? 'hover:bg-mango-brand/90 disabled:opacity-50 disabled:grayscale' : 'opacity-80'
+                }`}
+              >
+                <CreditCard size={18} />
+                <span>Quick Purchase</span>
+              </button>
+              <button 
+                onClick={handleAddToCart}
+                disabled={!isInStock}
+                className={`py-5 bg-brand-accent text-black rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3 transition-all shadow-lg active:scale-95 disabled:cursor-not-allowed ${
+                  isInStock ? 'hover:bg-[#D9A300] disabled:opacity-50 disabled:grayscale' : 'opacity-80'
+                }`}
+              >
+                <ShoppingBag size={18} />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+            {!selectedSize && (
+              <p className="mt-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 animate-pulse">
+                Please click Quick Purchase to proceed.
+              </p>
+            )}
+          </motion.div>
+        </div>
+
+        {/* TABS SECTION */}
+        <div className="mt-12">
+          {/* Tab Headers */}
+          <div className="flex overflow-x-auto hide-scrollbar border-b border-slate-200 mb-8 sm:mb-12">
+            <div className="flex space-x-8 px-2 w-max min-w-full justify-start md:justify-center">
+              {TABS.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`py-4 text-sm font-bold uppercase tracking-widest transition-colors relative whitespace-nowrap ${
+                    activeTab === tab ? 'text-brand-accent' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {tab}
+                  {activeTab === tab && (
+                    <motion.div 
+                      layoutId="tabIndicator"
+                      className="absolute bottom-0 left-0 w-full h-1 bg-brand-accent rounded-t-full"
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <div className="max-w-4xl mx-auto bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm min-h-[300px]">
+            <AnimatePresence mode="wait">
+              {activeTab === 'Description' && (
+                <motion.div
+                  key="Description"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="prose prose-slate max-w-none text-slate-700"
+                >
+                  <h3 className="text-xl font-bold text-infinite-night mb-4">About {product.name}</h3>
+                  <p className="leading-relaxed whitespace-pre-wrap">{product.longDescription || product.description}</p>
+                </motion.div>
+              )}
+
+              {activeTab === 'Additional Information' && (
+                <motion.div
+                  key="Additional Information"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="space-y-6"
+                >
+                  {product.specifications && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                      {Object.entries(product.specifications).map(([key, value]) => (
+                        <div key={key} className="flex flex-col p-4 bg-slate-50 rounded-xl border border-slate-100">
+                          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{key}</span>
+                          <span className="text-sm font-bold text-slate-900">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-slate-100">
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 mb-1">Available Packs</h4>
+                      <p className="text-slate-600">5KG, 10KG, BULK</p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 mb-1">Variety</h4>
+                      <p className="text-slate-600">{product.type}</p>
+                    </div>
+                  </div>
+                  <div className="bg-amber-50 p-6 rounded-2xl border border-amber-200">
+                    <p className="text-sm font-bold text-amber-800 leading-relaxed uppercase tracking-wider mb-2">Important Information</p>
+                    <p className="text-sm font-medium text-amber-800 leading-relaxed">
+                      The weight mentioned is the total package weight when packed unripe. This includes the box and packaging material. Fruits may lose some water weight during the natural ripening process.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === 'Payment & Delivery' && (
+                <motion.div
+                  key="Payment & Delivery"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="space-y-10"
+                >
+                  <section>
+                    <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                       <CreditCard className="text-brand-accent" size={24}/> Payment Policy
+                    </h4>
+                    <ul className="space-y-3 text-slate-700 list-disc pl-5">
+                      <li>Advance payment required across Pakistan.</li>
+                      <li>Cash on Delivery (COD) available only for <strong className="text-slate-900">Tando Allahyar</strong>.</li>
+                    </ul>
+                  </section>
+
+                  <section className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100">
+                    <h4 className="text-lg font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                      <Star className="text-emerald-500" fill="currentColor" size={20} /> Special Offer
+                    </h4>
+                    <ul className="space-y-2 text-emerald-800 text-sm list-disc pl-5">
+                      <li>Special Discount Available.</li>
+                      <li>Only for customers in Tando Allahyar.</li>
+                      <li>Discount applies automatically when city "Tando Allahyar" is selected in the order form.</li>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                       <Truck className="text-brand-accent" size={24}/> Delivery Time
+                    </h4>
+                    <ul className="space-y-3 text-slate-700 list-disc pl-5">
+                      <li>Standard delivery: 2–4 working days.</li>
+                      <li>Delivery via courier and rail cargo.</li>
+                    </ul>
+                  </section>
+
+                  <section className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <h4 className="text-lg font-bold text-red-900 mb-2 flex items-center gap-2">
+                       <ShieldCheck className="text-red-500" size={20}/> Important Disclaimer
+                    </h4>
+                    <ul className="space-y-2 text-red-800 text-sm list-disc pl-5">
+                      <li>Delivery may be delayed due to weather conditions, transport issues, train delays, or accidents.</li>
+                      <li>No claims will be accepted in such situations.</li>
+                      <li>Natural or unavoidable events are not covered under any claim.</li>
+                    </ul>
+                  </section>
+                </motion.div>
+              )}
+
+              {activeTab === 'Reviews' && (
+                <motion.div
+                  key="Reviews"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="-mx-6 sm:-mx-10"
+                >
+                  <div className="px-6 sm:px-10">
+                    {/* Reviews Summary */}
+                    <div className="grid md:grid-cols-3 gap-8 mb-12 bg-white border border-slate-100 p-8 rounded-3xl shadow-sm">
+                      <div className="text-center md:text-left flex flex-col justify-center">
+                        <h3 className="text-2xl font-bold text-infinite-night mb-2 uppercase tracking-tight">Customer Reviews</h3>
+                        <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
+                          <span className="text-5xl font-black text-slate-900">{averageRating}</span>
+                          <div className="flex flex-col gap-1 text-slate-500 text-sm">
+                            <div className="flex gap-1 text-brand-accent">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star key={star} size={16} fill={star <= Math.round(Number(averageRating)) ? 'currentColor' : 'none'} className={star <= Math.round(Number(averageRating)) ? 'text-brand-accent' : 'text-slate-200'} />
+                              ))}
+                            </div>
+                            <span className="font-bold uppercase tracking-wider text-[10px]">Based on {totalReviews} reviews</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-2 space-y-3 border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-8">
+                        {ratingCounts.map((rating) => (
+                          <div key={rating.stars} className="flex items-center gap-4 text-sm">
+                            <span className="w-12 font-bold text-slate-700 flex items-center gap-1">{rating.stars} <Star size={12} fill="currentColor" className="text-slate-200" /></span>
+                            <div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                              <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${rating.percentage}%` }}
+                                transition={{ duration: 1, ease: "easeOut" }}
+                                className="h-full bg-brand-accent rounded-full"
+                              />
+                            </div>
+                            <span className="w-12 text-right text-slate-400 font-bold text-[10px] uppercase">{rating.percentage.toFixed(0)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50/30 rounded-b-3xl">
+                    <Reviews productId={product.id} limit={4} />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+      
+      <AnimatePresence>
+        {/* The Reviews component now handles its own image lightboxes internally */}
+      </AnimatePresence>
+    </motion.div>
+  );
 }
 
-export const MANGO_PRODUCTS: MangoProduct[] = [
-  {
-    id: 'langra',
-    name: 'Langra Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    price8kg: 'N/A',
-    availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
-    type: 'Aromatic Juicy Mango',
-    description: 'Langra Mango – Juicy & Aromatic Summer Delight. Langra Mango is a highly juicy, sweet, and aromatic mango known for its rich flavor and smooth texture. It is loved worldwide for its natural taste and freshness.',
-    longDescription: 'Langra Mango is one of the most famous mango varieties from Pakistan. Its name "Langra" means "lame," and it is widely known for its traditional value and unique identity.\n\nThis mango is available in the summer season, mainly from May to July. It is greenish in color and ranges from medium to large size. Its shape is usually slightly oval and natural.\n\nLangra Mango has a rich, juicy pulp with a strong aroma and sweet taste. It is less intensely sweet compared to some other varieties, which makes it especially popular among international customers.\n\nIt is carefully handled during harvesting and packing to maintain its natural freshness, shape, and quality for export markets around the world.\n\nLangra Mango is:\n\nVery juicy and aromatic\nMedium to large in size\nGreenish skin with yellowish pulp when ripe\nFamous for its natural and balanced sweetness\nOne of the most popular export mangoes',
-    specifications: {
-      'Variety': 'Langra Mango',
-      'Taste': 'Sweet and aromatic',
-      'Texture': 'Juicy and soft',
-      'Shape': 'Medium to large, slightly oval',
-      'Season': 'May to July',
-      'Color': 'Greenish turning yellow when ripe',
-      'Use': 'Fresh eating & export quality mango',
-      'Special Feature': 'Less intense sweetness, international demand'
-    },
-    status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png',
-    lastRateUpdate: "2025-05-14T10:00:00"
-  },
-  {
-    id: 'chaunsa',
-    name: 'Chaunsa Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    price8kg: 'N/A',
-    availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
-    type: 'King of Sweetness',
-    description: 'Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
-    longDescription: 'Chaunsa Mango is a gift from nature, known for its exceptional sweetness, rich nutrition, and smooth texture. Its delicious taste makes it one of the most popular mango varieties in the world.\n\nIt is one of the most exported Pakistani mangoes, widely shipped to Europe, America, and the Middle East due to its high quality and demand.\n\nThe word "Chaunsa" means "to suck," which describes the best way to enjoy it. The ideal method is to gently squeeze the ripe mango until it becomes soft, then open a small hole at the top and enjoy the sweet juice inside.\n\nChaunsa has a low-fiber, smooth pulp, making it very easy and enjoyable to eat.\n\nIn Pakistan, Chaunsa is a late-season mango and is usually available in the last phase of the mango season, mainly from July to August.\n\nThe Chaunsa from Tando Allahyar (Sindh) is especially famous for its premium quality and export standards.\n\nIt is:\n\nVery sweet and juicy\nSmooth and low-fiber\nHighly aromatic\nOne of the top export mangoes',
-    specifications: {
-      'Variety': 'Chaunsa Mango',
-      'Taste': 'Very sweet',
-      'Texture': 'Soft and smooth',
-      'Season': 'July to August (late season)',
-      'Origin': 'Tando Allahyar, Sindh (Pakistan)',
-      'Export': 'Europe, USA, Middle East',
-      'Use': 'Fresh eating & export quality mango'
-    },
-    status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s800-rw/Chaunsa%20mango-main.png',
-    lastRateUpdate: "2025-05-14T10:00:00"
-  },
-  {
-    id: 'sindhri',
-    name: 'Sindhri Mango',
-    price5kg: 'N/A',
-    price10kg: 2650,
-    price8kg: 2450,
-    availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
-    type: 'Queen of Mangoes',
-    description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',
-    longDescription: 'Sindhri Mango is one of the most famous mango varieties in Pakistan. It is mainly grown in Sindh, especially in Tando Allahyar and Sindhri areas, which are known for producing high-quality export mangoes.\n\nThis mango is large, oval-shaped, very sweet, and highly fragrant. Because of its rich taste and strong aroma, it is considered one of the best mangoes in the country and is loved all over Pakistan as well as exported internationally.\n\nSindhri Mango is a highly demanded variety and is often called the "Queen of Mangoes" due to its premium taste and quality.\n\nIt is available in the mango season, mainly from May to June.\n\nIt is:\n\nSweet and juicy\nHighly aromatic\nExport quality fruit\nOne of the most popular mangoes in Pakistan',
-    specifications: {
-      'Variety': 'Sindhri Mango',
-      'Taste': 'Very sweet',
-      'Texture': 'Soft and juicy',
-      'Shape': 'Large and oval',
-      'Season': 'May to June',
-      'Origin': 'Tando Allahyar, Sindh (Pakistan)',
-      'Use': 'Fresh eating & export quality'
-    },
-    status: 'In Stock',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVJ_7SXyQeA3EVHwciuZtLK9vdtKVMUtE82SaOwjpZibVdu7BJA4opnTmYGrQ4AXLvO_efGp8ZxqHFKodM1akPf669S0FIl9eVv3sFFghtEJP6Ro5N5gaMZip9q2INwHcy47vWBP6t5YVpwMTvhYI85KMUeL6cQK8snn43-P0HWC-sZHs3BVJ0X_EI2WM/s800-rw/sindhri-main.png',
-    isFeatured: true,
-    featuredBadge: 'Most Popular',
-    gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZrXdCtEZCWw747N8BRyAmDNFrcN7iSpbxr772To7P15B9LPnVIbII7qkXxr5TPuglvWFhgDzyAhr8jozUQIMQfZDRrzunRUIjfhFIO2iUH5OMNV-W2jaL7p8v1DsP2DlpzLjcRGFl61xPGZ2tcXQXgejafolP9oDIU33C3Uaw1GzTQyEwaw4WLC4Vmk8/s800-rw/sindhri-1.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjk8Tc1wwFu86khz-VB1kzXjIUuqIxm2Y9pUaTSlFyAO6F83Dfy59OQqnMF5Ym3RaXMXYk_ujbd9WcP3Ujsbzh2-FoOWtNIx0uro00Hb99Ay_t84hWVsTiVYPOmi-F8bO9w-BLfgyb8S8_pKxiGoHk5d3bmg32E8vlZNPep01onjQ7f03V58yJCQf-quPA/s800-rw/sindhri-2.png'
-    ]
-  },
-  {
-    id: 'almas',
-    name: 'Almas Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    availableSizes: ['5kg', '10kg', 'Bulk'],
-    type: 'Prince of Balance',
-    description: 'Almas Mango is a Pakistani mango variety that arrives in May during the early mango season. It is known for its mild sweetness, refreshing taste, and soft juicy texture, making it a good choice for fresh eating.',
-    longDescription: 'Almas Mango – A Refreshing Start to the Season\n\nAlmas Mango is an early-season Pakistani mango variety grown in the regions of Sindh and Punjab. It usually becomes available in May and is appreciated for its light sweetness and refreshing flavor. Unlike heavily sweet mango varieties, Almas offers a softer and more balanced taste that feels light and pleasant in warm weather.\n\nThe fruit has a soft, smooth, and juicy pulp with low fiber, making it enjoyable for fresh consumption. Its skin remains green in the early stages and gradually turns light yellow when ripe. Almas Mango is commonly eaten fresh and is valued for its natural flavor, smooth texture, and seasonal freshness.\n\nIt is a suitable choice for people who prefer a mango that is not overly sweet and has a clean, refreshing taste during the beginning of the mango season.',
-    specifications: {
-      'Variety': 'Almas Mango',
-      'Taste': 'Mildly sweet and refreshing',
-      'Texture': 'Soft, smooth, and juicy',
-      'Skin Color': 'Green turning light yellow when ripe',
-      'Season': 'May (Early Mango Season)',
-      'Regions': 'Sindh and Punjab, Pakistan',
-      'Nutritional Value': 'Rich in vitamins and minerals',
-      'Best Use': 'Fresh eating'
-    },
-    status: 'Out of Stock',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhULI5pKc3gOTA75pftmazdlTJI1IVzr9lHgN3azqI7O0QKdGqULL9N5yWRXAGQcTmbW-fza24ctJvclhSSin4Yu9aHdSa7f78_80QR_trviN1PE1upErTEULatuo1JwWg_lwfPdoTYJmPdARtnlKdVcyMDgy39Up_P4ybsvj7iu5q0KapryQqa-2Os2qA/s800-rw/file_00000000086071faa4a27c1f5ff0f263.png',
-    lastRateUpdate: "2026-05-17T10:00:00"
-  },
-  {
-    id: 'saroli',
-    name: 'Saroli Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    availableSizes: ['5kg', '10kg', 'Bulk'],
-    type: 'Season Opener Mango',
-    description: 'Saroli is one of the earliest mango varieties of the season, known for its soft texture and naturally sweet taste. It offers a refreshing and delightful start to the mango season.',
-    longDescription: 'Saroli Mango – A Fresh Start to the Mango Season\n\nSaroli Mango is one of the oldest and most traditional mango varieties grown in Pakistan. It is widely known as the "season opener" because it arrives early and marks the beginning of the mango season.\n\nThis variety is naturally rich in essential vitamins and minerals, making it both nutritious and delicious. Saroli mangoes have green skin that gradually turns slightly yellowish-brown as they ripen. Inside, the pulp is soft, smooth, and juicy, offering a naturally sweet taste with a light and refreshing aroma.\n\nSaroli is highly appreciated for its balanced flavor and tender texture, making it an excellent choice for fresh consumption. Its early availability and pleasant taste make it a favorite among mango lovers who want to enjoy the first mangoes of the season.\n\nSaroli Mango is typically available in early mango season, mainly from May to June, making it one of the first varieties to arrive in the market.',
-    specifications: {
-      'Variety': 'Saroli Mango',
-      'Taste': 'Mildly sweet and refreshing',
-      'Texture': 'Soft, smooth, and juicy',
-      'Skin Color': 'Green turning light yellow-brown when ripe',
-      'Season': 'Early mango season (season starter)',
-      'Nutritional Value': 'Rich in vitamins and minerals',
-      'Best Use': 'Fresh eating'
-    },
-    status: 'Out of Stock',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQkH1-rI21NXeFwY93pQOwto7sXh2kDiAq4MB6NsM6llgcicewJFtQ_dsLtWLvhOOnm7_v5DdehGvRHfNV-qgxepEFmvJWqkZc-er2wrP16jW763JtY0ZcN5ptNGb1jnFMeUr-fdlYlWD1K8SwX4d06P4TYK1FRSPRhiSSM8auxZdAS4OqLdScXnm2u8A/s800-rw/Saroli%20mango-main.png',
-    lastRateUpdate: "2025-05-14T10:00:00"
-  },
-  {
-    id: 'desi-achar',
-    name: 'Desi Achari Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    availableSizes: ['5kg', '10kg', 'Bulk'],
-    type: 'Raw Pickle Mango (Achar Special)',
-    description: 'Desi Achari Mango – Best for Pickle (Achar). Desi Achari Mango is a traditional raw mango mainly used for making pickles. It has a sour taste and strong flavor, perfect for homemade achar.',
-    longDescription: 'Desi Achari Mango – Traditional Mango for Pickle Making\n\nDesi Achari Mango is a traditional mango variety in Pakistan. It is not usually eaten fresh because it is raw and sour. It is mainly used for making mango pickle (achar).\n\nThis mango is hard and firm, so it absorbs spices very well. When mixed with salt, oil, and spices, it becomes a tasty and long-lasting pickle that is very popular in desi homes.\n\nDesi Achari Mango is available in the summer season, mostly from May to July, which is the best time for making pickles.\n\nIt is mainly used for:\n\nMango pickle (achar)\nSpicy homemade pickles\nTraditional food preparation',
-    specifications: {
-      'Variety': 'Desi Achari Mango',
-      'Taste': 'Sour (raw mango)',
-      'Texture': 'Hard and firm',
-      'Season': 'May to July',
-      'Main Use': 'Pickle (Achar)'
-    },
-    status: 'Out of Stock',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-T6eEfXGg295uibQEQwe3pAFALJbrVng_vWPRuR24nj-KGNSxeROseBhxarWajdMjckjEvOPavJix6Wk48p2LMCY-J3OXteY_68zs6ms7aUdZH96O-Y4P9EgnyLjXd50hmxBJUEsFYVl83zq5nPlrqK2FqBwFI1cbmdWWEbdLURep_8g2mdWWBmCnBwQ/s800-rw/Desi%20mango-2.png',
-    gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhq4Lfe39N-cbRvtWiRNyUQsHHjo7RrvYr6vU8mric691uxuf19ZTKAgMK81OBjVsVF69zzeBxuMRUNx0EE2I-tm0IbH-I-XwR_JG0CIQ3RpCWFldU4X3WV6P3H24ipRXc3e_WmKZIc5s4I817fhKiApWN5ZIJI_PVVvsvhIjmGxde4C-AgOlAJ5FZUwAk/s800-rw/Desi%20achari%20mango-main.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7xvmpaw_Fuiq1LgncPdJOEFtOHmOdF_a8UjxsGVZ_fmnIsBINL7rVQ6JOxAyYVr0RA8iiC9E0ytNfNdBtlwDSJ8gMVmekSrQobFisUYCKDr6sK5JGaQM3udbjwqBK_4CFg9gs-dn3uQ70HlT3s4SPjVK693PtkmgbARyx5DUYWRY4xyZI5jIg4WoCSrc/s800-rw/Desi%20achari%20mangoi-1.png'
-    ]
-  },
-  {
-    id: 'anwar-ratol',
-    name: 'Anwar Ratol Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    availableSizes: ['5kg', '10kg', 'Bulk'],
-    type: 'Mini Powerhouse Mango',
-    description: 'Anwar Ratol Mango – Mini Powerhouse of Sweetness. Anwar Ratol is a small, yellow mango known for its extreme sweetness and smooth, fiberless pulp. It is one of the most loved mango varieties in Pakistan.',
-    longDescription: 'Anwar Ratol Mango is a small-sized, yellow mango variety famous for its rich sweetness and soft, fiberless pulp. It is often called a "mini powerhouse" because of its strong natural sweetness in a small fruit.\n\nThis mango is mainly grown in Punjab and Sindh regions of Pakistan and is highly popular due to its unique taste and smooth texture.\n\nAnwar Ratol is extremely sweet, juicy, and melts easily in the mouth. It is best enjoyed fresh when fully ripe. Because of its low fiber content, it is very smooth and easy to eat.\n\nThis mango is available in the mid mango season, mainly from June to July.\n\nIt is:\n\nVery sweet and juicy\nSmooth and fiberless\nSmall in size but rich in taste\nOne of the most popular premium mangoes in Pakistan',
-    specifications: {
-      'Variety': 'Anwar Ratol Mango',
-      'Taste': 'Extremely sweet',
-      'Texture': 'Soft and fiberless',
-      'Shape': 'Small and round',
-      'Season': 'June to July',
-      'Origin': 'Punjab & Sindh (Pakistan)',
-      'Use': 'Fresh eating premium mango'
-    },
-    status: 'Out of Stock',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOqy37aB5kFHk2Gdz3ksqFpjm9Jv-He4NoQGmVNhvYF43grLGIs9yhMFDx8xv5aHbKzMyet2M8mQ4hQE82bsPLom-rDjlAGwf_stKKnvd_INJF3Hm6lbznoXJVjmJ53Sifzuu8-OUkxYH-KWPmK890We-o0o49qoBuw64nRmZ4Sps_fgAa8kuZBJG8ud0/s800-rw/Anwar%20ratol-main.png',
-    lastRateUpdate: "2025-05-14T10:00:00",
-    gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmr6VtQBmAt_6mbDuzfYCbjELVUSoJ_FikOgZm-l9O0GF7zBHC1vhGxj_g2J7lX4nhF4d4cv3Ne9mWp7zljgkngpPiig3JUvaaecx2PbCz1cRaLyG-nZcoK6L-_Al_uNQlXq7H1fJN0xXekQRl2HT3ozXsAVxwjaTVPGxyjG0REH_pOvAJO8gnI6n2Gx8/s800-rw/Anwar%20ratol-2.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjBmsVbG5INenM5N49YgyzjApZhYqQ179kGLLB6d3H7YHi0pvaQ3Yll1oTXkKrgiCDcfRXcjWX_ryUz9DAeN0Sq0xyArYt3TEXbjRzaGVh3E_kP6-MHokz72P4IKvcMzYyyGXSIksBvA1HbAHBP5xUkfGEoqS_2qISaqY7MVXkLQL32VS0dSXUx9vm3mbY/s800-rw/Anwar%20ratol-1.png'
-    ]
-  },
-  {
-    id: 'dasheri',
-    name: 'Dasheri Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    availableSizes: ['5kg', '10kg', 'Bulk'],
-    type: 'Classic Summer Mango',
-    description: 'Dasheri Mango – Sweet & Juicy Summer Delight. Dasheri Mango is a popular summer fruit known for its sweet taste, smooth texture, and juicy pulp. It is a refreshing and healthy mango variety loved by everyone.',
-    longDescription: 'Dasheri Mango is one of the most loved mango varieties in South Asia, known for its rich sweetness and soft, smooth flesh. It is a valuable summer fruit enjoyed for its delicious taste and refreshing juice.\n\nThis mango is also known by different regional names such as Dasheri, Dashari, and Desheri. It is widely grown and enjoyed across Pakistan and India.\n\nDasheri Mango is rich in fiber, which helps support digestion. It is also a good source of Vitamin C, which helps strengthen the immune system. In addition, it contains important nutrients like Vitamin A, Vitamin E, iron, calcium, folate, zinc, and other minerals that support overall body health.\n\nThe skin of Dasheri Mango also contains natural antioxidants that may help reduce inflammation and support good health.\n\nDasheri Mango is available in the summer season, mainly from June to July. It is best enjoyed fresh when fully ripe, offering a sweet, juicy, and aromatic flavor.\n\nIt is:\n\nVery sweet and juicy\nSoft and smooth in texture\nHealthy and nutrient-rich\nA classic summer mango variety',
-    specifications: {
-      'Variety': 'Dasheri Mango',
-      'Taste': 'Sweet and aromatic',
-      'Texture': 'Soft and juicy',
-      'Shape': 'Medium and oval',
-      'Season': 'June to July',
-      'Nutritional Value': 'Rich in fiber, Vitamin C, Vitamin A, iron, calcium, folate, zinc',
-      'Benefits': 'Supports digestion and immunity',
-      'Use': 'Fresh eating summer fruit'
-    },
-    status: 'Out of Stock',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh2Q0QsmytjCz69nqBhOODrcgOfnRLZbHu6WqPepVzZCIlooiohFAqV9oEJU8W8hAdXgmTyuoVRK9EdvQt0ievaPSfuyxoArOzBXwKnaHgmuzDzOY9gpIyUX-Wm-Sf1G7yj_8cNTXLad3MZldeuFz6Bta-LZHL3czUS1J_DiFPIz5eUZFVaFCEWOayz2pw/s800-rw/Dasheri%20mango-1.png',
-    gallery: [
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3_iVcoT6ROPVEio0O3Oj9fVIEuwpRDBtv1exDYf1wAVgFvrlYGbVlBdvlsUWvaU9ttSHBRapXHXgpGrnyZsL8CVk5PEHwkf5QKbPtfhbdVyx1SzRFDX7aWfXMliZLamHoKUoicZewcU86PZ_Vv3GRfHWNmSmUsEIawnmU0c3Z73sX1nG7lgqhDAdtNJA/s800-rw/Dasheri%20mango-main.png',
-      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglTSO0evg1vvhXcxbzEXB4V2MT-nrKc05Ix-XQsIi6nTjjoQqg1rHI3R0OFVIkdxflAMIPqy50zvyuqhrZ1Cj4UtGWuLvPhH-CieE6Nmcw5wFLxxhdPl-if5Pek08ha_T_b-Q_0CyfKGkVeokZd0orKuZgXQkrWBHVj0J2PigRHFitT11MotTR77mdRE4/s800-rw/Dasheri%20image-2.png'
-    ]
-  }
-];
-
-export const SOCIAL_LINKS = {
-  facebook: 'https://www.facebook.com/share/1P366h4wni/',
-  instagram: 'https://www.instagram.com/aamwalapk',
-  tiktok: 'https://www.tiktok.com/@aam.wala?_r=1&_t=ZS-95c0yvCUDTU',
-  whatsapp: 'https://api.whatsapp.com/send?phone=923063908181',
-  phone: '0306-3908181',
-  email: 'aamwalastore@gmail.com'
-};
