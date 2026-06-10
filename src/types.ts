@@ -36,30 +36,6 @@ export interface OrderFormData {
 
 export const MANGO_PRODUCTS: MangoProduct[] = [
   {
-    id: 'langra',
-    name: 'Langra Mango',
-    price5kg: 'N/A',
-    price10kg: 'N/A',
-    price8kg: 'N/A',
-    availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
-    type: 'Aromatic Juicy Mango',
-    description: 'Langra Mango – Juicy & Aromatic Summer Delight. Langra Mango is a highly juicy, sweet, and aromatic mango known for its rich flavor and smooth texture. It is loved worldwide for its natural taste and freshness.',
-    longDescription: 'Langra Mango is one of the most famous mango varieties from Pakistan. Its name "Langra" means "lame," and it is widely known for its traditional value and unique identity.\n\nThis mango is available in the summer season, mainly from May to July. It is greenish in color and ranges from medium to large size. Its shape is usually slightly oval and natural.\n\nLangra Mango has a rich, juicy pulp with a strong aroma and sweet taste. It is less intensely sweet compared to some other varieties, which makes it especially popular among international customers.\n\nIt is carefully handled during harvesting and packing to maintain its natural freshness, shape, and quality for export markets around the world.\n\nLangra Mango is:\n\nVery juicy and aromatic\nMedium to large in size\nGreenish skin with yellowish pulp when ripe\nFamous for its natural and balanced sweetness\nOne of the most popular export mangoes',
-    specifications: {
-      'Variety': 'Langra Mango',
-      'Taste': 'Sweet and aromatic',
-      'Texture': 'Juicy and soft',
-      'Shape': 'Medium to large, slightly oval',
-      'Season': 'May to July',
-      'Color': 'Greenish turning yellow when ripe',
-      'Use': 'Fresh eating & export quality mango',
-      'Special Feature': 'Less intense sweetness, international demand'
-    },
-    status: 'Coming Soon',
-    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png',
-    lastRateUpdate: "2025-05-14T10:00:00"
-  },
-  {
     id: 'chaunsa',
     name: 'Chaunsa Mango',
     price5kg: 'N/A',
@@ -83,11 +59,35 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     lastRateUpdate: "2025-05-14T10:00:00"
   },
   {
+    id: 'langra',
+    name: 'Langra Mango',
+    price5kg: 'N/A',
+    price10kg: 'N/A',
+    price8kg: 'N/A',
+    availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
+    type: 'Aromatic Juicy Mango',
+    description: 'Langra Mango – Juicy & Aromatic Summer Delight. Langra Mango is a highly juicy, sweet, and aromatic mango known for its rich flavor and smooth texture. It is loved worldwide for its natural taste and freshness.',
+    longDescription: 'Langra Mango is one of the most famous mango varieties from Pakistan. Its name "Langra" means "lame," and it is widely known for its traditional value and unique identity.\n\nThis mango is available in the summer season, mainly from May to July. It is greenish in color and ranges from medium to large size. Its shape is usually slightly oval and natural.\n\nLangra Mango has a rich, juicy pulp with a strong aroma and sweet taste. It is less intensely sweet compared to some other varieties, which makes it especially popular among international customers.\n\nIt is carefully handled during harvesting and packing to maintain its natural freshness, shape, and quality for export markets around the world.\n\nLangra Mango is:\n\nVery juicy and aromatic\nMedium to large in size\nGreenish skin with yellowish pulp when ripe\nFamous for its natural and balanced sweetness\nOne of the most popular export mangoes',
+    specifications: {
+      'Variety': 'Langra Mango',
+      'Taste': 'Sweet and aromatic',
+      'Texture': 'Juicy and soft',
+      'Shape': 'Medium to large, slightly oval',
+      'Season': 'May to July',
+      'Color': 'Greenish turning yellow when ripe',
+      'Use': 'Fresh eating & export quality mango',
+      'Special Feature': 'Less intense sweetness, international demand'
+    },
+    status: 'Out of Stock',
+    image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpfYxZ3DQxr0qLrntZfx0c4NkR8zK8usTpq8nbyir82KH3OuWFzY6qBN2t0ge6dRLMOt8pWyvGVHd95HcceX7nuk8YVL-SRIRVpQoCXBuJX31zSuRCV_AbiZRZJg-uAM4kyG4tXEAOViGpFkcSu8Zmx6xS2HuKFWKKDHRYSwlLClWJW2BrMP3Q522zmio/s800-rw/Langra%20mango-main.png',
+    lastRateUpdate: "2025-05-14T10:00:00"
+  },
+  {
     id: 'sindhri',
     name: 'Sindhri Mango',
     price5kg: 'N/A',
-    price10kg: 2650,
-    price8kg: 2450,
+    price10kg: 2800,
+    price8kg: 2600,
     availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
     type: 'Queen of Mangoes',
     description: 'Sindhri Mango – The Queen of Mangoes. Sindhri is a large, sweet, and highly fragrant mango known as the "Queen of Mangoes." It is one of the most popular mango varieties in Pakistan.',
