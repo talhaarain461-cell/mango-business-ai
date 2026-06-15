@@ -127,10 +127,12 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       const sizeLower = (item.size || '').toLowerCase();
       if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
         if (sizeLower.includes('8kg')) {
-          const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : 2600;
+          const fallback = item.product.id === 'chaunsa' ? 3100 : 2600;
+          const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : fallback;
           itemSubtotal = p * item.quantity;
         } else if (sizeLower.includes('10kg')) {
-          const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 2800;
+          const fallback = item.product.id === 'chaunsa' ? 3500 : 2800;
+          const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : fallback;
           itemSubtotal = p * item.quantity;
         }
       } else {

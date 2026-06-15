@@ -37,16 +37,16 @@ export interface OrderFormData {
 export const MANGO_PRODUCTS: MangoProduct[] = [
   {
     id: 'chaunsa',
-    name: 'Chaunsa Mango',
+    name: 'White Chaunsa Mango',
     price5kg: 'N/A',
-    price10kg: 'N/A',
-    price8kg: 'N/A',
+    price10kg: 3500,
+    price8kg: 3100,
     availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
     type: 'King of Sweetness',
-    description: 'Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
-    longDescription: 'Chaunsa Mango is a gift from nature, known for its exceptional sweetness, rich nutrition, and smooth texture. Its delicious taste makes it one of the most popular mango varieties in the world.\n\nIt is one of the most exported Pakistani mangoes, widely shipped to Europe, America, and the Middle East due to its high quality and demand.\n\nThe word "Chaunsa" means "to suck," which describes the best way to enjoy it. The ideal method is to gently squeeze the ripe mango until it becomes soft, then open a small hole at the top and enjoy the sweet juice inside.\n\nChaunsa has a low-fiber, smooth pulp, making it very easy and enjoyable to eat.\n\nIn Pakistan, Chaunsa is a late-season mango and is usually available in the last phase of the mango season, mainly from July to August.\n\nThe Chaunsa from Tando Allahyar (Sindh) is especially famous for its premium quality and export standards.\n\nIt is:\n\nVery sweet and juicy\nSmooth and low-fiber\nHighly aromatic\nOne of the top export mangoes',
+    description: 'White Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
+    longDescription: 'White Chaunsa Mango is a gift from nature, known for its exceptional sweetness, rich nutrition, and smooth texture. Its delicious taste makes it one of the most popular mango varieties in the world.\n\nIt is one of the most exported Pakistani mangoes, widely shipped to Europe, America, and the Middle East due to its high quality and demand.\n\nThe word "Chaunsa" means "to suck," which describes the best way to enjoy it. The ideal method is to gently squeeze the ripe mango until it becomes soft, then open a small hole at the top and enjoy the sweet juice inside.\n\nWhite Chaunsa Mango has a low-fiber, smooth pulp, making it very easy and enjoyable to eat.\n\nIn Pakistan, White Chaunsa is a late-season mango and is usually available in the last phase of the mango season, mainly from July to August.\n\nThe Chaunsa from Tando Allahyar (Sindh) is especially famous for its premium quality and export standards.\n\nIt is:\n\nVery sweet and juicy\nSmooth and low-fiber\nHighly aromatic\nOne of the top export mangoes',
     specifications: {
-      'Variety': 'Chaunsa Mango',
+      'Variety': 'White Chaunsa Mango',
       'Taste': 'Very sweet',
       'Texture': 'Soft and smooth',
       'Season': 'July to August (late season)',
@@ -54,7 +54,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Export': 'Europe, USA, Middle East',
       'Use': 'Fresh eating & export quality mango'
     },
-    status: 'Coming Soon',
+    status: 'In Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s800-rw/Chaunsa%20mango-main.png',
     lastRateUpdate: "2025-05-14T10:00:00"
   },
