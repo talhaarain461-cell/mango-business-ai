@@ -28,14 +28,12 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
     if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
       const sizeLower = (item.size || '').toLowerCase();
       if (sizeLower.includes('8kg')) {
-        const fallback = item.product.id === 'chaunsa' ? 3100 : 2600;
-        const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : fallback;
-        return p * item.quantity;
+        if (typeof item.product.price8kg !== 'number') return 'N/A';
+        return item.product.price8kg * item.quantity;
       }
       if (sizeLower.includes('10kg')) {
-        const fallback = item.product.id === 'chaunsa' ? 3500 : 2800;
-        const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : fallback;
-        return p * item.quantity;
+        if (typeof item.product.price10kg !== 'number') return 'N/A';
+        return item.product.price10kg * item.quantity;
       }
     }
     
@@ -131,17 +129,23 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                             </button>
                           </div>
                           <div className="flex items-center gap-2 mt-1">
-                            <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">
-                              {['sindhri', 'langra', 'chaunsa'].includes(item.product.id) ? (
-                                typeof item.product.price8kg === 'number' && typeof item.product.price10kg === 'number' 
-                                  ? `Rs ${item.product.price8kg} - ${item.product.price10kg}` 
-                                  : "N/A"
+                            {['sindhri', 'langra', 'chaunsa'].includes(item.product.id) ? (
+                              typeof item.product.price8kg === 'number' && typeof item.product.price10kg === 'number' ? (
+                                <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">
+                                  Rs {item.product.price8kg} - {item.product.price10kg}
+                                </p>
                               ) : (
-                                typeof item.product.price5kg === 'number' && typeof item.product.price10kg === 'number' 
-                                  ? `Rs ${item.product.price5kg} - ${item.product.price10kg}` 
-                                  : "N/A"
-                              )}
-                            </p>
+                                <span className="text-rose-600 font-black text-[9px] bg-rose-50 px-2 py-0.5 rounded border border-rose-100 uppercase tracking-widest">N/A</span>
+                              )
+                            ) : (
+                              typeof item.product.price5kg === 'number' && typeof item.product.price10kg === 'number' ? (
+                                <p className="text-[10px] font-black text-mango-brand uppercase tracking-widest">
+                                  Rs {item.product.price5kg} - {item.product.price10kg}
+                                </p>
+                              ) : (
+                                <span className="text-rose-600 font-black text-[9px] bg-rose-50 px-2 py-0.5 rounded border border-rose-100 uppercase tracking-widest">N/A</span>
+                              )
+                            )}
                             <span className="h-1 w-1 bg-slate-300 rounded-full" />
                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
                               {item.size.toLowerCase().includes('wood petti') || item.size.toLowerCase().includes('box') || item.size.toLowerCase().includes('bulk') ? item.size : `${item.size} Pack`}
@@ -170,13 +174,10 @@ export function CartDrawer({ onCheckout, onStartShopping }: { onCheckout: () => 
                   <span className="text-2xl font-black text-infinite-night">{typeof cartTotal === 'number' ? `Rs ${cartTotal.toLocaleString()}` : cartTotal}</span>
                 </div>
                 <button
-                  onClick={() => {
-                    onClose();
-                    onCheckout();
-                  }}
-                  className="w-full py-5 bg-brand-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-brand-primary/90 transition-all shadow-xl active:scale-95"
+                  disabled={true}
+                  className="w-full py-5 bg-slate-300 text-slate-500 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center space-x-3 cursor-not-allowed opacity-60"
                 >
-                  <span>Check Out Now</span>
+                  <span>Store Closed (See you in 2027)</span>
                   <ArrowRight size={18} />
                 </button>
               </div>

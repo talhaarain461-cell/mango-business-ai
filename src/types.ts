@@ -39,8 +39,8 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
     id: 'chaunsa',
     name: 'White Chaunsa Mango',
     price5kg: 'N/A',
-    price10kg: 3500,
-    price8kg: 3100,
+    price10kg: 'N/A',
+    price8kg: 'N/A',
     availableSizes: ['8kg Box', '10kg Box', 'Bulk'],
     type: 'King of Sweetness',
     description: 'White Chaunsa Mango – The King of Flavor. Chaunsa is one of the most premium mango varieties, loved for its rich sweetness, smooth texture, and strong aroma. It is a highly demanded mango both locally and internationally.',
@@ -54,7 +54,7 @@ export const MANGO_PRODUCTS: MangoProduct[] = [
       'Export': 'Europe, USA, Middle East',
       'Use': 'Fresh eating & export quality mango'
     },
-    status: 'In Stock',
+    status: 'Out of Stock',
     image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgo-Yv2IdhlUXiTN3m5286-jFbRaQe2PzoYmDQvZmD4uI_B7kT_7NMfqx3RfvbWqsg9t3s6lfdt4g_MXoNPxig5tT4g_tErDJ_UyvuExosbEeVVS1Zi7PNxGnGmQ5B9cNWRHh1KQZk76i5kwU6vEmeq2RV9Ztw3HK3dPfjHu3vz4JGlruF_FYtnqwzgPSY/s800-rw/Chaunsa%20mango-main.png',
     lastRateUpdate: "2025-05-14T10:00:00"
   },

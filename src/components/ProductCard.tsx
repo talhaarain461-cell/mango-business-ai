@@ -101,19 +101,23 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
       <div className="p-3 sm:p-5 lg:p-6 flex flex-col flex-grow">
         <div className="flex flex-col sm:flex-row justify-between items-start mb-1 gap-1.5">
           <h3 className="text-sm sm:text-lg font-black text-infinite-night uppercase tracking-tight leading-tight group-hover:text-brand-accent transition-colors">{product.name}</h3>
-          <div className={`${
-            ['sindhri', 'langra', 'chaunsa'].includes(product.id)
-              ? 'bg-transparent text-slate-950 border-transparent shadow-none font-black text-xs sm:text-sm px-0 py-0'
-              : 'bg-brand-accent/10 text-brand-accent border-brand-accent/20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black border'
-          } whitespace-nowrap`}>
+          <div className="whitespace-nowrap">
             {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
-              typeof product.price8kg === 'number' && typeof product.price10kg === 'number' ? 
-                `Rs ${product.price8kg} - ${product.price10kg}` : 
-                "N/A"
+              typeof product.price8kg === 'number' && typeof product.price10kg === 'number' ? (
+                <span className="text-slate-950 font-black text-xs sm:text-sm">
+                  Rs {product.price8kg} - {product.price10kg}
+                </span>
+              ) : (
+                <span className="text-rose-600 font-black text-xs sm:text-sm bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-100">N/A</span>
+              )
             ) : (
-              typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? 
-                `Rs ${product.price5kg} - ${product.price10kg}` : 
-                "N/A"
+              typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? (
+                <span className="bg-brand-accent/10 text-brand-accent border-brand-accent/20 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-[9px] sm:text-xs font-black border">
+                  Rs {product.price5kg} - {product.price10kg}
+                </span>
+              ) : (
+                <span className="text-rose-600 font-black text-xs sm:text-sm bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-100">N/A</span>
+              )
             )}
           </div>
         </div>
@@ -169,7 +173,7 @@ export function ProductCard({ product, onBuyNow, onViewDetails }: ProductCardPro
                 isInStock ? 'shadow-brand-primary/20' : 'opacity-80 cursor-not-allowed grayscale-[20%]'
               }`}
             >
-              <span>Buy Now</span>
+              <span>{isInStock ? 'Buy Now' : 'Out of Stock'}</span>
             </button>
           </div>
         </div>

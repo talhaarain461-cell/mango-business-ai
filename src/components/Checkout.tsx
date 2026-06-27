@@ -127,12 +127,10 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
       const sizeLower = (item.size || '').toLowerCase();
       if (['sindhri', 'langra', 'chaunsa'].includes(item.product.id)) {
         if (sizeLower.includes('8kg')) {
-          const fallback = item.product.id === 'chaunsa' ? 3100 : 2600;
-          const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : fallback;
+          const p = typeof item.product.price8kg === 'number' ? item.product.price8kg : 0;
           itemSubtotal = p * item.quantity;
         } else if (sizeLower.includes('10kg')) {
-          const fallback = item.product.id === 'chaunsa' ? 3500 : 2800;
-          const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : fallback;
+          const p = typeof item.product.price10kg === 'number' ? item.product.price10kg : 0;
           itemSubtotal = p * item.quantity;
         }
       } else {
@@ -732,25 +730,11 @@ export function Checkout({ preSelectedProduct, preSelectedSize, preSelectedQuant
                   <button
                     type="submit"
                     form="checkout-form"
-                    disabled={
-                      formState === 'sending' || 
-                      !formData.fullName || 
-                      !formData.phone || 
-                      !formData.address || 
-                      !formData.city || 
-                      localOrderItems.length === 0 || 
-                      localOrderItems.some(item => !item.size)
-                    }
-                    className="w-full py-5 bg-[#25D366] text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center space-x-3 hover:bg-[#25D366] transition-all shadow-sm active:scale-95 disabled:opacity-50 disabled:grayscale"
+                    disabled={true}
+                    className="w-full py-5 bg-slate-400 text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center space-x-3 cursor-not-allowed opacity-60"
                   >
-                    {formState === 'sending' ? (
-                      <span>Loading WhatsApp...</span>
-                    ) : (
-                      <>
-                        <Phone size={18} />
-                        <span>Confirm on WhatsApp</span>
-                      </>
-                    )}
+                    <X size={18} />
+                    <span>Store Closed (See you in 2027)</span>
                   </button>
                   
                   <p className="text-[9px] text-slate-500 text-center font-bold uppercase tracking-tighter mt-4">

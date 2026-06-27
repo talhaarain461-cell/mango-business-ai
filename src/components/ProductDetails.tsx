@@ -64,14 +64,12 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
     if (['sindhri', 'langra', 'chaunsa'].includes(product.id)) {
       const sizeLower = selectedSize.toLowerCase();
       if (sizeLower.includes('8kg')) {
-        const fallback = product.id === 'chaunsa' ? 3100 : 2600;
-        const p = typeof product.price8kg === 'number' ? product.price8kg : fallback;
-        return p * quantity;
+        if (typeof product.price8kg !== 'number') return 'N/A';
+        return product.price8kg * quantity;
       }
       if (sizeLower.includes('10kg')) {
-        const fallback = product.id === 'chaunsa' ? 3500 : 2800;
-        const p = typeof product.price10kg === 'number' ? product.price10kg : fallback;
-        return p * quantity;
+        if (typeof product.price10kg !== 'number') return 'N/A';
+        return product.price10kg * quantity;
       }
     }
 
@@ -224,17 +222,23 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                   {product.type}
                 </p>
                 <div className="h-1 w-1 bg-slate-300 rounded-full" />
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                  {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
-                    typeof product.price8kg === 'number' && typeof product.price10kg === 'number' 
-                      ? `Rs ${product.price8kg} - ${product.price10kg}` 
-                      : "N/A"
+                {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
+                  typeof product.price8kg === 'number' && typeof product.price10kg === 'number' ? (
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Rs {product.price8kg} - {product.price10kg}
+                    </p>
                   ) : (
-                    typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
-                      ? `Rs ${product.price5kg} - ${product.price10kg}` 
-                      : "N/A"
-                  )}
-                </p>
+                    <span className="text-rose-600 font-black text-[10px] bg-rose-50 px-2.5 py-1 rounded border border-rose-100 uppercase tracking-widest">N/A</span>
+                  )
+                ) : (
+                  typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? (
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Rs {product.price5kg} - {product.price10kg}
+                    </p>
+                  ) : (
+                    <span className="text-rose-600 font-black text-[10px] bg-rose-50 px-2.5 py-1 rounded border border-rose-100 uppercase tracking-widest">N/A</span>
+                  )
+                )}
               </div>
               
               <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-medium mb-8">
@@ -367,7 +371,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                 }`}
               >
                 <CreditCard size={18} />
-                <span>Quick Purchase</span>
+                <span>{isInStock ? 'Quick Purchase' : 'Out of Stock'}</span>
               </button>
               <button 
                 onClick={handleAddToCart}
@@ -377,7 +381,7 @@ export function ProductDetails({ product, onBack, onBuyNow }: ProductDetailsProp
                 }`}
               >
                 <ShoppingBag size={18} />
-                <span>Add to Cart</span>
+                <span>{isInStock ? 'Add to Cart' : 'Out of Stock'}</span>
               </button>
             </div>
             {!selectedSize && (

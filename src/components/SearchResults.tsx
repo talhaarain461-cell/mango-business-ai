@@ -108,17 +108,23 @@ export function SearchResults({ onNavigate, onBuyNow, onViewDetails }: SearchRes
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Price</span>
                       <div className="flex items-center gap-2">
-                        <span className={`text-xl font-black ${['sindhri', 'langra', 'chaunsa'].includes(product.id) ? 'text-slate-950 font-black' : 'text-brand-accent'}`}>
-                          {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
-                            typeof product.price8kg === 'number' && typeof product.price10kg === 'number' 
-                              ? `Rs ${product.price8kg} - ${product.price10kg}` 
-                              : "N/A"
+                        {['sindhri', 'langra', 'chaunsa'].includes(product.id) ? (
+                          typeof product.price8kg === 'number' && typeof product.price10kg === 'number' ? (
+                            <span className="text-xl font-black text-slate-950">
+                              Rs {product.price8kg} - {product.price10kg}
+                            </span>
                           ) : (
-                            typeof product.price5kg === 'number' && typeof product.price10kg === 'number' 
-                              ? `Rs ${product.price5kg} - ${product.price10kg}` 
-                              : "N/A"
-                          )}
-                        </span>
+                            <span className="text-rose-600 font-black text-xs sm:text-sm bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-100">N/A</span>
+                          )
+                        ) : (
+                          typeof product.price5kg === 'number' && typeof product.price10kg === 'number' ? (
+                            <span className="text-xl font-black text-brand-accent">
+                              Rs {product.price5kg} - {product.price10kg}
+                            </span>
+                          ) : (
+                            <span className="text-rose-600 font-black text-xs sm:text-sm bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-100">N/A</span>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
